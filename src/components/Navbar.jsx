@@ -61,35 +61,40 @@ export default function Navbar({ onOpenProjectModal }) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
-          scrolled || megaMenuOpen
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+          scrolled || megaMenuOpen || mobileMenuOpen
             ? isDark
-              ? 'py-3.5 bg-[#07090e]/90 backdrop-blur-xl border-b border-white/[0.08] shadow-2xl shadow-black/50'
-              : 'py-3.5 bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-md shadow-slate-200/50'
-            : 'py-5 bg-transparent'
+              ? 'py-2.5 sm:py-3.5 bg-[#07090e]/95 backdrop-blur-xl border-b border-white/[0.08] shadow-2xl shadow-black/50'
+              : 'py-2.5 sm:py-3.5 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-md shadow-slate-200/50'
+            : isDark
+              ? 'py-3 sm:py-5 bg-gradient-to-b from-black/60 to-transparent'
+              : 'py-3 sm:py-5 bg-gradient-to-b from-white/70 to-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             
             {/* BRAND LOGO */}
             <Link
               to="/"
               onMouseEnter={() => sound.hover()}
-              onClick={() => sound.click()}
+              onClick={() => {
+                sound.click();
+                setMobileMenuOpen(false);
+              }}
               className="group flex items-center relative focus:outline-none shrink-0"
               aria-label="Sarirait Homepage"
             >
               <img
                 src="/logo.png"
                 alt="Sarirait"
-                className={`h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_15px_rgba(0,240,255,0.4)] ${
+                className={`h-7 sm:h-8.5 md:h-10 w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_15px_rgba(0,240,255,0.4)] ${
                   !isDark ? 'brand-logo-light' : ''
                 }`}
               />
             </Link>
 
-            {/* DESKTOP NAVIGATION LINKS */}
+            {/* DESKTOP NAVIGATION LINKS (hidden on mobile and tablet) */}
             <nav className={`hidden lg:flex items-center gap-1 p-1.5 rounded-full backdrop-blur-md transition-all duration-200 ${
               isDark
                 ? 'bg-white/[0.03] border border-white/[0.07]'
@@ -163,8 +168,8 @@ export default function Navbar({ onOpenProjectModal }) {
               ))}
             </nav>
 
-            {/* RIGHT SIDE ACTIONS */}
-            <div className="hidden sm:flex items-center gap-2.5">
+            {/* DESKTOP RIGHT SIDE ACTIONS (hidden on mobile and tablet) */}
+            <div className="hidden lg:flex items-center gap-2.5">
               {/* Theme Mode Toggle */}
               <button
                 onClick={handleToggleTheme}
@@ -212,35 +217,67 @@ export default function Navbar({ onOpenProjectModal }) {
               </button>
             </div>
 
-            {/* MOBILE MENU TOGGLE */}
-            <div className="flex lg:hidden items-center gap-2">
+            {/* MOBILE & TABLET CONTROLS (< lg) */}
+            <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
+              {/* Tablet Quick CTA */}
+              <button
+                onClick={() => {
+                  sound.click();
+                  onOpenProjectModal();
+                }}
+                className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-sm hover:opacity-95 active:scale-95 transition-all cursor-pointer"
+              >
+                <span>Start a Project</span>
+                <ArrowUpRight size={12} />
+              </button>
+
+              {/* Theme Toggle Button */}
               <button
                 onClick={handleToggleTheme}
-                className={`p-2 rounded-lg ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all cursor-pointer ${
+                  isDark
+                    ? 'border-white/10 bg-white/[0.04] text-slate-300 hover:text-white hover:bg-white/[0.08]'
+                    : 'border-slate-200 bg-white text-slate-700 hover:text-slate-900 shadow-xs'
+                }`}
                 aria-label="Toggle Theme"
+                title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
               >
-                {isDark ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} className="text-cyan-600" />}
+                {isDark ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} className="text-cyan-600" />}
               </button>
+
+              {/* Sound Toggle Button */}
               <button
                 onClick={toggleSound}
-                className={`p-2 rounded-lg ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all cursor-pointer ${
+                  isDark
+                    ? 'border-white/10 bg-white/[0.04] text-slate-300 hover:text-white hover:bg-white/[0.08]'
+                    : 'border-slate-200 bg-white text-slate-700 hover:text-slate-900 shadow-xs'
+                }`}
                 aria-label="Toggle Sound"
+                title={audioActive ? "Mute interactive audio" : "Enable futuristic sound effects"}
               >
-                {audioActive ? <Volume2 size={18} className="text-cyan-400" /> : <VolumeX size={18} />}
+                {audioActive ? <Volume2 size={15} className="text-cyan-400" /> : <VolumeX size={15} className={isDark ? 'text-slate-400' : 'text-slate-500'} />}
               </button>
+
+              {/* Mobile Menu Hamburger / Close Toggle */}
               <button
                 onClick={() => {
                   sound.click();
                   setMobileMenuOpen(!mobileMenuOpen);
                 }}
-                className={`p-2 rounded-xl border focus:outline-none cursor-pointer ${
-                  isDark
-                    ? 'bg-white/[0.05] border-white/10 text-white'
-                    : 'bg-white border-slate-200 text-slate-900 shadow-sm'
+                className={`w-9 h-9 rounded-xl flex items-center justify-center border focus:outline-none transition-all cursor-pointer active:scale-95 ${
+                  mobileMenuOpen
+                    ? isDark
+                      ? 'bg-cyan-500/20 border-cyan-400/60 text-cyan-300'
+                      : 'bg-cyan-50 border-cyan-400 text-cyan-700'
+                    : isDark
+                      ? 'bg-white/[0.05] border-white/10 text-white hover:bg-white/[0.08]'
+                      : 'bg-white border-slate-200 text-slate-800 hover:bg-slate-50 shadow-xs'
                 }`}
-                aria-label="Toggle Navigation Menu"
+                aria-label={mobileMenuOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
+                aria-expanded={mobileMenuOpen}
               >
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                {mobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
               </button>
             </div>
 
@@ -260,7 +297,7 @@ export default function Navbar({ onOpenProjectModal }) {
         </div>
       </header>
 
-      {/* MOBILE ACCORDION MENU */}
+      {/* MOBILE ACCORDION DRAWER */}
       <MobileMenu
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
