@@ -83,13 +83,13 @@ export default function Hero3D() {
         </div>
       )}
 
-      {/* Floating high-tech HUD badges */}
-      <div className="absolute -top-4 -right-2 md:top-8 md:right-4 z-10 glass-pill px-3.5 py-1.5 rounded-full text-xs font-mono-code text-cyan-300 border border-cyan-500/30 shadow-lg shadow-cyan-500/10 flex items-center gap-2 backdrop-blur-md pointer-events-none">
-        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+      {/* Floating high-tech HUD badges - contained cleanly within canvas */}
+      <div className="absolute top-3 right-3 md:top-8 md:right-4 z-10 glass-pill px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-mono-code text-cyan-300 border border-cyan-500/30 shadow-lg shadow-cyan-500/10 flex items-center gap-1.5 sm:gap-2 backdrop-blur-md pointer-events-none">
+        <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400 animate-ping" />
         <span>R3F ENGINE • ACTIVE</span>
       </div>
 
-      <div className="absolute -bottom-2 -left-2 md:bottom-8 md:left-4 z-10 glass-pill px-3.5 py-1.5 rounded-full text-xs font-mono-code text-slate-300 border border-white/10 shadow-lg flex items-center gap-2 backdrop-blur-md pointer-events-none">
+      <div className="absolute bottom-3 left-3 md:bottom-8 md:left-4 z-10 glass-pill px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-mono-code text-slate-300 border border-white/10 shadow-lg flex items-center gap-1.5 sm:gap-2 backdrop-blur-md pointer-events-none">
         <span className="text-violet-400">FPS:</span>
         <span className="text-white font-semibold">60 • LOW LATENCY</span>
       </div>

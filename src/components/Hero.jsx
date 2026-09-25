@@ -27,7 +27,7 @@ export default function Hero({ onOpenProjectModal }) {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen pt-32 pb-20 flex flex-col justify-between overflow-hidden bg-mesh-grid">
+    <section id="hero" className="relative min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-20 flex flex-col justify-between overflow-hidden bg-mesh-grid">
       {/* Background ambient lighting glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[500px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-10 w-[450px] h-[450px] bg-violet-600/12 rounded-full blur-[160px] pointer-events-none -z-10" />
@@ -154,7 +154,7 @@ export default function Hero({ onOpenProjectModal }) {
       </div>
 
       {/* SECTION 7: SCROLL INDICATOR */}
-      <div className="w-full flex justify-center pt-8">
+      <div className="w-full justify-center pt-8 hidden sm:flex">
         <a
           href="#trust"
           onClick={() => sound.click()}

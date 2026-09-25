@@ -218,14 +218,15 @@ export default function Navbar({ onOpenProjectModal }) {
             </div>
 
             {/* MOBILE & TABLET CONTROLS (< lg) */}
-            <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
+            <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0 ml-auto z-10">
               {/* Tablet Quick CTA */}
               <button
+                type="button"
                 onClick={() => {
                   sound.click();
                   onOpenProjectModal();
                 }}
-                className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-sm hover:opacity-95 active:scale-95 transition-all cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-sm hover:opacity-95 active:scale-95 transition-all cursor-pointer shrink-0"
               >
                 <span>Start a Project</span>
                 <ArrowUpRight size={12} />
@@ -233,8 +234,9 @@ export default function Navbar({ onOpenProjectModal }) {
 
               {/* Theme Toggle Button */}
               <button
+                type="button"
                 onClick={handleToggleTheme}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all cursor-pointer ${
+                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all cursor-pointer shrink-0 ${
                   isDark
                     ? 'border-white/10 bg-white/[0.04] text-slate-300 hover:text-white hover:bg-white/[0.08]'
                     : 'border-slate-200 bg-white text-slate-700 hover:text-slate-900 shadow-xs'
@@ -247,8 +249,9 @@ export default function Navbar({ onOpenProjectModal }) {
 
               {/* Sound Toggle Button */}
               <button
+                type="button"
                 onClick={toggleSound}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all cursor-pointer ${
+                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all cursor-pointer shrink-0 ${
                   isDark
                     ? 'border-white/10 bg-white/[0.04] text-slate-300 hover:text-white hover:bg-white/[0.08]'
                     : 'border-slate-200 bg-white text-slate-700 hover:text-slate-900 shadow-xs'
@@ -261,11 +264,12 @@ export default function Navbar({ onOpenProjectModal }) {
 
               {/* Mobile Menu Hamburger / Close Toggle */}
               <button
+                type="button"
                 onClick={() => {
                   sound.click();
                   setMobileMenuOpen(!mobileMenuOpen);
                 }}
-                className={`w-9 h-9 rounded-xl flex items-center justify-center border focus:outline-none transition-all cursor-pointer active:scale-95 ${
+                className={`w-9 h-9 rounded-xl flex items-center justify-center border focus:outline-none transition-all cursor-pointer active:scale-95 shrink-0 ${
                   mobileMenuOpen
                     ? isDark
                       ? 'bg-cyan-500/20 border-cyan-400/60 text-cyan-300'
