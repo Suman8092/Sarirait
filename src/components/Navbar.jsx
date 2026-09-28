@@ -68,7 +68,7 @@ export default function Navbar({ onOpenProjectModal }) {
     { name: 'Work', to: '/#work' },
     { name: 'About', to: '/#why-us' },
     { name: 'Process', to: '/#process' },
-    { name: 'Insights', to: '/#technology' },
+    { name: 'Technology', to: '/#technology' },
     { name: 'Contact', to: '/#footer' },
   ];
 

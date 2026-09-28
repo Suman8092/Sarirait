@@ -57,27 +57,27 @@ export default function ServiceDetail() {
   const faqs = [
     {
       q: `What is the typical timeframe for ${service.title}?`,
-      a: `Sprint timelines typically range from 2 to 6 weeks for focused implementations, and 8 to 16 weeks for complex enterprise-wide deployments with phased milestone rollouts.`
+      a: `Timing depends on the agreed scope, content and review process. We can suggest a schedule after learning more about what you need.`
     },
     {
-      q: `How does Sarirait ensure high performance and quality?`,
-      a: `Every deliverable adheres to our strict engineering standards: 100/100 Core Web Vitals, automated test coverage, type-safe clean code architecture, and strict security compliance checks.`
+      q: `How do you approach quality?`,
+      a: `We agree on the goals and scope first, review the work at key points, and check the finished experience across relevant devices before handoff.`
     },
     {
-      q: `Do we own 100% of the code, IP, and assets created?`,
-      a: `Yes, absolutely. Upon project signoff, all proprietary code, design source files, repositories, and documentation are transferred 100% to your organization without recurring licensing fees.`
+      q: `What happens to the finished work?`,
+      a: `Ownership, source files, third-party assets and handoff details are agreed as part of the project scope and contract.`
     },
     {
       q: `Do you provide post-launch maintenance and technical support?`,
-      a: `Yes. Every deployment includes post-launch warranty support, followed by optional enterprise retainer tiers covering 24/7 uptime monitoring, security patching, and ongoing feature expansion.`
+      a: `We can discuss maintenance and future updates when we plan your project. The support options depend on the platform and the work involved.`
     }
   ];
 
   const processSteps = [
-    { step: "01", title: "Discovery & Technical Audit", desc: "We evaluate your existing infrastructure, competitive landscape, and key metrics to establish architectural requirements." },
-    { step: "02", title: "Strategy & Systems Design", desc: "Interactive wireframes, data schemas, tech-stack selection, and sprint roadmaps are codified before execution." },
-    { step: "03", title: "Agile Development Sprint", desc: "Bi-weekly sprint demos, staging preview URLs, automated continuous integration, and rapid stakeholder feedback loops." },
-    { step: "04", title: "Launch & Performance Scaling", desc: "Zero-downtime deployment, telemetry monitoring, team onboarding documentation, and ongoing conversion optimization." }
+    { step: "01", title: "Understand the brief", desc: "We talk through your goals, audience, current setup and priorities." },
+    { step: "02", title: "Agree the plan", desc: "We outline the scope, deliverables, schedule and review points." },
+    { step: "03", title: "Create and review", desc: "We develop the agreed work and share it with you for feedback." },
+    { step: "04", title: "Launch and hand over", desc: "We make the agreed refinements and prepare the final files or site handoff." }
   ];
 
   return (
@@ -114,12 +114,12 @@ export default function ServiceDetail() {
                 <span>CATEGORY {category.number} // {category.title.toUpperCase()}</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold text-white tracking-tight leading-[1.12] mb-6 max-w-3xl">
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight leading-[1.12] mb-6 max-w-3xl">
                 {service.title}
               </h1>
 
               <p className="text-slate-300 text-base sm:text-xl leading-relaxed max-w-2xl mb-8">
-                {service.shortDesc} Built with modern technology, strategic precision, and relentless focus on commercial performance.
+                {service.shortDesc}
               </p>
 
               <div className="flex flex-wrap items-center gap-4">
@@ -153,7 +153,7 @@ export default function ServiceDetail() {
               </div>
 
               <div className="text-xs font-mono-code uppercase text-cyan-300 tracking-wider mb-2">
-                Proven Target Impact
+                Project considerations
               </div>
 
               <div className="space-y-4 pt-2">
@@ -181,20 +181,20 @@ export default function ServiceDetail() {
               {/* Challenge */}
               <div className="p-8 sm:p-10 rounded-3xl glass-card border border-rose-500/20 bg-rose-500/[0.02]">
                 <span className="text-xs font-mono-code uppercase text-rose-400 tracking-widest block mb-4">
-                  01 // The Industry Challenge
+                  01 // Common considerations
                 </span>
                 <h3 className="text-2xl font-display font-bold text-white mb-4">
-                  Common Pitfalls Most Companies Face
+                  What to think through
                 </h3>
                 <p className="text-slate-300 text-sm leading-relaxed mb-6">
-                  Most legacy solutions in this space suffer from brittle architecture, bloated dependencies, slow turnaround times, and lack of real commercial accountability.
+                  The right approach depends on your audience, existing materials, budget and the outcome you want from this work.
                 </p>
                 <div className="space-y-2.5">
                   {[
-                    "Unpredictable project delays & scope creep",
-                    "Slow page speeds causing high user bounce rates",
-                    "Vendor lock-in with closed, expensive ecosystems",
-                    "Disjointed design systems that don't scale across viewports"
+                    "Who the work needs to reach",
+                    "What information or features matter most",
+                    "Which content and materials are ready",
+                    "How the finished work will be maintained"
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2.5 text-xs text-slate-400">
                       <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
@@ -207,20 +207,20 @@ export default function ServiceDetail() {
               {/* Solution */}
               <div className="p-8 sm:p-10 rounded-3xl glass-card border border-cyan-500/30 bg-cyan-500/[0.02]">
                 <span className="text-xs font-mono-code uppercase text-cyan-400 tracking-widest block mb-4">
-                  02 // The Sarirait Solution
+                  02 // A considered approach
                 </span>
                 <h3 className="text-2xl font-display font-bold text-white mb-4">
-                  Engineering Precision &amp; Strategic Execution
+                  Clear goals, then thoughtful work
                 </h3>
                 <p className="text-slate-300 text-sm leading-relaxed mb-6">
-                  We engineer modern, modular architectures with strict type-safety, 100% IP ownership, and continuous testing to ensure zero failure at production scale.
+                  We use the brief to shape an appropriate design and delivery plan, then review key decisions with you as the work takes shape.
                 </p>
                 <div className="space-y-2.5">
                   {[
-                    "Transparent weekly sprint milestones & staging preview environments",
-                    "Hardware-accelerated sub-second latency performance",
-                    "Clean open-source foundation with zero proprietary vendor lock-in",
-                    "Empirical business KPIs measured with live telemetry"
+                    "A scope and schedule agreed before work begins",
+                    "Design reviews at useful decision points",
+                    "Tools selected to fit the project",
+                    "A handoff that explains the finished work"
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2.5 text-xs text-slate-300">
                       <CheckCircle2 size={14} className="text-cyan-400 shrink-0" />
@@ -241,7 +241,7 @@ export default function ServiceDetail() {
               <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-3 block">
                 Deliverables &amp; Scope
               </span>
-              <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+              <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
                 What’s Included in {service.title}
               </h2>
             </div>
@@ -265,7 +265,7 @@ export default function ServiceDetail() {
                       {feat}
                     </h4>
                     <p className="text-xs text-slate-400 leading-relaxed">
-                      Engineered according to modern industry best practices, ensuring reliability, maintainability, and seamless scalability.
+                      We’ll confirm whether this item is needed for your project and include it in the agreed scope.
                     </p>
                   </div>
                   <div className="mt-5 pt-3 border-t border-white/[0.05] flex items-center gap-1.5 text-[11px] font-mono-code text-slate-500">
@@ -283,9 +283,9 @@ export default function ServiceDetail() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-3 block">
-                Agile Sprint Framework
+                Project steps
               </span>
-              <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+              <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
                 How We Deliver {service.title}
               </h2>
             </div>
@@ -309,7 +309,7 @@ export default function ServiceDetail() {
                   </div>
                   <div className="mt-6 pt-3 border-t border-white/[0.05] flex items-center gap-1.5 text-[11px] font-mono-code text-slate-500">
                     <Clock size={12} className="text-cyan-400" />
-                    <span>Sprint Milestone</span>
+                    <span>Project step</span>
                   </div>
                 </div>
               ))}
@@ -324,7 +324,7 @@ export default function ServiceDetail() {
               <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-2 block">
                 Questions &amp; Clarity
               </span>
-              <h3 className="text-2xl sm:text-4xl font-display font-bold text-white">
+                <h3 className="text-xl sm:text-3xl font-display font-bold text-white">
                 Frequently Asked Questions
               </h3>
             </div>
@@ -383,7 +383,7 @@ export default function ServiceDetail() {
                 onClick={() => sound.click()}
                 className="text-xs font-mono-code text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
               >
-                <span>Explore All 22 Capabilities</span>
+                <span>Explore All Services</span>
                 <ArrowRight size={13} />
               </Link>
             </div>
@@ -417,7 +417,7 @@ export default function ServiceDetail() {
         {/* BOTTOM INVITATION CTA */}
         <section className="mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="p-10 sm:p-16 rounded-3xl glass-card border border-cyan-500/30 text-center relative overflow-hidden bg-gradient-to-r from-cyan-950/20 via-[#07090e] to-violet-950/20">
-            <h3 className="text-3xl sm:text-5xl font-display font-bold text-white mb-4">
+            <h3 className="text-2xl sm:text-4xl font-display font-bold text-white mb-4">
               Ready to launch your {service.title}?
             </h3>
             <p className="text-slate-300 text-base max-w-2xl mx-auto mb-8 leading-relaxed">

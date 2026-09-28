@@ -23,15 +23,15 @@ export default function Technologies() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-              <span>INFRASTRUCTURE &amp; STACK</span>
+              <span>TOOLS &amp; TECHNOLOGY</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight">
-              Built with <br />
-              <span className="text-gradient-cyan">modern technology.</span>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight">
+              Choose tools <br />
+              <span className="text-gradient-cyan">that fit the work.</span>
             </h2>
           </div>
           <p className="text-slate-400 text-sm sm:text-base max-w-md">
-            We operate at the leading edge of open-source standards and battle-tested cloud frameworks, ensuring zero obsolescence and infinite scale.
+            The right platform depends on your needs, team and plans. We can discuss the options that make sense for your project.
           </p>
         </div>
 
@@ -112,11 +112,11 @@ export default function Technologies() {
           <div className="flex items-center gap-3">
             <Terminal className="w-5 h-5 text-cyan-400 shrink-0" />
             <span className="text-xs sm:text-sm text-slate-300">
-              Need a bespoke stack not listed above? We support custom Rust, Go, Python microservices, and hybrid on-prem topologies.
+              Not sure which tools suit your project? Tell us what you need to make or improve, and we can talk through the options.
             </span>
           </div>
           <span className="text-xs font-mono-code text-cyan-400 whitespace-normal sm:whitespace-nowrap">
-            100% TECH AGNOSTIC
+            PROJECT-LED CHOICES
           </span>
         </div>
 

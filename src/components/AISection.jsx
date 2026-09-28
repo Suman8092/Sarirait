@@ -4,13 +4,13 @@ import { NeuralBrain3D } from './3d/NeuralBrain3D';
 import { sound } from '../utils/sound';
 
 export default function AISection({ onOpenProjectModal }) {
-  const [selectedWorkload, setSelectedWorkload] = useState('Customer Support & Triage');
+  const [selectedWorkload, setSelectedWorkload] = useState('Customer support');
   
   const workloads = [
-    { name: 'Customer Support & Triage', speedup: '8.4x faster resolution', costSavings: '64% cost reduction' },
-    { name: 'Autonomous Workflow Agents', speedup: '12x operational velocity', costSavings: '72% manual hours saved' },
-    { name: 'Document & Knowledge Extraction', speedup: '35x indexing speed', costSavings: '99.8% precision rate' },
-    { name: 'Predictive Sales Intelligence', speedup: '3.8x lead qualification', costSavings: '+42% deal velocity' }
+    { name: 'Customer support', fit: 'Answer common questions', approach: 'Human review available' },
+    { name: 'Everyday workflows', fit: 'Reduce repetitive steps', approach: 'Keep people in control' },
+    { name: 'Business information', fit: 'Find useful details faster', approach: 'Use approved source material' },
+    { name: 'Content planning', fit: 'Organize ideas and drafts', approach: 'Keep your brand voice' }
   ];
 
   const currentWorkload = workloads.find(w => w.name === selectedWorkload) || workloads[0];
@@ -30,21 +30,21 @@ export default function AISection({ onOpenProjectModal }) {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                <span>SARIRAIT AI LABS</span>
+                <span>AI &amp; AUTOMATION</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.12]">
-                The future of digital <br />
-                <span className="text-gradient-purple">starts now.</span>
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
+                Make room for <br />
+                <span className="text-gradient-purple">smarter workflows.</span>
               </h2>
               <p className="text-slate-300 text-base sm:text-lg mt-6 leading-relaxed">
-                From intelligent automation to AI-powered products, we help businesses use emerging technology to build what comes next.
+                Explore practical ways AI can support your team—from organizing information to handling repeat tasks. We’ll start with the problem and choose tools only where they fit.
               </p>
             </div>
 
             {/* INTERACTIVE WORKLOAD BENCHMARK TOOL */}
             <div className="p-6 rounded-2xl glass-card border border-violet-500/30">
               <span className="text-xs font-mono-code uppercase text-violet-400 tracking-wider block mb-3">
-                Simulate Your AI Acceleration
+                Explore possible starting points
               </span>
               
               <div className="grid grid-cols-2 gap-2 mb-4">
@@ -70,12 +70,12 @@ export default function AISection({ onOpenProjectModal }) {
               {/* Dynamic simulated impact */}
               <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/[0.08]">
                 <div className="p-3 rounded-lg bg-white/[0.03]">
-                  <span className="text-[10px] font-mono-code text-slate-400 uppercase block">Projected Velocity</span>
-                  <span className="text-sm sm:text-base font-bold text-cyan-300 font-mono-code">{currentWorkload.speedup}</span>
+                  <span className="text-[10px] font-mono-code text-slate-400 uppercase block">Possible use</span>
+                  <span className="text-sm sm:text-base font-bold text-cyan-300 font-mono-code">{currentWorkload.fit}</span>
                 </div>
                 <div className="p-3 rounded-lg bg-white/[0.03]">
-                  <span className="text-[10px] font-mono-code text-slate-400 uppercase block">Efficiency Yield</span>
-                  <span className="text-sm sm:text-base font-bold text-violet-300 font-mono-code">{currentWorkload.costSavings}</span>
+                  <span className="text-[10px] font-mono-code text-slate-400 uppercase block">Design principle</span>
+                  <span className="text-sm sm:text-base font-bold text-violet-300 font-mono-code">{currentWorkload.approach}</span>
                 </div>
               </div>
             </div>
@@ -101,14 +101,14 @@ export default function AISection({ onOpenProjectModal }) {
             <div className="relative w-full rounded-3xl glass-card border border-white/[0.08] p-4 overflow-hidden">
               <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[11px] font-mono-code text-cyan-300">
                 <Brain size={14} className="text-violet-400" />
-                <span>SYNAPSE ENGINE // v4.2</span>
+                <span>WORKFLOW EXPLORER</span>
               </div>
 
               <NeuralBrain3D />
 
               <div className="p-4 text-center">
                 <span className="text-xs font-mono-code text-slate-400">
-                  Interactive WebGL neural node topology. Drag to orbit synaptic vectors.
+                  A visual exploration of how connected tools can support everyday work.
                 </span>
               </div>
             </div>

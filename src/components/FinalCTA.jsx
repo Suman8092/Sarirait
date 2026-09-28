@@ -16,18 +16,18 @@ export default function FinalCTA({ onOpenProjectModal }) {
         {/* TOP STATUS PILL */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-pill text-xs font-mono-code text-cyan-300 mb-8 border border-cyan-500/40 shadow-xl shadow-cyan-500/10">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <span>CURRENT AVAILABILITY // ACCEPTING Q2 PROJECTS</span>
+          <span>HAVE A PROJECT IN MIND?</span>
         </div>
 
         {/* HEADLINE */}
-        <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-extrabold text-white tracking-tight leading-[1.08] mb-6">
-          Have an idea? <br />
-          <span className="text-gradient-cyan">Let’s build it.</span>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold text-white tracking-tight leading-[1.08] mb-6">
+          Ready for your next <br />
+          <span className="text-gradient-cyan">digital chapter?</span>
         </h2>
 
         {/* DESCRIPTION */}
         <p className="text-slate-300 text-base sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
-          Tell us what you're building, and let's turn your vision into a digital experience people remember.
+          Tell us what your business needs. We’ll help you explore the right mix of branding, design, development and marketing.
         </p>
 
         {/* CTAS */}
@@ -63,15 +63,15 @@ export default function FinalCTA({ onOpenProjectModal }) {
         <div className="mt-14 pt-8 border-t border-white/[0.08] flex flex-wrap items-center justify-center gap-8 text-xs font-mono-code text-slate-400">
           <div className="flex items-center gap-2">
             <ShieldCheck size={16} className="text-cyan-400" />
-            <span>Full NDA Protection</span>
+            <span>Clear scope and next steps</span>
           </div>
           <div className="flex items-center gap-2">
             <Zap size={16} className="text-cyan-400" />
-            <span>24-Hour Proposal Turnaround</span>
+            <span>Work shaped around your goals</span>
           </div>
           <div className="flex items-center gap-2">
             <Sparkles size={16} className="text-cyan-400" />
-            <span>100% Intellectual Property Ownership</span>
+            <span>One connected digital presence</span>
           </div>
         </div>
 

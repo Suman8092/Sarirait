@@ -47,27 +47,26 @@ export default function Services() {
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-6 border border-cyan-500/30">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span>SARIRAIT CAPABILITIES DIRECTORY</span>
+              <span>DESIGN • DEVELOPMENT • MARKETING</span>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold text-white tracking-tight leading-[1.08] mb-6">
-              Solutions Built for <br />
-              <span className="text-gradient-cyan">Digital Growth.</span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight leading-[1.08] mb-6">
+              Everything your brand needs <br />
+              <span className="text-gradient-cyan">to show up online.</span>
             </h1>
 
             <p className="text-slate-300 text-base sm:text-xl max-w-3xl mx-auto leading-relaxed mb-10">
-              From development and business software to digital marketing, branding and AI, 
-              Sarirait delivers integrated solutions designed around your goals.
+              Explore branding and design, websites and apps, e-commerce, marketing and digital tools. Choose one service or start with a wider brief.
             </p>
 
             {/* Quick Filter Category Pills */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               {[
-                { id: 'all', label: 'All 22 Capabilities' },
-                { id: 'development', label: 'Development' },
-                { id: 'marketing', label: 'Digital Marketing' },
-                { id: 'creative', label: 'Creative Services' },
-                { id: 'business', label: 'Business Solutions' }
+                { id: 'all', label: 'All Services' },
+                { id: 'development', label: 'Web, Apps & E-commerce' },
+                { id: 'marketing', label: 'Marketing' },
+                { id: 'creative', label: 'Brand & Design' },
+                { id: 'business', label: 'Digital Tools' }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -102,7 +101,7 @@ export default function Services() {
                 <div>
                   <div className="flex items-center gap-2 text-cyan-400 font-mono-code text-xs mb-2">
                     <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30">01</span>
-                    <span>DEVELOPMENT SOLUTIONS</span>
+                    <span>WE DEVELOP</span>
                   </div>
                   <h2 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight">
                     {devCat.title}
@@ -114,7 +113,7 @@ export default function Services() {
 
                 <div className="flex items-center gap-2 text-xs font-mono-code text-slate-500">
                   <Globe size={14} className="text-cyan-400" />
-                  <span>Next.js • React • Flutter • Full-Stack</span>
+                  <span>Websites • Apps • Online stores</span>
                 </div>
               </div>
 
@@ -145,7 +144,7 @@ export default function Services() {
                       {/* Key capabilities list */}
                       <div className="mt-5 pt-4 border-t border-white/[0.06] space-y-2">
                         <span className="text-[11px] font-mono-code uppercase tracking-wider text-slate-500 block">
-                          Core Capabilities:
+                          Possible project elements:
                         </span>
                         {srv.features.slice(0, 3).map((feat, fIdx) => (
                           <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
@@ -186,13 +185,13 @@ export default function Services() {
                 <div className="lg:col-span-6">
                   <div className="flex items-center gap-2 text-sky-400 font-mono-code text-xs mb-2">
                     <span className="px-2 py-0.5 rounded bg-sky-500/10 border border-sky-500/30">02</span>
-                    <span>DIGITAL MARKETING</span>
+                    <span>WE MARKET</span>
                   </div>
-                  <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+                  <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
                     {marketingCat.title}
                   </h2>
                   <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-                    {marketingCat.description} We merge predictive audience segmentation with high-frequency creative experimentation to maximize CAC-to-LTV ratios.
+                    {marketingCat.description}
                   </p>
                 </div>
 
@@ -201,35 +200,35 @@ export default function Services() {
                   <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
                     <div className="flex items-center gap-2">
                       <Activity size={16} className="text-sky-400" />
-                      <span className="text-xs font-mono-code text-white font-semibold">Live Omnichannel Performance Telemetry</span>
+                      <span className="text-xs font-mono-code text-white font-semibold">A marketing plan can include</span>
                     </div>
                     <span className="text-[10px] font-mono-code text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
-                      ROAS 4.8x // OPTIMIZED
+                      GOALS // AUDIENCE // CHANNELS
                     </span>
                   </div>
 
                   <div className="grid grid-cols-3 gap-3 my-4">
                     <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                      <span className="text-[10px] font-mono-code text-slate-400 uppercase">Organic Search</span>
-                      <div className="text-lg font-bold text-white font-mono-code mt-0.5">+240%</div>
-                      <span className="text-[10px] text-emerald-400 font-mono-code">↑ High Intent</span>
+                      <span className="text-[10px] font-mono-code text-slate-400 uppercase">Search</span>
+                      <div className="text-lg font-bold text-white font-mono-code mt-0.5">Be found</div>
+                      <span className="text-[10px] text-emerald-400 font-mono-code">Useful pages</span>
                     </div>
                     <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                      <span className="text-[10px] font-mono-code text-slate-400 uppercase">Blended CPA</span>
-                      <div className="text-lg font-bold text-white font-mono-code mt-0.5">-38.5%</div>
-                      <span className="text-[10px] text-sky-400 font-mono-code">↓ Cost Savings</span>
+                      <span className="text-[10px] font-mono-code text-slate-400 uppercase">Social</span>
+                      <div className="text-lg font-bold text-white font-mono-code mt-0.5">Show up</div>
+                      <span className="text-[10px] text-sky-400 font-mono-code">Good content</span>
                     </div>
                     <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                      <span className="text-[10px] font-mono-code text-slate-400 uppercase">Retention Rate</span>
-                      <div className="text-lg font-bold text-white font-mono-code mt-0.5">88.2%</div>
-                      <span className="text-[10px] text-violet-400 font-mono-code">↑ Klaviyo &amp; WA</span>
+                      <span className="text-[10px] font-mono-code text-slate-400 uppercase">Email</span>
+                      <div className="text-lg font-bold text-white font-mono-code mt-0.5">Stay in touch</div>
+                      <span className="text-[10px] text-violet-400 font-mono-code">Timely updates</span>
                     </div>
                   </div>
 
                   <div className="space-y-2 pt-2">
                     <div className="flex justify-between text-xs font-mono-code text-slate-400">
-                      <span>Campaign Allocation (Meta, Google, SEO)</span>
-                      <span className="text-sky-400">99.4% Delivery Efficiency</span>
+                      <span>Choose channels to suit your audience</span>
+                      <span className="text-sky-400">Plan • Publish • Learn</span>
                     </div>
                     <div className="w-full h-2 rounded-full bg-white/[0.06] overflow-hidden flex">
                       <div className="h-full bg-sky-400 w-2/5" />
@@ -304,9 +303,9 @@ export default function Services() {
                 <div>
                   <div className="flex items-center gap-2 text-violet-400 font-mono-code text-xs mb-2">
                     <span className="px-2 py-0.5 rounded bg-violet-500/10 border border-violet-500/30">03</span>
-                    <span>CREATIVE SERVICES</span>
+                    <span>WE DESIGN</span>
                   </div>
-                  <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+                  <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
                     {creativeCat.title}
                   </h2>
                   <p className="text-slate-300 text-sm sm:text-base mt-2 max-w-xl">
@@ -316,7 +315,7 @@ export default function Services() {
 
                 <div className="flex items-center gap-2 text-xs font-mono-code text-slate-500">
                   <Sparkles size={14} className="text-violet-400" />
-                  <span>Branding • Design • Packaging • Video Marketing</span>
+                  <span>Identity • Graphics • Packaging • Video</span>
                 </div>
               </div>
 
@@ -384,13 +383,13 @@ export default function Services() {
                 <div className="lg:col-span-6">
                   <div className="flex items-center gap-2 text-indigo-400 font-mono-code text-xs mb-2">
                     <span className="px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30">04</span>
-                    <span>BUSINESS SOLUTIONS</span>
+                    <span>DIGITAL BUSINESS TOOLS</span>
                   </div>
-                  <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+                  <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
                     {businessCat.title}
                   </h2>
                   <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-                    {businessCat.description} From bespoke ERP and CRM systems to multi-tenant SaaS and auto-scaling cloud microservices.
+                    {businessCat.description}
                   </p>
                 </div>
 
@@ -399,33 +398,33 @@ export default function Services() {
                   <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
                     <div className="flex items-center gap-2">
                       <Server size={16} className="text-indigo-400" />
-                      <span className="text-xs font-mono-code text-white font-semibold">Sarirait Enterprise Resource Mesh</span>
+                      <span className="text-xs font-mono-code text-white font-semibold">Plan tools around your team</span>
                     </div>
-                    <span className="text-[10px] font-mono-code text-cyan-400">Kubernetes // Multi-Region</span>
+                    <span className="text-[10px] font-mono-code text-cyan-400">WORKFLOW // PEOPLE // TOOLS</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 my-4">
                     <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                       <div className="flex items-center gap-2 text-xs text-slate-400 font-mono-code mb-1">
                         <Database size={13} className="text-cyan-400" />
-                        <span>ERP LEDGER STATUS</span>
+                        <span>TEAM WORKFLOW</span>
                       </div>
-                      <div className="text-base font-bold text-white font-mono-code">Synchronized</div>
-                      <span className="text-[10px] text-slate-500 font-mono-code">Enterprise Integration</span>
+                      <div className="text-base font-bold text-white font-mono-code">Understand</div>
+                      <span className="text-[10px] text-slate-500 font-mono-code">Map current steps</span>
                     </div>
                     <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                       <div className="flex items-center gap-2 text-xs text-slate-400 font-mono-code mb-1">
                         <BarChart size={13} className="text-indigo-400" />
-                        <span>SaaS SUBSCRIPTIONS</span>
+                        <span>USEFUL SOFTWARE</span>
                       </div>
-                      <div className="text-base font-bold text-white font-mono-code">$2.4M ARR</div>
-                      <span className="text-[10px] text-emerald-400 font-mono-code">+42% YoY Growth</span>
+                      <div className="text-base font-bold text-white font-mono-code">Choose tools</div>
+                      <span className="text-[10px] text-emerald-400 font-mono-code">Fit the real need</span>
                     </div>
                   </div>
 
                   <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-xs text-slate-300 flex items-center justify-between">
-                    <span>Active Microservices: <strong>48 Pods</strong></span>
-                    <span className="font-mono-code text-indigo-300">0.00% Error Rate</span>
+                    <span>Agree the scope before implementation</span>
+                    <span className="font-mono-code text-indigo-300">Clear next steps</span>
                   </div>
                 </div>
               </div>
@@ -488,11 +487,11 @@ export default function Services() {
         {/* BOTTOM INVITATION CTA BANNER */}
         <section className="mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="p-10 sm:p-14 rounded-3xl glass-card border border-cyan-500/30 text-center relative overflow-hidden bg-gradient-to-r from-cyan-950/20 via-[#07090e] to-violet-950/20">
-            <h3 className="text-2xl sm:text-4xl font-display font-bold text-white mb-4">
-              Need a custom multi-discipline engagement?
+            <h3 className="text-xl sm:text-3xl font-display font-bold text-white mb-4">
+              Need a mix of services?
             </h3>
             <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8">
-              We frequently combine engineering, marketing and creative services for high-velocity full-lifecycle project sprints.
+              We can discuss how brand, website and marketing work could fit together around your goals.
             </p>
             <button
               onClick={() => {
@@ -502,7 +501,7 @@ export default function Services() {
               onMouseEnter={() => sound.hover()}
               className="px-8 py-3.5 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-xl shadow-cyan-500/25 hover:brightness-110 transition-all inline-flex items-center gap-2"
             >
-              <span>Schedule Discovery Briefing</span>
+              <span>Tell Us About Your Project</span>
               <ArrowRight size={15} />
             </button>
           </div>

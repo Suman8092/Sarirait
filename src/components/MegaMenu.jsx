@@ -51,9 +51,9 @@ export default function MegaMenu({ isOpen, onClose, onOpenProjectModal }) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -6, scale: 0.99 }}
           transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute top-full left-1/2 -translate-x-1/2 w-[94vw] max-w-4xl mt-2 z-50 pointer-events-auto"
+          className="absolute top-full left-1/2 -translate-x-1/2 w-[min(96vw,80rem)] max-w-none mt-2 z-50 pointer-events-auto"
         >
-          {/* Glassmorphic Mega Menu Card - Balanced 2x2 Layout */}
+          {/* Glassmorphic Mega Menu Card - Single-Row Desktop Layout */}
           <div className="relative rounded-2xl bg-[#090d16]/95 backdrop-blur-2xl border border-cyan-500/20 shadow-2xl shadow-black/80 overflow-hidden glow-border">
             
             {/* Subtle background glow */}
@@ -65,7 +65,7 @@ export default function MegaMenu({ isOpen, onClose, onOpenProjectModal }) {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                 <span className="text-[11px] font-mono-code uppercase tracking-wider text-cyan-300">
-                  Sarirait Services Directory // 22 Capabilities
+                  Sarirait Services Directory
                 </span>
               </div>
               <Link
@@ -81,8 +81,8 @@ export default function MegaMenu({ isOpen, onClose, onOpenProjectModal }) {
               </Link>
             </div>
 
-            {/* BALANCED 2x2 CATEGORY LAYOUT */}
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+            {/* FOUR SERVICE CATEGORIES IN ONE DESKTOP ROW */}
+            <div className="p-4 sm:p-5 grid grid-cols-4 gap-x-3 lg:gap-x-4">
               {serviceCategories.map((category) => (
                 <div key={category.id} className="space-y-2">
                   
@@ -93,7 +93,7 @@ export default function MegaMenu({ isOpen, onClose, onOpenProjectModal }) {
                     </span>
                     <div className="flex items-center gap-1.5 min-w-0">
                       {categoryIcons[category.id]}
-                      <h4 className="font-display font-bold text-white text-xs tracking-wider uppercase truncate">
+                      <h4 className="font-display font-bold text-white text-[10px] tracking-normal uppercase truncate">
                         {category.title}
                       </h4>
                     </div>
@@ -110,14 +110,14 @@ export default function MegaMenu({ isOpen, onClose, onOpenProjectModal }) {
                           onClose();
                         }}
                         onMouseEnter={() => sound.hover()}
-                        className="group flex items-center justify-between px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.06] border border-transparent hover:border-cyan-500/20 transition-all duration-150"
+                        className="group flex items-center justify-between px-1.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.06] border border-transparent hover:border-cyan-500/20 transition-all duration-150"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
                           <ServiceIcon
                             name={srv.icon}
                             className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-400 group-hover:scale-110 transition-all shrink-0"
                           />
-                          <span className="text-xs font-medium truncate group-hover:translate-x-0.5 transition-transform">
+                          <span className="text-[11px] font-medium whitespace-nowrap truncate group-hover:translate-x-0.5 transition-transform">
                             {srv.title}
                           </span>
                         </div>
@@ -145,7 +145,7 @@ export default function MegaMenu({ isOpen, onClose, onOpenProjectModal }) {
                   Build. Grow. Scale.
                 </span>
                 <span className="text-[11px] text-slate-400 hidden sm:inline">
-                  — Custom Technology, Marketing & Creative Solutions
+                  — Brand design, websites, apps and marketing
                 </span>
               </div>
 

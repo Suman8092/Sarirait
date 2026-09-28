@@ -85,7 +85,7 @@ export default function MobileMenu({ isOpen, onClose, onOpenProjectModal }) {
               <div className="flex items-center justify-between pb-2 border-b border-current/10">
                 <span className="text-xs font-mono-code uppercase tracking-wider text-cyan-500 font-semibold flex items-center gap-1.5">
                   <Sparkles size={13} />
-                  Services Directory (22 Capabilities)
+                  Services Directory
                 </span>
                 <Link
                   to="/services"

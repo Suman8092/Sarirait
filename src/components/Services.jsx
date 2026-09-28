@@ -42,7 +42,7 @@ export default function Services({ onOpenProjectModal }) {
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
             <span>WHAT WE DO</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.12]">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
             Digital solutions designed to create <br />
             <span className="text-gradient-cyan">real business impact.</span>
           </h2>

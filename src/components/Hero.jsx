@@ -52,21 +52,21 @@ export default function Hero({ onOpenProjectModal }) {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400" />
               </span>
               <span className="font-semibold tracking-wider uppercase truncate">
-                DEVELOPMENT • DIGITAL MARKETING • CREATIVE • BUSINESS SOLUTIONS
+                BRANDING • DESIGN • DEVELOPMENT • DIGITAL MARKETING
               </span>
             </motion.div>
 
             {/* MAIN HEADLINE */}
             <motion.h1
               variants={itemVariants}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-[2.35rem] xl:text-[2.85rem] 2xl:text-[3.4rem] font-display font-extrabold tracking-tight text-white leading-[1.14] mb-6"
+              className="text-3xl sm:text-4xl md:text-[2.35rem] lg:text-[2.5rem] xl:text-[2.7rem] 2xl:text-[3rem] font-display font-extrabold tracking-tight text-white leading-[1.14] mb-6"
             >
               <span className="inline sm:whitespace-nowrap">
-                We Build <span className="text-gradient-cyan">Digital Experiences</span>
+                Make Your Brand <span className="text-gradient-cyan">Stand Out Online</span>
               </span>{' '}
               <br className="hidden sm:inline" />
               <span className="inline sm:whitespace-nowrap">
-                That Move Businesses Forward.
+                From First Impression to First Sale.
               </span>
             </motion.h1>
 
@@ -75,7 +75,7 @@ export default function Hero({ onOpenProjectModal }) {
               variants={itemVariants}
               className="text-base sm:text-lg lg:text-xl text-slate-300/90 font-normal leading-relaxed max-w-2xl mb-8"
             >
-              From custom development and business software to high-ROI digital marketing and creative branding, Sarirait helps ambitious businesses build, grow and scale.
+              Sarirait brings branding, design, websites, apps and digital marketing together, giving your business a clear and consistent presence across every digital touchpoint.
             </motion.p>
 
             {/* CTAS */}
@@ -115,26 +115,26 @@ export default function Hero({ onOpenProjectModal }) {
             >
               <div>
                 <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-tight">
-                  20<span className="text-cyan-400">+</span>
+                  Brand
                 </div>
                 <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code uppercase mt-0.5 leading-tight">
-                  Deployments
+                  &amp; Design
                 </div>
               </div>
               <div>
                 <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-tight">
-                  98<span className="text-violet-400">%</span>
+                  Web
                 </div>
                 <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code uppercase mt-0.5 leading-tight">
-                  Retention
+                  &amp; Apps
                 </div>
               </div>
               <div>
                 <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-tight">
-                  100<span className="text-cyan-400">%</span>
+                  Growth
                 </div>
                 <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code uppercase mt-0.5 leading-tight">
-                  Bespoke Code
+                  &amp; Marketing
                 </div>
               </div>
             </motion.div>

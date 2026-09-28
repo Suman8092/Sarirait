@@ -6,7 +6,14 @@ export default function CustomCursor() {
   const ringRef = useRef(null);
   const [cursorText, setCursorText] = useState('');
   const [cursorVariant, setCursorVariant] = useState('default');
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchDevice] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(pointer: coarse)').matches
+    );
+  });
   const [isVisible, setIsVisible] = useState(false);
   const { isDark } = useTheme();
 
@@ -20,34 +27,27 @@ export default function CustomCursor() {
   const isView = cursorVariant === 'view';
   const isHover = cursorVariant === 'hover';
   const targetScale = isView ? 2.2 : isHover ? 1.45 : 1.0;
+  const targetScaleRef = useRef(targetScale);
   const currentScale = useRef(1.0);
 
   // Smooth lerp animation loop for the outer ring with idle sleep
   useEffect(() => {
-    // Check if touch device or pointer coarse
-    if (
-      'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0 ||
-      window.matchMedia('(pointer: coarse)').matches
-    ) {
-      setIsTouchDevice(true);
-      return;
-    }
+    if (isTouchDevice) return;
 
     const render = () => {
       const targetX = mousePos.current.x;
       const targetY = mousePos.current.y;
       const dx = targetX - ringPos.current.x;
       const dy = targetY - ringPos.current.y;
-      const ds = targetScale - currentScale.current;
+      const ds = targetScaleRef.current - currentScale.current;
 
       // If outer ring has caught up and scale is settled, pause loop
       if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1 && Math.abs(ds) < 0.01) {
         ringPos.current.x = targetX;
         ringPos.current.y = targetY;
-        currentScale.current = targetScale;
+        currentScale.current = targetScaleRef.current;
         if (ringRef.current) {
-          ringRef.current.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%) scale(${targetScale})`;
+          ringRef.current.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%) scale(${targetScaleRef.current})`;
         }
         isLoopRunning.current = false;
         return;
@@ -134,7 +134,13 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
       if (rafId.current) cancelAnimationFrame(rafId.current);
+      rafId.current = null;
+      isLoopRunning.current = false;
     };
+  }, [isTouchDevice]);
+
+  useEffect(() => {
+    targetScaleRef.current = targetScale;
   }, [targetScale]);
 
   if (isTouchDevice) return null;

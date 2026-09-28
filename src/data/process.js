@@ -1,56 +1,56 @@
 export const processSteps = [
   {
     step: "01",
-    phase: "Discover",
-    title: "Deep Discovery & Goal Alignment",
-    summary: "Understand the business, audience, competitive landscape, and strategic objectives.",
-    deliverables: ["Stakeholder Interviews", "Audience Persona Modeling", "Technical Audit", "KPI Framework"],
-    duration: "Week 1",
-    tagline: "Uncovering the signal within the noise."
+    phase: "Listen",
+    title: "Understand the brief",
+    summary: "We discuss your business, audience, goals and what is already in place.",
+    deliverables: ["Project conversation", "Audience and goals", "Current materials", "Open questions"],
+    duration: "First step",
+    tagline: "Start with the right questions."
   },
   {
     step: "02",
-    phase: "Strategize",
-    title: "Architecture & Product Roadmap",
-    summary: "Define the product specifications, technology stack selection, and creative trajectory.",
-    deliverables: ["Information Architecture", "Tech Stack Blueprint", "Scope & Milestone Roadmap", "Conversion Blueprint"],
-    duration: "Week 2",
-    tagline: "Every line of code starts with clarity."
+    phase: "Plan",
+    title: "Set the direction",
+    summary: "We outline the scope, priorities, content needs and a workable plan for delivery.",
+    deliverables: ["Project scope", "Page or feature outline", "Content checklist", "Delivery plan"],
+    duration: "Plan together",
+    tagline: "A clear plan keeps the work focused."
   },
   {
     step: "03",
     phase: "Design",
-    title: "Interactive UI/UX & 3D Prototyping",
-    summary: "Create the visual language, design token system, micro-interactions, and user experience.",
-    deliverables: ["Figma Design Tokens", "Interactive 3D Prototypes", "Responsive Systems", "Design System Library"],
-    duration: "Weeks 3-4",
-    tagline: "Form and function in harmonious balance."
+    title: "Explore the experience",
+    summary: "We shape the look, content structure and key screens before moving into production.",
+    deliverables: ["Visual direction", "Page layouts", "Key screen designs", "Review and feedback"],
+    duration: "Review together",
+    tagline: "Make the important decisions visible."
   },
   {
     step: "04",
-    phase: "Develop",
-    title: "Precision Engineering & Scalability",
-    summary: "Build scalable, secure, and ultra-high-performance technology across modern frameworks.",
-    deliverables: ["Clean Component Code", "GraphQL / REST APIs", "Database Optimization", "Automated CI/CD"],
-    duration: "Weeks 5-8",
-    tagline: "Rock-solid engineering built for scale."
+    phase: "Create",
+    title: "Build the approved work",
+    summary: "We create the agreed identity, website, store, app or campaign and share progress as we go.",
+    deliverables: ["Design and content", "Development", "Responsive layouts", "Progress reviews"],
+    duration: "By project scope",
+    tagline: "Build with care at every step."
   },
   {
     step: "05",
     phase: "Launch",
-    title: "Battle Testing & Zero-Downtime Deploy",
-    summary: "Deploy, stress test, run performance audits, and launch seamlessly into production.",
-    deliverables: ["Lighthouse 95+ Audit", "Penetration Testing", "Cross-Device QA", "DNS & Cloud Deployment"],
-    duration: "Week 9",
-    tagline: "A flawless launch into the digital wild."
+    title: "Review and hand over",
+    summary: "We review the finished work with you, make the agreed refinements and prepare the handoff.",
+    deliverables: ["Final review", "Responsive checks", "Launch checklist", "Handover notes"],
+    duration: "Before launch",
+    tagline: "Finish with a confident handoff."
   },
   {
     step: "06",
-    phase: "Grow",
-    title: "Continuous Evolution & Data Optimization",
-    summary: "Continue improving the product based on empirical analytics, user feedback, and AI iterations.",
-    deliverables: ["Heatmap Analytics", "Conversion Rate Tuning", "Feature Expansions", "24/7 SLA Support"],
-    duration: "Ongoing",
-    tagline: "Long-term partnership driving real compound growth."
+    phase: "Improve",
+    title: "Plan what comes next",
+    summary: "After launch, we can help maintain the experience and prioritize future improvements.",
+    deliverables: ["Feedback review", "Content updates", "Maintenance options", "Next-step priorities"],
+    duration: "Optional support",
+    tagline: "Keep making the experience better."
   }
 ];

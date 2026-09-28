@@ -9,7 +9,7 @@ export default function WhySarirait() {
       number: "01",
       title: "Strategy First",
       subtitle: "Every project starts with understanding the business.",
-      description: "We don't write a single line of code until we have deconstructed your revenue model, audience psychology, and competitive moat. Technology is a lever for market advantage.",
+      description: "We start by learning about your business, your audience and what you want to achieve. That context guides the design and build decisions that follow.",
       icon: <Target className="w-6 h-6 text-cyan-400" />,
       accent: "border-cyan-500/30 group-hover:border-cyan-400"
     },
@@ -17,7 +17,7 @@ export default function WhySarirait() {
       number: "02",
       title: "Design That Matters",
       subtitle: "Beautiful interfaces with meaningful user experiences.",
-      description: "Aesthetics without usability is decoration. Usability without aesthetics is forgettable. We merge bespoke creative direction with cognitive ergonomic rigor.",
+      description: "A strong identity and a clear, easy-to-use experience help people understand what you offer and feel confident taking the next step.",
       icon: <Sparkles className="w-6 h-6 text-violet-400" />,
       accent: "border-violet-500/30 group-hover:border-violet-400"
     },
@@ -25,7 +25,7 @@ export default function WhySarirait() {
       number: "03",
       title: "Technology That Scales",
       subtitle: "Clean architecture designed for future growth.",
-      description: "No vendor lock-in. No brittle monolithic dependencies. We engineer modular, type-safe, containerized systems ready for exponential traffic surges.",
+      description: "We choose practical tools for your needs and build with performance, accessibility and future updates in mind.",
       icon: <Cpu className="w-6 h-6 text-blue-400" />,
       accent: "border-blue-500/30 group-hover:border-blue-400"
     },
@@ -33,7 +33,7 @@ export default function WhySarirait() {
       number: "04",
       title: "Results Over Noise",
       subtitle: "Every digital product should create measurable value.",
-      description: "We hold our craft accountable to real empirical KPIs: conversion lift, retention duration, latency reduction, and bottom-line margin expansion.",
+      description: "We agree on the project scope and priorities with you, then use feedback and real-world results to decide what to improve next.",
       icon: <BarChart3 className="w-6 h-6 text-emerald-400" />,
       accent: "border-emerald-500/30 group-hover:border-emerald-400"
     }
@@ -52,12 +52,12 @@ export default function WhySarirait() {
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
             <span>WHY SARIRAIT</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.12]">
-            We combine technology, <br />
-            <span className="text-gradient-cyan">design and strategy.</span>
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
+            Thoughtful design. <br />
+            <span className="text-gradient-cyan">Useful digital work.</span>
           </h2>
           <p className="text-slate-400 text-sm sm:text-lg mt-5 leading-relaxed">
-            Our operating philosophy is built on four immutable pillars that protect your investment and accelerate time-to-value.
+            We connect the parts of your online presence so your brand looks consistent, works smoothly and is ready to grow.
           </p>
         </div>
 

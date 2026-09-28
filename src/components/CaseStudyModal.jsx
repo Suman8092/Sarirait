@@ -34,7 +34,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
             <div className="flex items-center gap-3">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
               <span className="text-xs font-mono-code uppercase tracking-wider text-cyan-300">
-                Case Study // {project.client}
+                Concept preview // {project.client}
               </span>
             </div>
             <button
@@ -54,9 +54,9 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
             {/* Title & Metadata */}
             <div>
               <span className="text-xs font-mono-code text-cyan-400 uppercase tracking-widest block mb-2">
-                {project.industry} • {project.year}
+                {project.industry} • Illustrative concept
               </span>
-              <h3 className="text-3xl sm:text-4xl font-display font-extrabold text-white">
+              <h3 className="text-2xl sm:text-3xl font-display font-extrabold text-white">
                 {project.title}
               </h3>
               <p className="text-slate-300 text-base sm:text-lg mt-3 leading-relaxed">
@@ -82,7 +82,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="p-6 rounded-2xl bg-rose-500/[0.03] border border-rose-500/20">
                 <span className="text-xs font-mono-code uppercase text-rose-400 block mb-2">
-                  01 // The Challenge
+                01 // Project idea
                 </span>
                 <p className="text-sm text-slate-300 leading-relaxed">
                   {project.challenge}
@@ -91,7 +91,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
 
               <div className="p-6 rounded-2xl bg-cyan-500/[0.03] border border-cyan-500/20">
                 <span className="text-xs font-mono-code uppercase text-cyan-400 block mb-2">
-                  02 // The Sarirait Solution
+                02 // Illustrative direction
                 </span>
                 <p className="text-sm text-slate-300 leading-relaxed">
                   {project.solution}
@@ -102,7 +102,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
             {/* Services & Tech Stack */}
             <div>
               <h4 className="text-xs font-mono-code uppercase tracking-widest text-slate-400 mb-3">
-                Deployed Technologies &amp; Architecture
+                Possible design and technology choices
               </h4>
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech, i) => (
@@ -120,7 +120,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
           {/* Bottom Bar CTA */}
           <div className="px-6 py-4 border-t border-white/[0.08] bg-white/[0.02] flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-xs font-mono-code text-slate-400">
-              Want similar high-velocity results for your organization?
+              Have a project with a similar goal?
             </span>
             <button
               onClick={() => {
@@ -131,7 +131,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
               onMouseEnter={() => sound.hover()}
               className="w-full sm:w-auto px-6 py-2.5 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2"
             >
-              <span>Build A Solution Like This</span>
+              <span>Discuss Your Project</span>
               <ArrowUpRight size={16} />
             </button>
           </div>

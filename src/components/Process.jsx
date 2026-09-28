@@ -20,12 +20,12 @@ export default function Process() {
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
             <span>HOW WE WORK</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.12]">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
             From idea <br />
             <span className="text-gradient-cyan">to impact.</span>
           </h2>
           <p className="text-slate-400 text-sm sm:text-lg mt-5 leading-relaxed">
-            Our disciplined 6-stage delivery framework eliminates guesswork, guarantees code reliability, and turns ambitious visions into high-performing reality.
+            We keep the work clear and collaborative, with agreed goals, useful review points and a practical handoff.
           </p>
         </div>
 

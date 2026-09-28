@@ -119,13 +119,13 @@ export function DeviceShowcase3D() {
               {/* URL address pill */}
               <div className="flex-1 max-w-xl mx-auto px-3 py-1 rounded-lg bg-black/40 border border-white/[0.06] flex items-center justify-center gap-2 text-[10px] sm:text-xs font-mono-code text-slate-400 truncate">
                 <ShieldCheck size={13} className="text-cyan-400 shrink-0" />
-                <span className="truncate">https://sarirait.com/case-study/aetheria-enterprise-mesh</span>
+                <span className="truncate">https://sarirait.com/concepts/digital-experience</span>
               </div>
 
               {/* Live badge */}
               <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono-code text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="hidden sm:inline">99.99% SLA</span>
+                <span className="hidden sm:inline">CONCEPT PREVIEW</span>
               </div>
             </div>
 
@@ -136,13 +136,13 @@ export function DeviceShowcase3D() {
                 <div>
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono-code text-cyan-300 mb-2">
                     <Activity size={12} />
-                    <span>SARIRAIT ENTERPRISE PLATFORM</span>
+                    <span>INTERFACE CONCEPT</span>
                   </div>
                   <h4 className="text-lg sm:text-2xl font-display font-bold text-white tracking-tight">
-                    Aetheria Neural Mesh <span className="text-gradient-cyan">v3.4</span>
+                    Digital experience <span className="text-gradient-cyan">concept</span>
                   </h4>
                   <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-                    Autonomous high-velocity microservices &amp; real-time telemetry cloud engine.
+                    A sample dashboard layout for a connected digital product.
                   </p>
                 </div>
 
@@ -158,7 +158,7 @@ export function DeviceShowcase3D() {
                         : 'bg-white/[0.03] text-slate-400 hover:text-white border border-white/[0.06]'
                     }`}
                   >
-                    Metrics
+                    Overview
                   </button>
                   <button
                     onClick={() => {
@@ -171,33 +171,33 @@ export function DeviceShowcase3D() {
                         : 'bg-white/[0.03] text-slate-400 hover:text-white border border-white/[0.06]'
                     }`}
                   >
-                    Clusters
+                    Details
                   </button>
                 </div>
               </div>
 
-              {/* Live Metric Cards Grid */}
+              {/* Illustrative interface cards */}
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
-                {/* Metric 1 */}
+                {/* Summary card */}
                 <div className="sm:col-span-4 p-4 rounded-xl bg-white/[0.02] border border-cyan-500/30 flex flex-col justify-between">
                   <span className="text-[10px] font-mono-code uppercase text-cyan-400 tracking-wider">
-                    Pipeline Latency
+                    Project overview
                   </span>
                   <div className="text-3xl sm:text-4xl font-display font-extrabold text-white my-2">
-                    &lt; 24ms
+                    At a glance
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium font-mono-code">
-                    <span>▲ 14.8x Acceleration</span>
+                    <span>Clear status and next steps</span>
                   </div>
                 </div>
 
-                {/* Metric 2: SVG Telemetry Wave Curve */}
+                {/* Activity visualization */}
                 <div className="sm:col-span-8 p-4 rounded-xl bg-white/[0.02] border border-violet-500/30 flex flex-col justify-between">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[10px] font-mono-code uppercase text-violet-400 tracking-wider">
-                      Distributed Throughput (Req/Sec)
+                      Content and activity
                     </span>
-                    <span className="text-xs font-mono-code text-cyan-300 font-bold">142,850 req/s</span>
+                    <span className="text-xs font-mono-code text-cyan-300 font-bold">Sample view</span>
                   </div>
 
                   {/* SVG Wave Graphic */}
@@ -230,12 +230,12 @@ export function DeviceShowcase3D() {
                   onClick={() => sound.click()}
                   className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all"
                 >
-                  <span>LAUNCH PIPELINE</span>
+                  <span>Explore the concept</span>
                   <ArrowUpRight size={14} />
                 </button>
                 <div className="flex items-center gap-2 text-xs font-mono-code text-slate-400 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06]">
                   <Terminal size={13} className="text-violet-400" />
-                  <span>kubectl get pods -n mesh-prod // STATUS: HEALTHY</span>
+                  <span>Navigation // Content // Interaction</span>
                 </div>
               </div>
             </div>

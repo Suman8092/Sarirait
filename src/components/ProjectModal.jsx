@@ -9,7 +9,7 @@ export default function ProjectModal({ isOpen, onClose }) {
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState(['Website Development']);
   const [activeCategoryTab, setActiveCategoryTab] = useState('all');
-  const [budget, setBudget] = useState('$15,000 - $35,000');
+  const [budget, setBudget] = useState('Not decided yet');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,10 +21,10 @@ export default function ProjectModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const budgetTiers = [
-    '< $10,000',
-    '$15,000 - $35,000',
-    '$35,000 - $75,000',
-    '$75,000+'
+    'Not decided yet',
+    'Please suggest a range',
+    'Budget is set',
+    'Prefer to discuss'
   ];
 
   const toggleService = (srv) => {
@@ -41,6 +41,18 @@ export default function ProjectModal({ isOpen, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     sound.success();
+
+    const subject = encodeURIComponent(`Sarirait project enquiry from ${formData.name}`);
+    const body = encodeURIComponent([
+      `Name: ${formData.name}`,
+      `Email: ${formData.email}`,
+      `Company: ${formData.company || 'Not provided'}`,
+      `Services: ${selectedServices.join(', ')}`,
+      `Budget: ${budget}`,
+      '',
+      formData.details || 'Project details not provided yet.'
+    ].join('\n'));
+    window.location.href = `mailto:contact@sarirait.com?subject=${subject}&body=${body}`;
     
     // Trigger celebratory confetti
     try {
@@ -118,7 +130,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                         Select Services ({selectedServices.length} selected)
                       </label>
                       <span className="text-[11px] font-mono-code text-cyan-400">
-                        22 Services Available
+                {serviceCategories.reduce((total, category) => total + category.services.length, 0)} Services Available
                       </span>
                     </div>
 
@@ -187,7 +199,7 @@ export default function ProjectModal({ isOpen, onClose }) {
 
                   <div>
                     <label className="block text-sm font-semibold text-white mb-2 font-display">
-                      Estimated Project Investment Tier
+                      Budget planning
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {budgetTiers.map((b) => (
@@ -315,10 +327,10 @@ export default function ProjectModal({ isOpen, onClose }) {
                 <CheckCircle2 size={32} />
               </div>
               <h3 className="text-2xl sm:text-3xl font-display font-bold text-white">
-                Brief Received Successfully
+                Your project brief is ready
               </h3>
               <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                Thank you, <span className="text-cyan-300 font-semibold">{formData.name || 'Partner'}</span>. Our technical leadership team will review your specifications and reach out to <span className="text-cyan-300">{formData.email}</span> within 24 hours with architectural suggestions and a discovery timeline.
+                Thank you, <span className="text-cyan-300 font-semibold">{formData.name || 'there'}</span>. Your email app should open with this brief addressed to <span className="text-cyan-300">contact@sarirait.com</span>. Review it and press Send to complete your enquiry. If no email app opens, you can write to us directly.
               </p>
               <div className="pt-4">
                 <button
@@ -334,7 +346,7 @@ export default function ProjectModal({ isOpen, onClose }) {
           {/* Privacy Note */}
           <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-center gap-2 text-[11px] font-mono-code text-slate-500">
             <ShieldCheck size={14} className="text-cyan-400" />
-            <span>Encrypted transmission. Your information remains strictly confidential under NDA.</span>
+            <span>Your details are for discussing this project enquiry.</span>
           </div>
         </motion.div>
       </div>

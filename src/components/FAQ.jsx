@@ -25,12 +25,12 @@ export default function FAQ({ onOpenProjectModal }) {
             <HelpCircle size={14} />
             <span>FREQUENTLY ASKED QUESTIONS</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
             Clear answers to <br />
             <span className="text-gradient-cyan">common inquiries.</span>
           </h2>
           <p className="text-slate-400 text-sm sm:text-base mt-4 max-w-xl mx-auto">
-            Everything you need to know about partnering with Sarirait, our delivery process, technical standards, and commitments.
+            A few helpful details about the services, planning and support we can discuss with you.
           </p>
         </div>
 
@@ -87,7 +87,7 @@ export default function FAQ({ onOpenProjectModal }) {
         {/* EXTRA HELP FOOTER */}
         <div className="mt-12 text-center p-6 rounded-2xl glass-card border border-white/[0.06]">
           <span className="text-sm text-slate-400">
-            Have a unique technical inquiry or custom enterprise requirement?
+            Have a project question or a specific idea in mind?
           </span>
           <div className="mt-3">
             <button
@@ -98,7 +98,7 @@ export default function FAQ({ onOpenProjectModal }) {
               onMouseEnter={() => sound.hover()}
               className="text-xs font-mono-code uppercase font-bold text-cyan-400 hover:text-cyan-300 underline underline-offset-4"
             >
-              Speak directly with a Solutions Architect →
+              Tell us about your project →
             </button>
           </div>
         </div>

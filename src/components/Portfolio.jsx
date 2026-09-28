@@ -22,15 +22,15 @@ export default function Portfolio({ onOpenProjectModal }) {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-              <span>SELECTED WORK</span>
+              <span>CONCEPT SHOWCASE</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight">
-              Ideas transformed into <br />
-              <span className="text-gradient-cyan">digital experiences.</span>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight">
+              Thoughtful concepts for <br />
+              <span className="text-gradient-cyan">brands in motion.</span>
             </h2>
           </div>
           <p className="text-slate-400 text-sm sm:text-base max-w-md">
-            A curated selection of modern applications, bespoke digital flagships, and autonomous AI systems built for ambitious category leaders.
+            These illustrative concepts show how brand identity, websites and digital products can come together. They are not client case studies.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function Portfolio({ onOpenProjectModal }) {
                       <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
                     </div>
-                    <span className="text-[10px] font-mono-code text-slate-400">{project.client} // LIVE</span>
+                    <span className="text-[10px] font-mono-code text-slate-400">ILLUSTRATIVE CONCEPT</span>
                   </div>
 
                   <div className="pt-4 grid grid-cols-2 gap-4">
@@ -132,13 +132,13 @@ export default function Portfolio({ onOpenProjectModal }) {
           
           <div className="relative z-10 text-center max-w-3xl mx-auto mb-6">
             <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-2 block">
-              3D Interactive Device Experience
+              Interactive website concept
             </span>
-            <h3 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15]">
-              “Built for performance. <br className="hidden sm:inline" />Designed for impact.”
+            <h3 className="text-xl sm:text-3xl lg:text-4xl font-display font-bold text-white tracking-tight leading-[1.15]">
+              “A clear idea, <br className="hidden sm:inline" />brought to life online.”
             </h3>
             <p className="text-slate-400 text-xs sm:text-base mt-3">
-              Rotate, inspect, and experience how our architectures translate into responsive, lightning-fast digital flagship software.
+              Explore a visual interface concept showing how layout, interaction and content can work together across screens.
             </p>
           </div>
 
@@ -148,18 +148,18 @@ export default function Portfolio({ onOpenProjectModal }) {
           {/* Interactive footer details inside showcase */}
           <div className="relative z-10 mt-8 pt-8 border-t border-white/[0.08] flex flex-wrap items-center justify-around gap-6 text-center">
             <div>
-              <div className="text-xl sm:text-2xl font-bold font-mono-code text-cyan-400">GPU 3D</div>
-              <div className="text-xs text-slate-400 font-mono-code uppercase">Hardware Accelerated</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono-code text-cyan-400">Brand</div>
+              <div className="text-xs text-slate-400 font-mono-code uppercase">Identity &amp; direction</div>
             </div>
             <div className="w-[1px] h-8 bg-white/10 hidden sm:block" />
             <div>
-              <div className="text-xl sm:text-2xl font-bold font-mono-code text-violet-400">Zero Framedrops</div>
-              <div className="text-xs text-slate-400 font-mono-code uppercase">120FPS Smooth Parallax</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono-code text-violet-400">Digital</div>
+              <div className="text-xs text-slate-400 font-mono-code uppercase">Web &amp; app experiences</div>
             </div>
             <div className="w-[1px] h-8 bg-white/10 hidden sm:block" />
             <div>
-              <div className="text-xl sm:text-2xl font-bold font-mono-code text-white">Full Responsive</div>
-              <div className="text-xs text-slate-400 font-mono-code uppercase">Fluid Across Viewports</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono-code text-white">Growth</div>
+              <div className="text-xs text-slate-400 font-mono-code uppercase">Content &amp; marketing</div>
             </div>
           </div>
 

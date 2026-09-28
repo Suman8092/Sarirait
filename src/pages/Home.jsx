@@ -57,10 +57,10 @@ export default function Home() {
         {/* 7. Technology Stack Matrix */}
         <Technologies />
 
-        {/* 8. AI Labs & 3D Neural Synapse */}
+        {/* 8. AI and workflow ideas */}
         <AISection onOpenProjectModal={handleOpenProjectModal} />
 
-        {/* 9. Verified Client Testimonials */}
+        {/* 9. Connected brand, web and marketing services */}
         <Testimonials />
 
         {/* 10. Frequently Asked Questions */}

@@ -7,11 +7,14 @@ export default function Hero3D() {
   const [isInView, setIsInView] = useState(true);
 
   const [deviceScale, setDeviceScale] = useState(() => {
-    if (typeof window === 'undefined') return 1.0;
+    if (typeof window === 'undefined') return 0.78;
     const w = window.innerWidth;
-    if (w < 640) return 0.9;
-    if (w < 1024) return 0.95;
-    return 1.0;
+    if (w < 640) return 0.84;
+    if (w < 1024) return 0.9;
+    if (w < 1100) return 0.64;
+    if (w < 1180) return 0.72;
+    if (w < 1280) return 0.76;
+    return 0.78;
   });
 
   const [isMobile, setIsMobile] = useState(() => {
@@ -46,9 +49,12 @@ export default function Hero3D() {
     const handleResize = () => {
       const w = window.innerWidth;
       setIsMobile(w < 768);
-      if (w < 640) setDeviceScale(0.9);
-      else if (w < 1024) setDeviceScale(0.95);
-      else setDeviceScale(1.0);
+      if (w < 640) setDeviceScale(0.84);
+      else if (w < 1024) setDeviceScale(0.9);
+      else if (w < 1100) setDeviceScale(0.64);
+      else if (w < 1180) setDeviceScale(0.72);
+      else if (w < 1280) setDeviceScale(0.76);
+      else setDeviceScale(0.78);
     };
     window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
@@ -57,7 +63,7 @@ export default function Hero3D() {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full max-w-full h-[340px] sm:h-[460px] md:h-[540px] lg:h-[620px] xl:h-[680px] flex items-center justify-center overflow-hidden"
+      className="relative w-full max-w-full h-[340px] sm:h-[420px] md:h-[480px] lg:h-[520px] xl:h-[560px] flex items-center justify-center overflow-hidden"
     >
       {/* Ambient Radial Cyber Glow Behind 3D Canvas */}
       <div 
@@ -77,7 +83,7 @@ export default function Hero3D() {
         >
           <Canvas
             frameloop={isInView ? "always" : "never"}
-            camera={{ position: [0, 0, isMobile ? 6.8 : 5.8], fov: 45 }}
+            camera={{ position: [0, 0, 7.0], fov: 45 }}
             dpr={isMobile ? 1 : [1, 1.5]}
             gl={{ 
               antialias: !isMobile, 
@@ -102,8 +108,8 @@ export default function Hero3D() {
       ) : (
         /* Sleek CSS Fallback */
         <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[420px] md:h-[420px] max-w-full flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full border border-cyan-500/30 animate-[spin_12s_linear_infinite]" />
-          <div className="absolute inset-4 rounded-full border border-violet-500/30 animate-[spin_18s_linear_infinite_reverse]" />
+          <div className="absolute inset-0 rounded-full border border-cyan-500/30 animate-[spin_24s_linear_infinite]" />
+          <div className="absolute inset-4 rounded-full border border-violet-500/30 animate-[spin_36s_linear_infinite_reverse]" />
           <div className="w-36 h-36 rounded-full bg-gradient-to-tr from-cyan-500/30 via-violet-600/30 to-blue-500/30 backdrop-blur-xl border border-white/20 shadow-2xl shadow-cyan-500/20 flex items-center justify-center">
             <div className="w-14 h-14 rounded-full bg-cyan-400/40 blur-md animate-pulse" />
           </div>

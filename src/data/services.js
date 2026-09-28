@@ -1,6 +1,6 @@
 import { serviceCategories, allServices } from './servicesData';
 
-// Generate consistent flat services list from canonical 22 services
+// Generate a flat service list from the canonical service catalogue
 export const servicesData = allServices.map((srv, index) => {
   const num = String(index + 1).padStart(2, '0');
   return {

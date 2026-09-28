@@ -4,22 +4,22 @@ import { sound } from '../utils/sound';
 
 export default function TrustSection() {
   const stats = [
-    { value: "20+", label: "Completed Projects", detail: "Across Web, Cloud & AI" },
-    { value: "15+", label: "Global Clients", detail: "Startups to Enterprise" },
-    { value: "5+", label: "Years Experience", detail: "Next-Gen Engineering" },
-    { value: "98%", label: "Client Satisfaction", detail: "Verified NPS Score" }
+    { value: "01", label: "Shape the brand", detail: "Identity, design and content" },
+    { value: "02", label: "Build the experience", detail: "Websites, apps and stores" },
+    { value: "03", label: "Reach the audience", detail: "Search, social and campaigns" },
+    { value: "04", label: "Keep improving", detail: "Learn from real feedback" }
   ];
 
   // Marquee client partner logos
   const partners = [
-    { name: "Aetheria Systems", tag: "AI Cloud" },
-    { name: "NovaFin Capital", tag: "Fintech" },
-    { name: "Kinetics Health", tag: "Biosensors" },
-    { name: "Aura Atelier", tag: "Luxury Goods" },
-    { name: "Vortex Labs", tag: "Cybersecurity" },
-    { name: "Synapse Digital", tag: "Automation" },
-    { name: "Nexus Quantum", tag: "High-Freq Infra" },
-    { name: "Stratum Dynamics", tag: "Enterprise SaaS" }
+    { name: "Brand identity", tag: "Design" },
+    { name: "Print & packaging", tag: "Creative" },
+    { name: "Websites & stores", tag: "Development" },
+    { name: "Mobile applications", tag: "Product" },
+    { name: "Search visibility", tag: "Marketing" },
+    { name: "Social content", tag: "Marketing" },
+    { name: "Email campaigns", tag: "Growth" },
+    { name: "Lead generation", tag: "Growth" }
   ];
 
   return (
@@ -29,13 +29,13 @@ export default function TrustSection() {
         {/* SECTION HEADER */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-3 block">
-            Impact &amp; Reliability
+            A connected digital presence
           </span>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
-            “Technology built around your business goals.”
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-tight">
+            “Make every digital touchpoint feel like your brand.”
           </h2>
           <p className="text-slate-400 text-xs sm:text-base mt-4">
-            We don't just write code; we partner with visionary leadership teams to deliver compound enterprise value.
+            Bring your identity, website and marketing into one clear experience—from the first impression to the next customer action.
           </p>
         </div>
 
@@ -64,7 +64,7 @@ export default function TrustSection() {
           ))}
         </div>
 
-        {/* CLIENT-LOGO MARQUEE */}
+        {/* SERVICE AREAS MARQUEE */}
         <div className="relative overflow-hidden py-6 border-t border-white/[0.05]">
           {/* Gradient fade edge masks */}
           <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-36 bg-gradient-to-r from-[#070a10] to-transparent z-10 pointer-events-none" />

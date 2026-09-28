@@ -63,17 +63,17 @@ export default function ServicesPreview() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span>OUR SERVICES // 4 CORE PILLARS • 22 CAPABILITIES</span>
+              <span>DESIGN • DEVELOPMENT • MARKETING</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.12]">
-              Everything you need to <br />
-              <span className="text-gradient-cyan">build, grow and scale.</span>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
+              One team for your <br />
+              <span className="text-gradient-cyan">brand, website and growth.</span>
             </h2>
           </div>
 
           <div className="flex flex-col items-start md:items-end gap-3">
             <p className="text-slate-400 text-sm sm:text-base max-w-sm">
-              Integrated development, digital marketing, creative branding, and business software engineered for compound commercial performance.
+              From a new identity to a better website and a stronger marketing plan, choose the support that fits your next step.
             </p>
             <Link
               to="/services"
@@ -81,7 +81,7 @@ export default function ServicesPreview() {
               onClick={() => sound.click()}
               className="inline-flex items-center gap-2 text-xs font-mono-code uppercase font-semibold text-cyan-400 hover:text-cyan-300 transition-colors group"
             >
-              <span>Explore All 22 Services</span>
+              <span>Explore Our Services</span>
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
