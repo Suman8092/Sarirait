@@ -33,16 +33,16 @@ export default function Services() {
   const businessCat = serviceCategories[3];
 
   return (
-    <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden">
       <CustomCursor />
       
       {/* Global Navbar */}
       <Navbar onOpenProjectModal={() => setProjectModalOpen(true)} />
 
-      <main className="pt-32 pb-24">
+      <main className="pt-24 sm:pt-32 pb-16 sm:pb-24 w-full max-w-full overflow-x-hidden">
         {/* HERO SECTION */}
-        <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-20">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-cyan-500/10 rounded-full blur-[160px] pointer-events-none -z-10" />
+        <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16 sm:mb-20 overflow-hidden w-full max-w-full">
+          <div className="ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[700px] h-[350px] bg-cyan-500/10 rounded-full blur-[90px] pointer-events-none -z-10" />
 
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-6 border border-cyan-500/30">

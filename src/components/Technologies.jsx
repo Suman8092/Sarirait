@@ -12,11 +12,11 @@ export default function Technologies() {
     : technologiesData.filter(t => t.category === selectedCategory);
 
   return (
-    <section id="technology" className="relative py-28 bg-[#090d16] border-t border-white/[0.06]">
+    <section id="technology" className="relative py-20 sm:py-28 bg-[#090d16] border-t border-white/[0.06] overflow-hidden w-full max-w-full">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 right-1/4 w-[600px] h-[500px] bg-cyan-500/10 rounded-full blur-[170px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute top-1/2 right-0 sm:right-1/4 w-full max-w-[600px] h-[350px] sm:h-[500px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -115,7 +115,7 @@ export default function Technologies() {
               Need a bespoke stack not listed above? We support custom Rust, Go, Python microservices, and hybrid on-prem topologies.
             </span>
           </div>
-          <span className="text-xs font-mono-code text-cyan-400 whitespace-nowrap">
+          <span className="text-xs font-mono-code text-cyan-400 whitespace-normal sm:whitespace-nowrap">
             100% TECH AGNOSTIC
           </span>
         </div>

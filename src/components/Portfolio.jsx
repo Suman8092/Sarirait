@@ -10,12 +10,12 @@ export default function Portfolio({ onOpenProjectModal }) {
   const [selectedProject, setSelectedProject] = useState(null);
 
   return (
-    <section id="work" className="relative py-28 bg-[#07090e] border-t border-white/[0.06]">
+    <section id="work" className="relative py-20 sm:py-28 bg-[#07090e] border-t border-white/[0.06] overflow-hidden w-full max-w-full">
       {/* Background ambient light */}
-      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[160px] pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[160px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute top-1/4 right-0 w-full max-w-[500px] h-[350px] sm:h-[500px] bg-blue-600/10 rounded-full blur-[90px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute bottom-1/4 left-0 w-full max-w-[500px] h-[350px] sm:h-[500px] bg-purple-600/10 rounded-full blur-[90px] pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -128,16 +128,16 @@ export default function Portfolio({ onOpenProjectModal }) {
         </div>
 
         {/* SECTION 12: 3D PROJECT SHOWCASE (FLOATING LAPTOP DEVICE) */}
-        <div className="relative rounded-3xl p-8 sm:p-12 lg:p-16 glass-card border border-cyan-500/20 overflow-hidden bg-gradient-to-b from-[#0c1220]/80 via-[#07090e] to-[#07090e]">
+        <div className="relative rounded-3xl p-4 sm:p-8 lg:p-16 glass-card border border-cyan-500/20 overflow-hidden bg-gradient-to-b from-[#0c1220]/80 via-[#07090e] to-[#07090e] w-full max-w-full">
           
           <div className="relative z-10 text-center max-w-3xl mx-auto mb-6">
             <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-2 block">
               3D Interactive Device Experience
             </span>
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15]">
+            <h3 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15]">
               “Built for performance. <br className="hidden sm:inline" />Designed for impact.”
             </h3>
-            <p className="text-slate-400 text-sm sm:text-base mt-3">
+            <p className="text-slate-400 text-xs sm:text-base mt-3">
               Rotate, inspect, and experience how our architectures translate into responsive, lightning-fast digital flagship software.
             </p>
           </div>
@@ -148,13 +148,13 @@ export default function Portfolio({ onOpenProjectModal }) {
           {/* Interactive footer details inside showcase */}
           <div className="relative z-10 mt-8 pt-8 border-t border-white/[0.08] flex flex-wrap items-center justify-around gap-6 text-center">
             <div>
-              <div className="text-xl sm:text-2xl font-bold font-mono-code text-cyan-400">WebGL 2.0</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono-code text-cyan-400">GPU 3D</div>
               <div className="text-xs text-slate-400 font-mono-code uppercase">Hardware Accelerated</div>
             </div>
             <div className="w-[1px] h-8 bg-white/10 hidden sm:block" />
             <div>
               <div className="text-xl sm:text-2xl font-bold font-mono-code text-violet-400">Zero Framedrops</div>
-              <div className="text-xs text-slate-400 font-mono-code uppercase">60FPS Smooth Parallax</div>
+              <div className="text-xs text-slate-400 font-mono-code uppercase">120FPS Smooth Parallax</div>
             </div>
             <div className="w-[1px] h-8 bg-white/10 hidden sm:block" />
             <div>

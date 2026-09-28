@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, ArrowRight, Send, ShieldCheck } from 'lucide-react';
+import { X, CheckCircle2, ArrowRight, Send, ShieldCheck, Terminal, BarChart3, Sparkles, Cpu } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sound } from '../utils/sound';
+import { serviceCategories } from '../data/servicesData';
 
 export default function ProjectModal({ isOpen, onClose }) {
   const [step, setStep] = useState(1);
-  const [selectedServices, setSelectedServices] = useState(['Web Design & Development']);
+  const [selectedServices, setSelectedServices] = useState(['Website Development']);
+  const [activeCategoryTab, setActiveCategoryTab] = useState('all');
   const [budget, setBudget] = useState('$15,000 - $35,000');
   const [formData, setFormData] = useState({
     name: '',
@@ -17,16 +19,6 @@ export default function ProjectModal({ isOpen, onClose }) {
   const [submitted, setSubmitted] = useState(false);
 
   if (!isOpen) return null;
-
-  const servicesList = [
-    'Web Design & Development',
-    'Custom Software Development',
-    'Mobile App (iOS/Android)',
-    'Enterprise WordPress / Headless',
-    'UI/UX & Design Systems',
-    'AI Solutions & Automation',
-    'Technical SEO & Growth'
-  ];
 
   const budgetTiers = [
     '< $10,000',
@@ -121,29 +113,75 @@ export default function ProjectModal({ isOpen, onClose }) {
               {step === 1 ? (
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-semibold text-white mb-2 font-display">
-                      Which services are you looking to architect?
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {servicesList.map((srv) => {
-                        const isSelected = selectedServices.includes(srv);
-                        return (
-                          <button
-                            type="button"
-                            key={srv}
-                            onClick={() => toggleService(srv)}
-                            onMouseEnter={() => sound.hover()}
-                            className={`px-3.5 py-2 rounded-xl text-xs font-medium transition-all border ${
-                              isSelected
-                                ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-md shadow-cyan-500/10'
-                                : 'bg-white/[0.03] border-white/10 text-slate-400 hover:text-white hover:border-white/20'
-                            }`}
-                          >
-                            {isSelected && <span className="mr-1.5">✓</span>}
-                            {srv}
-                          </button>
-                        );
-                      })}
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-white font-display">
+                        Select Services ({selectedServices.length} selected)
+                      </label>
+                      <span className="text-[11px] font-mono-code text-cyan-400">
+                        22 Services Available
+                      </span>
+                    </div>
+
+                    {/* Category quick-filter tabs */}
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {[
+                        { id: 'all', label: 'All' },
+                        { id: 'development', label: 'Development' },
+                        { id: 'marketing', label: 'Digital Marketing' },
+                        { id: 'creative', label: 'Creative' },
+                        { id: 'business', label: 'Business' }
+                      ].map((tab) => (
+                        <button
+                          type="button"
+                          key={tab.id}
+                          onClick={() => {
+                            sound.click();
+                            setActiveCategoryTab(tab.id);
+                          }}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-mono-code transition-all border ${
+                            activeCategoryTab === tab.id
+                              ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300'
+                              : 'bg-white/[0.02] border-white/10 text-slate-400 hover:text-white'
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Scrollable list of categorized pills */}
+                    <div className="max-h-48 overflow-y-auto pr-1 space-y-3 custom-scrollbar">
+                      {serviceCategories
+                        .filter(cat => activeCategoryTab === 'all' || cat.id === activeCategoryTab)
+                        .map(cat => (
+                          <div key={cat.id} className="space-y-1.5">
+                            <div className="text-[10px] font-mono-code uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                              <span className="text-cyan-400">{cat.number}</span>
+                              <span>{cat.title}</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1.5">
+                              {cat.services.map((srv) => {
+                                const isSelected = selectedServices.includes(srv.title);
+                                return (
+                                  <button
+                                    type="button"
+                                    key={srv.slug}
+                                    onClick={() => toggleService(srv.title)}
+                                    onMouseEnter={() => sound.hover()}
+                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                                      isSelected
+                                        ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 shadow-sm shadow-cyan-500/20 font-semibold'
+                                        : 'bg-white/[0.03] border-white/10 text-slate-300 hover:text-white hover:border-white/20'
+                                    }`}
+                                  >
+                                    {isSelected && <span className="mr-1 text-cyan-400">✓</span>}
+                                    {srv.title}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
 

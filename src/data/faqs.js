@@ -2,7 +2,7 @@ export const faqsData = [
   {
     id: 1,
     question: "What services does Sarirait provide?",
-    answer: "Sarirait delivers end-to-end digital solutions organized across four core pillars: Development Solutions (Websites, Mobile Apps, Web Applications, E-Commerce, Maintenance, PPC), Digital Marketing (SEO, Google Business Profile, Social Media, Google & Meta Ads, Email, WhatsApp), Creative Services (Branding, Graphic Design, Packaging & Product Design, Reels & Video Marketing, Logo & Branding), and Business Solutions (ERP, CRM, SaaS, Cloud, Custom Software)."
+    answer: "Sarirait delivers comprehensive digital solutions organized across four core pillars: Development Solutions (Website Development, Mobile App Development, Web Applications, E-Commerce Solutions, Website Maintenance, Pay Per Click Marketing); Digital Marketing (SEO Services, Google Business Profile, Social Media Marketing, Google & Meta Ads, Email Marketing, WhatsApp Marketing); Creative Services (Branding Solutions, Graphic Design, Packaging & Product Design, Reels & Video Marketing, Logo & Branding); and Business Solutions (ERP Solutions, CRM Software, SaaS Solutions, Cloud Solutions, Custom Software Development)."
   },
   {
     id: 2,

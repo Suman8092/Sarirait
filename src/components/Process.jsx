@@ -8,14 +8,14 @@ export default function Process() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section id="process" className="relative py-28 bg-[#07090e] border-t border-white/[0.06]">
+    <section id="process" className="relative py-20 sm:py-28 bg-[#07090e] border-t border-white/[0.06] overflow-hidden w-full max-w-full">
       {/* Background ambient gradient */}
-      <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[170px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute top-1/3 left-1/4 w-full max-w-[600px] h-[350px] sm:h-[600px] bg-violet-600/10 rounded-full blur-[80px] pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
-        <div className="max-w-3xl mb-20">
+        <div className="max-w-3xl mb-12 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
             <span>HOW WE WORK</span>
@@ -24,7 +24,7 @@ export default function Process() {
             From idea <br />
             <span className="text-gradient-cyan">to impact.</span>
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg mt-5 leading-relaxed">
+          <p className="text-slate-400 text-sm sm:text-lg mt-5 leading-relaxed">
             Our disciplined 6-stage delivery framework eliminates guesswork, guarantees code reliability, and turns ambitious visions into high-performing reality.
           </p>
         </div>
@@ -42,7 +42,7 @@ export default function Process() {
                 sound.hover();
                 setActiveStep(index);
               }}
-              className={`p-8 rounded-3xl glass-card border transition-all duration-300 relative flex flex-col justify-between ${
+              className={`p-6 sm:p-8 rounded-2xl sm:rounded-3xl glass-card border transition-all duration-300 relative flex flex-col justify-between ${
                 activeStep === index 
                   ? 'border-cyan-500/50 bg-white/[0.04] shadow-xl shadow-cyan-500/10 -translate-y-1' 
                   : 'border-white/[0.07] hover:border-white/[0.2]'

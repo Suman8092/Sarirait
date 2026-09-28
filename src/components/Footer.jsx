@@ -72,11 +72,11 @@ export default function Footer({ onOpenProjectModal }) {
   ];
 
   return (
-    <footer id="footer" className="relative border-t border-white/[0.08] bg-[#05070b] text-slate-300 pt-20 pb-12 overflow-hidden">
+    <footer id="footer" className="relative border-t border-white/[0.08] bg-[#05070b] text-slate-300 pt-16 sm:pt-20 pb-12 overflow-hidden w-full max-w-full">
       {/* Background ambient lighting */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-cyan-500/5 rounded-full blur-[180px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[250px] sm:h-[300px] bg-cyan-500/5 rounded-full blur-[90px] pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* MAIN 6-COLUMN BALANCED FOOTER GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-16 border-b border-white/[0.08]">

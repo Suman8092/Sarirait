@@ -18,8 +18,8 @@ export default function AISection({ onOpenProjectModal }) {
   return (
     <section id="ai-future" className="relative py-28 bg-[#07090e] border-t border-white/[0.06] overflow-hidden">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[700px] h-[700px] bg-violet-600/10 rounded-full blur-[180px] pointer-events-none -z-10" />
-      <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[160px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute top-1/2 left-1/3 -translate-y-1/2 w-[700px] h-[700px] bg-violet-600/10 rounded-full blur-[90px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute bottom-10 right-10 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[90px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         

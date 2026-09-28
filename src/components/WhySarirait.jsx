@@ -40,14 +40,14 @@ export default function WhySarirait() {
   ];
 
   return (
-    <section id="why-us" className="relative py-28 bg-[#090d16] border-t border-white/[0.06]">
+    <section id="why-us" className="relative py-20 sm:py-28 bg-[#090d16] border-t border-white/[0.06] overflow-hidden w-full max-w-full">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-cyan-500/5 rounded-full blur-[180px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-[350px] sm:h-[400px] bg-cyan-500/5 rounded-full blur-[90px] pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
-        <div className="max-w-3xl mb-20">
+        <div className="max-w-3xl mb-12 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
             <span>WHY SARIRAIT</span>
@@ -56,13 +56,13 @@ export default function WhySarirait() {
             We combine technology, <br />
             <span className="text-gradient-cyan">design and strategy.</span>
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg mt-5 leading-relaxed">
+          <p className="text-slate-400 text-sm sm:text-lg mt-5 leading-relaxed">
             Our operating philosophy is built on four immutable pillars that protect your investment and accelerate time-to-value.
           </p>
         </div>
 
         {/* 4 CORE PRINCIPLES WITH LARGE TYPOGRAPHY */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {principles.map((p, index) => (
             <motion.div
               key={p.number}
@@ -71,7 +71,7 @@ export default function WhySarirait() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
               onMouseEnter={() => sound.hover()}
-              className={`group p-8 sm:p-10 rounded-3xl glass-card border transition-all duration-300 relative flex flex-col justify-between ${p.accent}`}
+              className={`group p-6 sm:p-10 rounded-3xl glass-card border transition-all duration-300 relative flex flex-col justify-between ${p.accent}`}
             >
               <div>
                 <div className="flex items-center justify-between mb-8">

@@ -156,18 +156,18 @@ function FloatingShards() {
     <group ref={shardsRef}>
       <mesh position={[2.2, 1.4, -1]} rotation={[0.4, 0.8, 0]}>
         <tetrahedronGeometry args={[0.25, 0]} />
-        <meshPhysicalMaterial
+        <meshStandardMaterial
           color="#00f0ff"
           emissive="#00f0ff"
           emissiveIntensity={0.4}
-          roughness={0.1}
-          metalness={0.9}
+          roughness={0.2}
+          metalness={0.8}
           wireframe
         />
       </mesh>
       <mesh position={[-2.4, -1.2, 0.8]} rotation={[0.9, 0.2, 0.5]}>
         <octahedronGeometry args={[0.3, 0]} />
-        <meshPhysicalMaterial
+        <meshStandardMaterial
           color="#8a2be2"
           emissive="#8a2be2"
           emissiveIntensity={0.5}
@@ -177,7 +177,7 @@ function FloatingShards() {
       </mesh>
       <mesh position={[1.8, -1.8, 1.2]} rotation={[0.2, 0.5, 0.9]}>
         <dodecahedronGeometry args={[0.22, 0]} />
-        <meshPhysicalMaterial
+        <meshStandardMaterial
           color="#38bdf8"
           roughness={0.3}
           metalness={0.7}
@@ -199,7 +199,6 @@ export function DigitalCore({ scale = 1.25 }) {
 
     // Smooth subtle camera/mouse tracking parallax
     if (coreRef.current) {
-      // Rotation lerping
       coreRef.current.rotation.y += delta * 0.25;
       coreRef.current.rotation.x = THREE.MathUtils.lerp(
         coreRef.current.rotation.x,
@@ -241,23 +240,17 @@ export function DigitalCore({ scale = 1.25 }) {
         />
       </mesh>
 
-      {/* Primary Luminous Holographic Crystal Core (Translucent & Refractive) */}
+      {/* Primary Luminous Holographic Crystal Core */}
       <mesh>
-        <sphereGeometry args={[0.82, 64, 64]} />
-        <meshPhysicalMaterial
+        <sphereGeometry args={[0.82, 32, 32]} />
+        <meshStandardMaterial
           color="#00f0ff"
-          emissive="#0284c7"
-          emissiveIntensity={0.25}
-          roughness={0.1}
-          metalness={0.1}
-          transmission={0.85}
-          thickness={1.2}
+          emissive="#00f0ff"
+          emissiveIntensity={0.5}
+          roughness={0.2}
+          metalness={0.8}
           transparent={true}
-          opacity={0.7}
-          ior={1.5}
-          reflectivity={0.9}
-          clearcoat={1}
-          clearcoatRoughness={0.1}
+          opacity={0.75}
         />
       </mesh>
 
@@ -296,10 +289,10 @@ export function DigitalCore({ scale = 1.25 }) {
       <OrbitRing radius={1.88} width={0.010} speed={0.2} tilt={1.1} color="#6366f1" />
 
       {/* Orbiting Digital Nodes */}
-      <OrbitingNodes count={8} radius={1.5} speed={0.35} />
+      <OrbitingNodes count={6} radius={1.5} speed={0.35} />
 
       {/* Surrounding Ambient Particle Dust */}
-      <ParticleDust count={240} />
+      <ParticleDust count={80} />
 
       {/* Floating Shards */}
       <FloatingShards />

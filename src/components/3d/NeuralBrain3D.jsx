@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -11,7 +11,7 @@ function NeuralNetworkMesh({ nodeCount = 55 }) {
   const group = useRef();
 
   // Generate 3D nodes clustered in a spherical cloud with synaptic connections
-  const { nodes, linePositions, lineColors } = useMemo(() => {
+  const { linePositions, lineColors, nodePositions, nodeColors } = useMemo(() => {
     const rawNodes = [];
     const thetaSpan = Math.PI * 2;
 
@@ -32,10 +32,16 @@ function NeuralNetworkMesh({ nodeCount = 55 }) {
     // Connect nodes within a proximity threshold
     const lineCoords = [];
     const colorCoords = [];
+    const nodeCoords = [];
+    const nodeColorCoords = [];
     const cCyan = new THREE.Color("#00f0ff");
     const cViolet = new THREE.Color("#8a2be2");
 
     for (let i = 0; i < rawNodes.length; i++) {
+      nodeCoords.push(rawNodes[i].x, rawNodes[i].y, rawNodes[i].z);
+      const nc = i % 2 === 0 ? cCyan : cViolet;
+      nodeColorCoords.push(nc.r, nc.g, nc.b);
+
       for (let j = i + 1; j < rawNodes.length; j++) {
         const dist = rawNodes[i].distanceTo(rawNodes[j]);
         if (dist < 1.45) {
@@ -50,9 +56,10 @@ function NeuralNetworkMesh({ nodeCount = 55 }) {
     }
 
     return {
-      nodes: rawNodes,
       linePositions: new Float32Array(lineCoords),
-      lineColors: new Float32Array(colorCoords)
+      lineColors: new Float32Array(colorCoords),
+      nodePositions: new Float32Array(nodeCoords),
+      nodeColors: new Float32Array(nodeColorCoords)
     };
   }, [nodeCount]);
 
@@ -77,7 +84,7 @@ function NeuralNetworkMesh({ nodeCount = 55 }) {
     <group ref={group}>
       {/* Central Pulsing Synaptic Nucleus */}
       <mesh>
-        <sphereGeometry args={[0.55, 32, 32]} />
+        <sphereGeometry args={[0.55, 24, 24]} />
         <meshStandardMaterial
           color="#00f0ff"
           emissive="#8a2be2"
@@ -108,31 +115,66 @@ function NeuralNetworkMesh({ nodeCount = 55 }) {
         />
       </lineSegments>
 
-      {/* Nodes (Neurons) */}
-      {nodes.map((pos, idx) => (
-        <mesh key={idx} position={[pos.x, pos.y, pos.z]}>
-          <sphereGeometry args={[idx % 3 === 0 ? 0.05 : 0.035, 12, 12]} />
-          <meshBasicMaterial
-            color={idx % 2 === 0 ? "#00f0ff" : "#c084fc"}
+      {/* Batched Synaptic Neuron Nodes - 1 Single High-Speed Draw Call */}
+      <points>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[nodePositions, 3]}
           />
-        </mesh>
-      ))}
+          <bufferAttribute
+            attach="attributes-color"
+            args={[nodeColors, 3]}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.12}
+          vertexColors
+          transparent
+          opacity={0.9}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
+      </points>
     </group>
   );
 }
 
 export function NeuralBrain3D() {
+  const containerRef = useRef(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.05, rootMargin: '100px' }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative w-full h-[360px] sm:h-[440px] md:h-[500px] flex items-center justify-center">
+    <div 
+      ref={containerRef}
+      className="relative w-full h-[360px] sm:h-[440px] md:h-[500px] flex items-center justify-center"
+    >
       <Canvas
+        frameloop={isInView ? "always" : "never"}
         camera={{ position: [0, 0, 4.8], fov: 45 }}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 1.5]}
+        gl={{ 
+          antialias: true, 
+          alpha: true,
+          powerPreference: "high-performance"
+        }}
         className="w-full h-full cursor-grab active:cursor-grabbing"
       >
         <ambientLight intensity={0.5} />
-        <pointLight position={[5, 5, 5]} intensity={2.0} color="#00f0ff" />
-        <pointLight position={[-5, -5, -3]} intensity={2.5} color="#8a2be2" />
+        <pointLight position={[5, 5, 5]} intensity={1.8} color="#00f0ff" />
+        <pointLight position={[-5, -5, -3]} intensity={2.0} color="#8a2be2" />
         <NeuralNetworkMesh />
       </Canvas>
     </div>

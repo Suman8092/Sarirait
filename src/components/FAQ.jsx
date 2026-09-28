@@ -13,14 +13,14 @@ export default function FAQ({ onOpenProjectModal }) {
   };
 
   return (
-    <section id="faq" className="relative py-28 bg-[#090d16] border-t border-white/[0.06]">
+    <section id="faq" className="relative py-20 sm:py-28 bg-[#090d16] border-t border-white/[0.06] overflow-hidden w-full max-w-full">
       {/* Background ambient lighting */}
-      <div className="absolute bottom-10 left-10 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[170px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute bottom-10 left-0 sm:left-10 w-full max-w-[500px] h-[350px] sm:h-[500px] bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none -z-10" />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
             <HelpCircle size={14} />
             <span>FREQUENTLY ASKED QUESTIONS</span>
@@ -50,7 +50,7 @@ export default function FAQ({ onOpenProjectModal }) {
                 <button
                   onClick={() => toggle(faq.id)}
                   onMouseEnter={() => sound.hover()}
-                  className="w-full p-6 text-left flex items-center justify-between gap-4 focus:outline-none"
+                  className="w-full p-4 sm:p-6 text-left flex items-center justify-between gap-3 sm:gap-4 focus:outline-none"
                   aria-expanded={isOpen}
                 >
                   <span className="font-display font-semibold text-base sm:text-lg text-white">

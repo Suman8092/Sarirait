@@ -81,15 +81,15 @@ export default function ServiceDetail() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden">
       <CustomCursor />
       
       {/* Global Sticky Navbar */}
       <Navbar onOpenProjectModal={() => setProjectModalOpen(true)} />
 
-      <main className="pt-32 pb-24">
+      <main className="pt-24 sm:pt-32 pb-16 sm:pb-24 w-full max-w-full overflow-x-hidden">
         {/* BREADCRUMB STRIP */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 w-full">
           <nav className="flex items-center gap-2 text-xs font-mono-code text-slate-500 overflow-x-auto whitespace-nowrap">
             <Link to="/" className="hover:text-slate-300 transition-colors">Home</Link>
             <ChevronRight size={12} />
@@ -102,8 +102,8 @@ export default function ServiceDetail() {
         </div>
 
         {/* HERO SECTION */}
-        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-          <div className="absolute top-1/3 left-1/4 w-[600px] h-[350px] bg-cyan-500/10 rounded-full blur-[160px] pointer-events-none -z-10" />
+        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-20 overflow-hidden w-full max-w-full">
+          <div className="ambient-glow absolute top-1/3 left-1/4 w-full max-w-[600px] h-[350px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none -z-10" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -362,6 +362,54 @@ export default function ServiceDetail() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* RELATED CAPABILITIES IN SAME CATEGORY */}
+        <section className="py-16 border-t border-white/[0.06] bg-[#070a12]/50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+              <div>
+                <span className="text-xs font-mono-code uppercase tracking-wider text-cyan-400 block mb-1">
+                  Category {category.number} // {category.title}
+                </span>
+                <h3 className="text-2xl font-display font-bold text-white">
+                  Other Services in This Category
+                </h3>
+              </div>
+              <Link
+                to="/services"
+                onClick={() => sound.click()}
+                className="text-xs font-mono-code text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+              >
+                <span>Explore All 22 Capabilities</span>
+                <ArrowRight size={13} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {category.services
+                .filter(s => s.slug !== service.slug)
+                .map(rel => (
+                  <Link
+                    key={rel.slug}
+                    to={`/services/${rel.slug}`}
+                    onClick={() => sound.click()}
+                    onMouseEnter={() => sound.hover()}
+                    className="p-5 rounded-2xl glass-card border border-white/[0.06] hover:border-cyan-500/40 hover:bg-white/[0.04] transition-all flex items-center justify-between group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform">
+                        <ServiceIcon name={rel.icon} className="w-4 h-4" />
+                      </div>
+                      <span className="text-sm font-semibold text-white group-hover:text-cyan-200 transition-colors truncate">
+                        {rel.title}
+                      </span>
+                    </div>
+                    <ArrowUpRight size={15} className="text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0 ml-2" />
+                  </Link>
+                ))}
             </div>
           </div>
         </section>

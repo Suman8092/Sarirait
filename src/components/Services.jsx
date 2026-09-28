@@ -16,6 +16,7 @@ import {
   Terminal,
   Activity
 } from 'lucide-react';
+import ServiceIcon from './ServiceIcon';
 import { servicesData } from '../data/services';
 import { sound } from '../utils/sound';
 
@@ -24,24 +25,14 @@ export default function Services({ onOpenProjectModal }) {
   const activeService = servicesData.find(s => s.id === activeServiceId) || servicesData[0];
 
   const getIcon = (name) => {
-    switch (name) {
-      case 'Layout': return <Layout className="w-5 h-5" />;
-      case 'Code2': return <Code2 className="w-5 h-5" />;
-      case 'Smartphone': return <Smartphone className="w-5 h-5" />;
-      case 'Globe': return <Globe className="w-5 h-5" />;
-      case 'Palette': return <Palette className="w-5 h-5" />;
-      case 'Cpu': return <Cpu className="w-5 h-5" />;
-      case 'TrendingUp': return <TrendingUp className="w-5 h-5" />;
-      case 'Search': return <Search className="w-5 h-5" />;
-      default: return <Sparkles className="w-5 h-5" />;
-    }
+    return <ServiceIcon name={name} className="w-5 h-5" />;
   };
 
   return (
     <section id="services" className="relative py-28 overflow-hidden bg-[#07090e]">
       {/* Background cyber radial glow */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="absolute top-1/3 right-0 w-96 h-96 bg-violet-600/10 rounded-full blur-[150px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute top-1/3 right-0 w-96 h-96 bg-violet-600/10 rounded-full blur-[80px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         

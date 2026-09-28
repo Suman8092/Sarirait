@@ -27,7 +27,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden">
       {/* Premium Desktop Custom Cursor */}
       <CustomCursor />
 
@@ -35,7 +35,7 @@ export default function Home() {
       <Navbar onOpenProjectModal={handleOpenProjectModal} />
 
       {/* Main Page Flow */}
-      <main>
+      <main className="w-full max-w-full overflow-x-hidden">
         {/* 1. Hero with Interactive 3D Digital Core */}
         <Hero onOpenProjectModal={handleOpenProjectModal} />
 

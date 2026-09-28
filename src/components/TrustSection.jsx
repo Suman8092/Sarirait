@@ -23,24 +23,24 @@ export default function TrustSection() {
   ];
 
   return (
-    <section id="trust" className="relative py-20 border-y border-white/[0.06] bg-[#070a10]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="trust" className="relative py-16 sm:py-20 border-y border-white/[0.06] bg-[#070a10] overflow-hidden w-full max-w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-3 block">
             Impact &amp; Reliability
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
             “Technology built around your business goals.”
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base mt-4">
+          <p className="text-slate-400 text-xs sm:text-base mt-4">
             We don't just write code; we partner with visionary leadership teams to deliver compound enterprise value.
           </p>
         </div>
 
         {/* 4 CORE STATS GRID */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
@@ -49,15 +49,15 @@ export default function TrustSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
               onMouseEnter={() => sound.hover()}
-              className="p-6 sm:p-8 rounded-2xl glass-card border border-white/[0.06] hover:border-cyan-500/30 group"
+              className="p-4 sm:p-8 rounded-2xl glass-card border border-white/[0.06] hover:border-cyan-500/30 group"
             >
-              <div className="text-4xl sm:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-cyan-300 group-hover:to-cyan-400 transition-colors">
+              <div className="text-3xl sm:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-cyan-300 group-hover:to-cyan-400 transition-colors">
                 {stat.value}
               </div>
-              <div className="text-base font-semibold text-white mt-2 font-display">
+              <div className="text-xs sm:text-base font-semibold text-white mt-1.5 sm:mt-2 font-display">
                 {stat.label}
               </div>
-              <div className="text-xs text-slate-400 font-mono-code mt-1">
+              <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code mt-0.5 sm:mt-1">
                 {stat.detail}
               </div>
             </motion.div>

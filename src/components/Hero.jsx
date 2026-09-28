@@ -27,32 +27,32 @@ export default function Hero({ onOpenProjectModal }) {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-20 flex flex-col justify-between overflow-hidden bg-mesh-grid">
-      {/* Background ambient lighting glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[500px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="absolute top-1/3 right-10 w-[450px] h-[450px] bg-violet-600/12 rounded-full blur-[160px] pointer-events-none -z-10" />
+    <section id="hero" className="relative min-h-[90vh] sm:min-h-screen pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-20 flex flex-col justify-between overflow-hidden bg-mesh-grid w-full max-w-full">
+      {/* Background ambient lighting glows - GPU accelerated */}
+      <div className="ambient-glow absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] h-[350px] sm:h-[500px] bg-cyan-500/10 rounded-full blur-[90px] pointer-events-none -z-10" />
+      <div className="ambient-glow absolute top-1/3 right-0 sm:right-10 w-full max-w-[450px] h-[350px] sm:h-[450px] bg-violet-600/12 rounded-full blur-[100px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           
           {/* LEFT COLUMN: HERO COPY & CTAS */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="lg:col-span-7 xl:col-span-7 2xl:col-span-7 flex flex-col items-start z-10"
+            className="lg:col-span-7 xl:col-span-7 2xl:col-span-7 flex flex-col items-start z-10 w-full"
           >
             {/* STATUS / TRUST PILL */}
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass-pill border border-cyan-500/30 text-xs sm:text-sm font-mono-code text-cyan-300 mb-6 shadow-lg shadow-cyan-500/5"
+              className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full glass-pill border border-cyan-500/30 text-[10px] sm:text-xs font-mono-code text-cyan-300 mb-6 shadow-lg shadow-cyan-500/5 max-w-full"
             >
-              <span className="flex h-2 w-2 relative">
+              <span className="flex h-2 w-2 relative shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400" />
               </span>
-              <span className="font-semibold tracking-wider text-[11px] sm:text-xs uppercase">
-                DIGITAL TECHNOLOGY • BUSINESS • CREATIVITY
+              <span className="font-semibold tracking-wider uppercase truncate">
+                DEVELOPMENT • DIGITAL MARKETING • CREATIVE • BUSINESS SOLUTIONS
               </span>
             </motion.div>
 
@@ -75,7 +75,7 @@ export default function Hero({ onOpenProjectModal }) {
               variants={itemVariants}
               className="text-base sm:text-lg lg:text-xl text-slate-300/90 font-normal leading-relaxed max-w-2xl mb-8"
             >
-              From websites and software to digital marketing, business solutions, creative services and AI-powered experiences, Sarirait helps ambitious businesses build, grow and scale.
+              From custom development and business software to high-ROI digital marketing and creative branding, Sarirait helps ambitious businesses build, grow and scale.
             </motion.p>
 
             {/* CTAS */}
@@ -111,29 +111,29 @@ export default function Hero({ onOpenProjectModal }) {
             {/* TRUST MICRO-BADGES */}
             <motion.div
               variants={itemVariants}
-              className="mt-12 pt-8 border-t border-white/[0.08] w-full grid grid-cols-3 gap-4"
+              className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/[0.08] w-full grid grid-cols-3 gap-2 sm:gap-4"
             >
               <div>
-                <div className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-tight">
                   20<span className="text-cyan-400">+</span>
                 </div>
-                <div className="text-xs text-slate-400 font-mono-code uppercase mt-0.5">
-                  Enterprise Deployments
+                <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code uppercase mt-0.5 leading-tight">
+                  Deployments
                 </div>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-tight">
                   98<span className="text-violet-400">%</span>
                 </div>
-                <div className="text-xs text-slate-400 font-mono-code uppercase mt-0.5">
-                  Client Retention
+                <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code uppercase mt-0.5 leading-tight">
+                  Retention
                 </div>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-tight">
                   100<span className="text-cyan-400">%</span>
                 </div>
-                <div className="text-xs text-slate-400 font-mono-code uppercase mt-0.5">
+                <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code uppercase mt-0.5 leading-tight">
                   Bespoke Code
                 </div>
               </div>

@@ -16,9 +16,23 @@ export default function Navbar({ onOpenProjectModal }) {
   const location = useLocation();
 
   useEffect(() => {
+    let prevScrolled = false;
+    let ticking = false;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const isScrolled = window.scrollY > 30;
+          if (isScrolled !== prevScrolled) {
+            prevScrolled = isScrolled;
+            setScrolled(isScrolled);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -61,7 +75,7 @@ export default function Navbar({ onOpenProjectModal }) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        className={`fixed top-0 inset-x-0 w-full max-w-full z-50 transition-all duration-300 ${
           scrolled || megaMenuOpen || mobileMenuOpen
             ? isDark
               ? 'py-2.5 sm:py-3.5 bg-[#07090e]/95 backdrop-blur-xl border-b border-white/[0.08] shadow-2xl shadow-black/50'
@@ -71,8 +85,8 @@ export default function Navbar({ onOpenProjectModal }) {
               : 'py-3 sm:py-5 bg-gradient-to-b from-white/70 to-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full">
+          <div className="flex items-center justify-between w-full">
             
             {/* BRAND LOGO */}
             <Link
@@ -88,7 +102,7 @@ export default function Navbar({ onOpenProjectModal }) {
               <img
                 src="/logo.png"
                 alt="Sarirait"
-                className={`h-7 sm:h-8.5 md:h-10 w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_15px_rgba(0,240,255,0.4)] ${
+                className={`h-7 sm:h-8.5 md:h-10 max-w-[130px] sm:max-w-none w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_15px_rgba(0,240,255,0.4)] ${
                   !isDark ? 'brand-logo-light' : ''
                 }`}
               />
@@ -288,8 +302,9 @@ export default function Navbar({ onOpenProjectModal }) {
           </div>
         </div>
 
-        {/* SERVICES MEGA MENU CONTAINER */}
+        {/* SERVICES MEGA MENU CONTAINER (Desktop Only) */}
         <div
+          className="hidden lg:block"
           onMouseEnter={handleMouseEnterServices}
           onMouseLeave={handleMouseLeaveServices}
         >
