@@ -27,7 +27,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 md:p-6 overflow-hidden">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -42,19 +42,23 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
 
         {/* Modal Window */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          initial={{ opacity: 0, scale: 0.96, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-4xl bg-[#0a0e1a] border border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-500/20 overflow-hidden z-10 my-8 max-h-[90vh] flex flex-col"
+          exit={{ opacity: 0, scale: 0.96, y: 15 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className={`relative w-full max-w-4xl max-h-[92dvh] sm:max-h-[88vh] flex flex-col rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden z-10 border ${
+            isDark
+              ? 'bg-[#0a0e1a] border-cyan-500/30 shadow-cyan-500/20'
+              : 'bg-white border-slate-200 shadow-slate-900/20'
+          }`}
         >
-          {/* Top Bar with Client Logo Badge */}
-          <div className={`px-6 py-4 border-b flex items-center justify-between ${
-            isDark ? 'border-white/[0.08] bg-white/[0.02]' : 'border-slate-200 bg-slate-50'
-          }`}>
-            <div className="flex items-center gap-3.5">
+          {/* Top Bar with Client Logo Badge - Pinned at top */}
+          <div className={`shrink-0 px-4 py-3 sm:px-6 sm:py-4 border-b flex items-center justify-between ${
+            isDark ? 'border-white/[0.08] bg-[#0c1222]/90' : 'border-slate-200 bg-slate-50/90'
+          } backdrop-blur-md z-20`}>
+            <div className="flex items-center gap-2.5 sm:gap-3.5">
               {/* Logo icon */}
-              <div className="w-11 h-11 rounded-2xl bg-black/80 border border-cyan-400/40 p-1 flex items-center justify-center overflow-hidden shrink-0 shadow-lg shadow-cyan-500/10">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-black/80 border border-cyan-400/40 p-1 flex items-center justify-center overflow-hidden shrink-0 shadow-lg shadow-cyan-500/10">
                 <img
                   src={project.logo}
                   alt={`${project.client} Logo`}
