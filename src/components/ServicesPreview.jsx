@@ -91,6 +91,8 @@ export default function ServicesPreview() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {serviceCategories.map((cat, index) => {
             const meta = categoryMeta[cat.id] || categoryMeta.development;
+            const previewServices = cat.services.slice(0, 5);
+
             return (
               <SpotlightCard
                 key={cat.id}
@@ -127,9 +129,9 @@ export default function ServicesPreview() {
                     {cat.description}
                   </p>
 
-                  {/* ALL SERVICES LIST WITH ICONS (Shows all services per category) */}
+                  {/* SERVICES LIST WITH ICONS (Shows 5 services per category on home page) */}
                   <div className="space-y-1.5 mb-6">
-                    {cat.services.map((srv) => (
+                    {previewServices.map((srv) => (
                       <Link
                         key={srv.slug}
                         to={`/services/${srv.slug}`}
@@ -163,7 +165,7 @@ export default function ServicesPreview() {
                 {/* Bottom Card Action */}
                 <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
                   <span className="text-xs font-mono-code text-slate-500">
-                    {cat.services.length} Capabilities
+                    {previewServices.length} Capabilities
                   </span>
                   <Link
                     to={`/services#${cat.id}`}
