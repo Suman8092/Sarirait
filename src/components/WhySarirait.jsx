@@ -2,6 +2,8 @@ import React from 'react';
 import { Target, Sparkles, Cpu, BarChart3, ArrowRight } from 'lucide-react';
 import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
+import TiltCard from './effects/TiltCard';
+import TextScramble from './effects/TextScramble';
 
 export default function WhySarirait() {
   const principles = [
@@ -58,7 +60,7 @@ export default function WhySarirait() {
         <div className="max-w-3xl mb-12 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-            <span>WHY SARIRAIT</span>
+            <TextScramble text="WHY SARIRAIT // 4 CORE PILLARS" triggerOnHover={true} />
           </div>
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
             Thoughtful design. <br />
@@ -69,50 +71,57 @@ export default function WhySarirait() {
           </p>
         </div>
 
-        {/* 4 CORE PRINCIPLES WITH LARGE TYPOGRAPHY & SPOTLIGHT CARDS */}
+        {/* 4 CORE PRINCIPLES WITH LUSION 3D TILT & UTSUBO CROSSHAIRS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {principles.map((p, index) => (
-            <SpotlightCard
+            <TiltCard
               key={p.number}
-              spotlightColor={p.spotlight}
-              borderColor={p.glowBorder}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              onMouseEnter={() => sound.hover()}
-              className={`group p-6 sm:p-10 rounded-3xl glass-card border transition-all duration-300 relative flex flex-col justify-between ${p.accent}`}
+              maxTilt={7}
+              glare={true}
+              crosshairs={true}
+              className="h-full"
             >
-              <div>
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-mono-code text-3xl sm:text-4xl font-extrabold text-white/20 group-hover:text-cyan-400 transition-colors">
-                    {p.number}
+              <SpotlightCard
+                spotlightColor={p.spotlight}
+                borderColor={p.glowBorder}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                onMouseEnter={() => sound.hover()}
+                className={`group p-6 sm:p-10 rounded-3xl glass-card border transition-all duration-300 relative flex flex-col justify-between h-full ${p.accent}`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="font-mono-code text-3xl sm:text-4xl font-extrabold text-white/20 group-hover:text-cyan-400 transition-colors">
+                      {p.number}
+                    </span>
+                    <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 group-hover:scale-110 transition-transform">
+                      {p.icon}
+                    </div>
+                  </div>
+
+                  <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">
+                    {p.title}
+                  </h3>
+                  <div className="text-sm font-semibold text-cyan-400 font-mono-code mb-4">
+                    {p.subtitle}
+                  </div>
+                  <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+                    {p.description}
+                  </p>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-white/[0.06] flex items-center justify-between">
+                  <span className="text-xs font-mono-code text-slate-500 uppercase">
+                    Pillar {p.number} // Core Tenet
                   </span>
-                  <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 group-hover:scale-110 transition-transform">
-                    {p.icon}
+                  <div className="w-8 h-8 rounded-full bg-white/[0.04] flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-cyan-500/20 transition-all">
+                    <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>
-
-                <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">
-                  {p.title}
-                </h3>
-                <div className="text-sm font-semibold text-cyan-400 font-mono-code mb-4">
-                  {p.subtitle}
-                </div>
-                <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-                  {p.description}
-                </p>
-              </div>
-
-              <div className="mt-8 pt-6 border-t border-white/[0.06] flex items-center justify-between">
-                <span className="text-xs font-mono-code text-slate-500 uppercase">
-                  Pillar {p.number} // Core Tenet
-                </span>
-                <div className="w-8 h-8 rounded-full bg-white/[0.04] flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-cyan-500/20 transition-all">
-                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </div>
-            </SpotlightCard>
+              </SpotlightCard>
+            </TiltCard>
           ))}
         </div>
 

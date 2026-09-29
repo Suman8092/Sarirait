@@ -5,6 +5,7 @@ import MegaMenu from './MegaMenu';
 import MobileMenu from './MobileMenu';
 import { sound } from '../utils/sound';
 import { useTheme } from '../context/ThemeContext';
+import MagneticButton from './effects/MagneticButton';
 
 export default function Navbar({ onOpenProjectModal }) {
   const [scrolled, setScrolled] = useState(false);
@@ -219,8 +220,10 @@ export default function Navbar({ onOpenProjectModal }) {
                 {audioActive ? <Volume2 size={15} className="text-cyan-400" /> : <VolumeX size={15} />}
               </button>
 
-              {/* Primary CTA */}
-              <button
+              {/* Primary Magnetic CTA (14islands / Locomotive) */}
+              <MagneticButton
+                strength={0.25}
+                textStrength={0.12}
                 onClick={() => {
                   sound.click();
                   onOpenProjectModal();
@@ -232,8 +235,8 @@ export default function Navbar({ onOpenProjectModal }) {
                   Start a Project
                   <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </span>
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-              </button>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none" />
+              </MagneticButton>
             </div>
 
             {/* MOBILE & TABLET CONTROLS (< lg) */}

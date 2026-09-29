@@ -1,6 +1,8 @@
 import React from 'react';
 import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
+import TiltCard from './effects/TiltCard';
+import TextScramble from './effects/TextScramble';
 
 export default function TrustSection() {
   const stats = [
@@ -34,9 +36,11 @@ export default function TrustSection() {
         
         {/* SECTION HEADER */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-3 block">
-            A connected digital presence
-          </span>
+          <TextScramble
+            text="A CONNECTED DIGITAL PRESENCE // SARIRAIT"
+            triggerOnHover={true}
+            className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-3 block"
+          />
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-tight">
             “Make every digital touchpoint feel like your brand.”
           </h2>
@@ -45,20 +49,16 @@ export default function TrustSection() {
           </p>
         </div>
 
-        {/* 4 CORE STATS GRID */}
+        {/* 4 CORE STATS GRID WITH LUSION 3D PERSPECTIVE TILT & UTSUBO CROSSHAIRS */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
           {stats.map((stat, i) => (
-            <SpotlightCard
+            <TiltCard
               key={i}
-              spotlightColor="rgba(0, 240, 255, 0.16)"
-              borderColor="rgba(0, 240, 255, 0.45)"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              whileHover={{ y: -5, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+              maxTilt={10}
+              glare={true}
+              crosshairs={true}
               onMouseEnter={() => sound.hover()}
-              className="p-4 sm:p-8 rounded-2xl glass-card border border-white/[0.06] hover:border-cyan-500/30 group"
+              className="p-4 sm:p-8 rounded-2xl glass-card border border-white/[0.08] hover:border-cyan-500/40 group transition-colors h-full flex flex-col justify-center"
             >
               <div className="text-3xl sm:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-cyan-300 group-hover:to-cyan-400 transition-colors">
                 {stat.value}
@@ -69,7 +69,7 @@ export default function TrustSection() {
               <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code mt-0.5 sm:mt-1">
                 {stat.detail}
               </div>
-            </SpotlightCard>
+            </TiltCard>
           ))}
         </div>
 

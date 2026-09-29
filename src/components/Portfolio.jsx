@@ -7,6 +7,10 @@ import { DeviceShowcase3D } from './3d/DeviceShowcase3D';
 import SpotlightCard from './SpotlightCard';
 import CaseStudyModal from './CaseStudyModal';
 import { sound } from '../utils/sound';
+import ScrollSkew from './effects/ScrollSkew';
+import TiltCard from './effects/TiltCard';
+import TextScramble from './effects/TextScramble';
+import MagneticButton from './effects/MagneticButton';
 
 export default function Portfolio({ onOpenProjectModal }) {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -49,7 +53,7 @@ export default function Portfolio({ onOpenProjectModal }) {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span>FEATURED WORK // 18+ DELIVERIES ARCHIVE</span>
+              <TextScramble text="FEATURED WORK // 18+ DELIVERIES ARCHIVE" triggerOnHover={true} />
             </div>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
               Proven work &amp; brand identities <br />
@@ -60,7 +64,10 @@ export default function Portfolio({ onOpenProjectModal }) {
             <p className="text-slate-400 text-sm max-w-md sm:text-right leading-relaxed">
               Authentic client deliverables featuring official brand logos, high-conversion e-commerce storefronts, mobile apps, and enterprise web solutions.
             </p>
-            <Link
+            <MagneticButton
+              strength={0.25}
+              textStrength={0.12}
+              as={Link}
               to="/work"
               onClick={() => sound.click()}
               onMouseEnter={() => sound.hover()}
@@ -68,7 +75,7 @@ export default function Portfolio({ onOpenProjectModal }) {
             >
               <span>Explore All 18+ Projects</span>
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </MagneticButton>
           </div>
         </div>
 
@@ -119,28 +126,36 @@ export default function Portfolio({ onOpenProjectModal }) {
           </Link>
         </div>
 
-        {/* SECTION 11: LARGE PROJECT PRESENTATION CARDS */}
-        <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-24">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <SpotlightCard
-                layout
-                key={project.id}
-                spotlightColor="rgba(0, 240, 255, 0.16)"
-                borderColor="rgba(0, 240, 255, 0.45)"
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -6, transition: { type: 'spring', stiffness: 260, damping: 20 } }}
-                onMouseEnter={() => sound.hover()}
-                data-cursor="view"
-                onClick={() => {
-                  sound.click();
-                  setSelectedProject(project);
-                }}
-                className="group rounded-3xl glass-card overflow-hidden border border-white/[0.08] hover:border-cyan-500/40 cursor-pointer flex flex-col justify-between shadow-2xl transition-all duration-300"
-              >
+        {/* STUDIO FREIGHT VELOCITY SCROLL SKEW CONTAINER */}
+        <ScrollSkew maxSkew={0.8} factor={0.025}>
+          {/* SECTION 11: LARGE PROJECT PRESENTATION CARDS */}
+          <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-24">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project) => (
+                <TiltCard
+                  key={project.id}
+                  maxTilt={5}
+                  glare={true}
+                  crosshairs={true}
+                  className="h-full"
+                >
+                  <SpotlightCard
+                    layout
+                    spotlightColor="rgba(0, 240, 255, 0.16)"
+                    borderColor="rgba(0, 240, 255, 0.45)"
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    whileHover={{ y: -6, transition: { type: 'spring', stiffness: 260, damping: 20 } }}
+                    onMouseEnter={() => sound.hover()}
+                    data-cursor="view"
+                    onClick={() => {
+                      sound.click();
+                      setSelectedProject(project);
+                    }}
+                    className="group rounded-3xl glass-card overflow-hidden border border-white/[0.08] hover:border-cyan-500/40 cursor-pointer flex flex-col justify-between shadow-2xl transition-all duration-300 h-full"
+                  >
                 {/* Visual Mockup & Logo Header Area */}
                 <div className="relative h-72 sm:h-84 w-full overflow-hidden bg-gradient-to-br from-[#0c1220] to-[#07090e] p-5 sm:p-6 flex flex-col justify-between">
                   {/* Real authentic project visual / logo background */}
@@ -252,34 +267,39 @@ export default function Portfolio({ onOpenProjectModal }) {
                   </div>
                 </div>
               </SpotlightCard>
+            </TiltCard>
             ))}
           </AnimatePresence>
         </motion.div>
+      </ScrollSkew>
 
-        {/* EXPLORE COMPLETE PORTFOLIO ARCHIVE BANNER */}
-        <div className="rounded-3xl p-6 sm:p-8 lg:p-10 mb-20 glass-card border border-cyan-500/30 bg-gradient-to-r from-cyan-950/40 via-[#0a0e18] to-purple-950/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl text-center md:text-left">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-mono-code mb-3">
-              <Sparkles size={13} />
-              <span>18+ VERIFIED CASE STUDIES ARCHIVE</span>
-            </div>
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-white leading-snug">
-              Looking for more industry-specific projects?
-            </h3>
-            <p className="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">
-              Explore our complete portfolio page to filter all 18+ projects across E-commerce storefronts, mobile apps, custom SaaS platforms, and brand identities.
-            </p>
+      {/* EXPLORE COMPLETE PORTFOLIO ARCHIVE BANNER */}
+      <div className="rounded-3xl p-6 sm:p-8 lg:p-10 mb-20 glass-card border border-cyan-500/30 bg-gradient-to-r from-cyan-950/40 via-[#0a0e18] to-purple-950/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl text-center md:text-left">
+        <div className="max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-mono-code mb-3">
+            <Sparkles size={13} />
+            <span>18+ VERIFIED CASE STUDIES ARCHIVE</span>
           </div>
-          <Link
-            to="/work"
-            onClick={() => sound.click()}
-            onMouseEnter={() => sound.hover()}
-            className="px-7 py-4 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-bold text-xs sm:text-sm font-mono-code flex items-center gap-2 shadow-xl shadow-cyan-500/25 shrink-0 hover:scale-105 active:scale-95 transition-all cursor-pointer"
-          >
-            <span>Explore All 18+ Projects</span>
-            <ArrowRight size={16} />
-          </Link>
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-white leading-snug">
+            Looking for more industry-specific projects?
+          </h3>
+          <p className="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">
+            Explore our complete portfolio page to filter all 18+ projects across E-commerce storefronts, mobile apps, custom SaaS platforms, and brand identities.
+          </p>
         </div>
+        <MagneticButton
+          strength={0.25}
+          textStrength={0.12}
+          as={Link}
+          to="/work"
+          onClick={() => sound.click()}
+          onMouseEnter={() => sound.hover()}
+          className="px-7 py-4 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-bold text-xs sm:text-sm font-mono-code flex items-center gap-2 shadow-xl shadow-cyan-500/25 shrink-0 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+        >
+          <span>Explore All 18+ Projects</span>
+          <ArrowRight size={16} />
+        </MagneticButton>
+      </div>
 
         {/* SECTION 12: 3D PROJECT SHOWCASE (FLOATING LAPTOP DEVICE) */}
         <div className="relative rounded-3xl p-4 sm:p-8 lg:p-16 glass-card border border-cyan-500/20 overflow-hidden bg-gradient-to-b from-[#0c1220]/80 via-[#07090e] to-[#07090e] w-full max-w-full">

@@ -641,5 +641,19 @@ html.light .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(2, 132, 199, 0.7);
 }
 
+/* ==========================================================================
+   BORDER BEAM ANIMATION (Inspired by Unseen & Fantik Studio)
+   ========================================================================== */
+@keyframes border-beam {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-
+.animate-border-beam {
+  animation: border-beam var(--duration, 8s) infinite linear;
+  animation-delay: var(--delay, 0s);
+}
