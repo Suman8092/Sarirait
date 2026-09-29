@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Sparkles } from 'lucide-react';
 import { projectsData } from '../data/projects';
 import { DeviceShowcase3D } from './3d/DeviceShowcase3D';
+import SpotlightCard from './SpotlightCard';
 import CaseStudyModal from './CaseStudyModal';
 import { sound } from '../utils/sound';
 
@@ -122,20 +123,23 @@ export default function Portfolio({ onOpenProjectModal }) {
         <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-24">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => (
-              <motion.div
+              <SpotlightCard
                 layout
                 key={project.id}
+                spotlightColor="rgba(0, 240, 255, 0.16)"
+                borderColor="rgba(0, 240, 255, 0.45)"
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -20 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -6, transition: { type: 'spring', stiffness: 260, damping: 20 } }}
                 onMouseEnter={() => sound.hover()}
                 data-cursor="view"
                 onClick={() => {
                   sound.click();
                   setSelectedProject(project);
                 }}
-                className="group relative rounded-3xl glass-card overflow-hidden border border-white/[0.08] hover:border-cyan-500/40 cursor-pointer flex flex-col justify-between shadow-2xl transition-all duration-300"
+                className="group rounded-3xl glass-card overflow-hidden border border-white/[0.08] hover:border-cyan-500/40 cursor-pointer flex flex-col justify-between shadow-2xl transition-all duration-300"
               >
                 {/* Visual Mockup & Logo Header Area */}
                 <div className="relative h-72 sm:h-84 w-full overflow-hidden bg-gradient-to-br from-[#0c1220] to-[#07090e] p-5 sm:p-6 flex flex-col justify-between">
@@ -247,7 +251,7 @@ export default function Portfolio({ onOpenProjectModal }) {
                     </span>
                   </div>
                 </div>
-              </motion.div>
+              </SpotlightCard>
             ))}
           </AnimatePresence>
         </motion.div>

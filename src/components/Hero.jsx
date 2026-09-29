@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import Hero3D from './Hero3D';
 import { sound } from '../utils/sound';
 
@@ -147,6 +147,38 @@ export default function Hero({ onOpenProjectModal }) {
             transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 xl:col-span-5 2xl:col-span-5 relative w-full flex items-center justify-center"
           >
+            {/* Ambient Floating Metric Badge - Top Left */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="hidden md:flex absolute -top-2 -left-2 sm:-left-4 z-20 items-center gap-3 px-3.5 py-2 rounded-2xl glass-card border border-cyan-500/30 shadow-xl shadow-cyan-500/10 animate-float pointer-events-none"
+            >
+              <div className="w-7 h-7 rounded-xl bg-cyan-500/15 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shrink-0">
+                <Sparkles size={14} />
+              </div>
+              <div className="text-left">
+                <div className="text-xs font-bold text-white font-display leading-tight">99.4% Client Score</div>
+                <div className="text-[10px] text-cyan-300 font-mono-code leading-tight">Delivered Excellence</div>
+              </div>
+            </motion.div>
+
+            {/* Ambient Floating Metric Badge - Bottom Right */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.8 }}
+              className="hidden md:flex absolute -bottom-2 -right-2 sm:-right-4 z-20 items-center gap-3 px-3.5 py-2 rounded-2xl glass-card border border-violet-500/30 shadow-xl shadow-violet-500/10 animate-float-reverse pointer-events-none"
+            >
+              <div className="w-7 h-7 rounded-xl bg-violet-500/15 border border-violet-400/40 flex items-center justify-center text-violet-400 shrink-0">
+                <CheckCircle2 size={14} />
+              </div>
+              <div className="text-left">
+                <div className="text-xs font-bold text-white font-display leading-tight">Production Grade</div>
+                <div className="text-[10px] text-violet-300 font-mono-code leading-tight">Design • Web • Marketing</div>
+              </div>
+            </motion.div>
+
             <Hero3D />
           </motion.div>
 

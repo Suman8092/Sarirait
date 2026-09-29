@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Clock } from 'lucide-react';
 import { processSteps } from '../data/process';
+import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
 
 export default function Process() {
@@ -32,19 +33,22 @@ export default function Process() {
         {/* PROCESS TIMELINE STEPS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
           {processSteps.map((step, index) => (
-            <motion.div
+            <SpotlightCard
               key={step.step}
+              spotlightColor="rgba(0, 240, 255, 0.16)"
+              borderColor="rgba(0, 240, 255, 0.45)"
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
+              whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
               onMouseEnter={() => {
                 sound.hover();
                 setActiveStep(index);
               }}
               className={`p-6 sm:p-8 rounded-2xl sm:rounded-3xl glass-card border transition-all duration-300 relative flex flex-col justify-between ${
                 activeStep === index 
-                  ? 'border-cyan-500/50 bg-white/[0.04] shadow-xl shadow-cyan-500/10 -translate-y-1' 
+                  ? 'border-cyan-500/50 bg-white/[0.04] shadow-xl shadow-cyan-500/10' 
                   : 'border-white/[0.07] hover:border-white/[0.2]'
               }`}
             >
@@ -91,7 +95,7 @@ export default function Process() {
               <div className="mt-6 pt-4 border-t border-white/[0.04] text-[11px] font-mono-code italic text-slate-500">
                 "{step.tagline}"
               </div>
-            </motion.div>
+            </SpotlightCard>
           ))}
         </div>
 

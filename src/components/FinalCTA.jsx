@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowUpRight, MessageSquare, Sparkles, ShieldCheck, Zap } from 'lucide-react';
 import { sound } from '../utils/sound';
 
@@ -11,7 +12,13 @@ export default function FinalCTA({ onOpenProjectModal }) {
       {/* Decorative Grid Lines */}
       <div className="absolute inset-0 bg-mesh-grid opacity-40 pointer-events-none" />
 
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10"
+      >
         
         {/* TOP STATUS PILL */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-pill text-xs font-mono-code text-cyan-300 mb-8 border border-cyan-500/40 shadow-xl shadow-cyan-500/10">
@@ -39,7 +46,7 @@ export default function FinalCTA({ onOpenProjectModal }) {
               onOpenProjectModal();
             }}
             onMouseEnter={() => sound.hover()}
-            className="px-9 py-4 rounded-full font-semibold text-sm sm:text-base tracking-wide bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2.5 group"
+            className="px-9 py-4 rounded-full font-semibold text-sm sm:text-base tracking-wide bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2.5 group cursor-pointer"
           >
             <span>Start a Project</span>
             <ArrowUpRight size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -52,7 +59,7 @@ export default function FinalCTA({ onOpenProjectModal }) {
               onOpenProjectModal();
             }}
             onMouseEnter={() => sound.hover()}
-            className="px-8 py-4 rounded-full font-semibold text-sm sm:text-base text-slate-200 glass-card hover:text-white hover:border-cyan-400/50 hover:bg-white/[0.08] transition-all flex items-center gap-2"
+            className="px-8 py-4 rounded-full font-semibold text-sm sm:text-base text-slate-200 glass-card hover:text-white hover:border-cyan-400/50 hover:bg-white/[0.08] transition-all flex items-center gap-2 cursor-pointer"
           >
             <MessageSquare size={18} className="text-cyan-400" />
             <span>Talk to Us</span>
@@ -75,7 +82,7 @@ export default function FinalCTA({ onOpenProjectModal }) {
           </div>
         </div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }

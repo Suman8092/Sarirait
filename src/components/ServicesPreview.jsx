@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Terminal, BarChart3, Cpu, Sparkles } from 'lucide-react';
 import { serviceCategories } from '../data/servicesData';
 import ServiceIcon from './ServiceIcon';
+import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
 
 export default function ServicesPreview() {
@@ -92,14 +93,16 @@ export default function ServicesPreview() {
           {serviceCategories.map((cat, index) => {
             const meta = categoryMeta[cat.id] || categoryMeta.development;
             return (
-              <motion.div
+              <SpotlightCard
                 key={cat.id}
+                spotlightColor={meta.glowColor || "rgba(0, 240, 255, 0.16)"}
+                borderColor={cat.id === 'creative' ? 'rgba(138, 43, 226, 0.5)' : 'rgba(0, 240, 255, 0.45)'}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 onMouseEnter={() => sound.hover()}
-                className={`group relative p-6 sm:p-8 rounded-3xl glass-card border bg-gradient-to-br ${meta.accentGradient} ${meta.accentBorder} transition-all duration-300 flex flex-col justify-between shadow-xl`}
+                className={`group p-6 sm:p-8 rounded-3xl glass-card border bg-gradient-to-br ${meta.accentGradient} ${meta.accentBorder} transition-all duration-300 shadow-xl`}
               >
                 <div>
                   {/* Category Header with Pill, Icon, Title and Horizontal Divider Line */}
@@ -133,7 +136,7 @@ export default function ServicesPreview() {
                         to={`/services/${srv.slug}`}
                         onClick={() => sound.click()}
                         onMouseEnter={() => sound.hover()}
-                        className="group/srv flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/[0.03] hover:border-white/10 transition-all duration-200"
+                        className="group/srv flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/[0.03] hover:border-white/10 hover:translate-x-1 transition-all duration-200"
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           <div className={`p-1.5 rounded-lg ${meta.iconBg} transition-transform group-hover/srv:scale-110 shrink-0`}>
@@ -173,7 +176,7 @@ export default function ServicesPreview() {
                     <ArrowRight size={13} />
                   </Link>
                 </div>
-              </motion.div>
+              </SpotlightCard>
             );
           })}
         </div>

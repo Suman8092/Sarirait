@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal } from 'lucide-react';
 import { technologiesData, techCategories } from '../data/technologies';
+import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
 
 export default function Technologies() {
@@ -63,13 +64,16 @@ export default function Technologies() {
         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           <AnimatePresence>
             {filteredTech.map((tech) => (
-              <motion.div
+              <SpotlightCard
                 key={tech.name}
                 layout
+                spotlightColor="rgba(0, 240, 255, 0.14)"
+                borderColor="rgba(0, 240, 255, 0.4)"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
+                whileHover={{ y: -4, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                 onMouseEnter={() => sound.hover()}
                 className="group p-6 rounded-2xl glass-card border border-white/[0.08] hover:border-cyan-500/40 relative overflow-hidden flex flex-col justify-between"
               >
@@ -102,7 +106,7 @@ export default function Technologies() {
                   <span>{tech.category}</span>
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: tech.accent }} />
                 </div>
-              </motion.div>
+              </SpotlightCard>
             ))}
           </AnimatePresence>
         </motion.div>

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, ArrowRight, Send, ShieldCheck } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sound } from '../utils/sound';
 import { serviceCategories } from '../data/servicesData';
 import { useTheme } from '../context/ThemeContext';
+import { useLenis } from './SmoothScroll';
 
 export default function ProjectModal({ isOpen, onClose }) {
   const { isDark } = useTheme();
+  const lenis = useLenis();
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState(['Website Development']);
   const [activeCategoryTab, setActiveCategoryTab] = useState('all');
@@ -19,6 +21,20 @@ export default function ProjectModal({ isOpen, onClose }) {
     details: ''
   });
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      lenis?.stop();
+      document.body.style.overflow = 'hidden';
+    } else {
+      lenis?.start();
+      document.body.style.overflow = '';
+    }
+    return () => {
+      lenis?.start();
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, lenis]);
 
   if (!isOpen) return null;
 

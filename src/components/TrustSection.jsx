@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
 
 export default function TrustSection() {
@@ -48,12 +48,15 @@ export default function TrustSection() {
         {/* 4 CORE STATS GRID */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
           {stats.map((stat, i) => (
-            <motion.div
+            <SpotlightCard
               key={i}
+              spotlightColor="rgba(0, 240, 255, 0.16)"
+              borderColor="rgba(0, 240, 255, 0.45)"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
+              whileHover={{ y: -5, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
               onMouseEnter={() => sound.hover()}
               className="p-4 sm:p-8 rounded-2xl glass-card border border-white/[0.06] hover:border-cyan-500/30 group"
             >
@@ -66,7 +69,7 @@ export default function TrustSection() {
               <div className="text-[10px] sm:text-xs text-slate-400 font-mono-code mt-0.5 sm:mt-1">
                 {stat.detail}
               </div>
-            </motion.div>
+            </SpotlightCard>
           ))}
         </div>
 

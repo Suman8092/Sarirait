@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowUpRight, Brain } from 'lucide-react';
 import { NeuralBrain3D } from './3d/NeuralBrain3D';
+import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
 
 export default function AISection({ onOpenProjectModal }) {
@@ -26,7 +28,13 @@ export default function AISection({ onOpenProjectModal }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* LEFT COLUMN: AI NARRATIVE & SIMULATOR */}
-          <div className="lg:col-span-6 space-y-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 space-y-8"
+          >
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
@@ -42,7 +50,11 @@ export default function AISection({ onOpenProjectModal }) {
             </div>
 
             {/* INTERACTIVE WORKLOAD BENCHMARK TOOL */}
-            <div className="p-6 rounded-2xl glass-card border border-violet-500/30">
+            <SpotlightCard
+              spotlightColor="rgba(138, 43, 226, 0.2)"
+              borderColor="rgba(138, 43, 226, 0.5)"
+              className="p-6 rounded-2xl glass-card border border-violet-500/30"
+            >
               <span className="text-xs font-mono-code uppercase text-violet-400 tracking-wider block mb-3">
                 Explore possible starting points
               </span>
@@ -78,7 +90,7 @@ export default function AISection({ onOpenProjectModal }) {
                   <span className="text-sm sm:text-base font-bold text-violet-300 font-mono-code">{currentWorkload.approach}</span>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* CTA */}
             <div>
@@ -88,16 +100,22 @@ export default function AISection({ onOpenProjectModal }) {
                   onOpenProjectModal();
                 }}
                 onMouseEnter={() => sound.hover()}
-                className="px-8 py-4 rounded-full font-semibold text-sm sm:text-base tracking-wide bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 text-white shadow-xl shadow-violet-600/25 hover:shadow-violet-600/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 group"
+                className="px-8 py-4 rounded-full font-semibold text-sm sm:text-base tracking-wide bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 text-white shadow-xl shadow-violet-600/25 hover:shadow-violet-600/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 group cursor-pointer"
               >
                 <span>Explore AI Solutions</span>
                 <ArrowUpRight size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
             </div>
-          </div>
+          </motion.div>
 
           {/* RIGHT COLUMN: 3D SYNAPTIC NEURAL BRAIN CANVAS */}
-          <div className="lg:col-span-6 relative flex flex-col items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 relative flex flex-col items-center justify-center"
+          >
             <div className="relative w-full rounded-3xl glass-card border border-white/[0.08] p-4 overflow-hidden">
               <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[11px] font-mono-code text-cyan-300">
                 <Brain size={14} className="text-violet-400" />
@@ -112,7 +130,7 @@ export default function AISection({ onOpenProjectModal }) {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
         </div>
 

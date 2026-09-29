@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowUpRight, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react';
+import { X, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { sound } from '../utils/sound';
+import { useLenis } from './SmoothScroll';
 
 export default function CaseStudyModal({ project, isOpen, onClose, onOpenProjectModal }) {
+  const lenis = useLenis();
+
+  useEffect(() => {
+    if (isOpen) {
+      lenis?.stop();
+      document.body.style.overflow = 'hidden';
+    } else {
+      lenis?.start();
+      document.body.style.overflow = '';
+    }
+    return () => {
+      lenis?.start();
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, lenis]);
+
   if (!isOpen || !project) return null;
 
   return (

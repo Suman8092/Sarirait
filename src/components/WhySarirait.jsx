@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Target, Sparkles, Cpu, BarChart3, ArrowRight } from 'lucide-react';
+import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
 
 export default function WhySarirait() {
@@ -11,7 +11,9 @@ export default function WhySarirait() {
       subtitle: "Every project starts with understanding the business.",
       description: "We start by learning about your business, your audience and what you want to achieve. That context guides the design and build decisions that follow.",
       icon: <Target className="w-6 h-6 text-cyan-400" />,
-      accent: "border-cyan-500/30 group-hover:border-cyan-400"
+      accent: "border-cyan-500/30 group-hover:border-cyan-400",
+      spotlight: "rgba(0, 240, 255, 0.16)",
+      glowBorder: "rgba(0, 240, 255, 0.45)"
     },
     {
       number: "02",
@@ -19,7 +21,9 @@ export default function WhySarirait() {
       subtitle: "Beautiful interfaces with meaningful user experiences.",
       description: "A strong identity and a clear, easy-to-use experience help people understand what you offer and feel confident taking the next step.",
       icon: <Sparkles className="w-6 h-6 text-violet-400" />,
-      accent: "border-violet-500/30 group-hover:border-violet-400"
+      accent: "border-violet-500/30 group-hover:border-violet-400",
+      spotlight: "rgba(138, 43, 226, 0.18)",
+      glowBorder: "rgba(138, 43, 226, 0.45)"
     },
     {
       number: "03",
@@ -27,7 +31,9 @@ export default function WhySarirait() {
       subtitle: "Clean architecture designed for future growth.",
       description: "We choose practical tools for your needs and build with performance, accessibility and future updates in mind.",
       icon: <Cpu className="w-6 h-6 text-blue-400" />,
-      accent: "border-blue-500/30 group-hover:border-blue-400"
+      accent: "border-blue-500/30 group-hover:border-blue-400",
+      spotlight: "rgba(59, 130, 246, 0.16)",
+      glowBorder: "rgba(59, 130, 246, 0.45)"
     },
     {
       number: "04",
@@ -35,7 +41,9 @@ export default function WhySarirait() {
       subtitle: "Every digital product should create measurable value.",
       description: "We agree on the project scope and priorities with you, then use feedback and real-world results to decide what to improve next.",
       icon: <BarChart3 className="w-6 h-6 text-emerald-400" />,
-      accent: "border-emerald-500/30 group-hover:border-emerald-400"
+      accent: "border-emerald-500/30 group-hover:border-emerald-400",
+      spotlight: "rgba(16, 185, 129, 0.16)",
+      glowBorder: "rgba(16, 185, 129, 0.45)"
     }
   ];
 
@@ -61,11 +69,13 @@ export default function WhySarirait() {
           </p>
         </div>
 
-        {/* 4 CORE PRINCIPLES WITH LARGE TYPOGRAPHY */}
+        {/* 4 CORE PRINCIPLES WITH LARGE TYPOGRAPHY & SPOTLIGHT CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {principles.map((p, index) => (
-            <motion.div
+            <SpotlightCard
               key={p.number}
+              spotlightColor={p.spotlight}
+              borderColor={p.glowBorder}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -102,7 +112,7 @@ export default function WhySarirait() {
                   <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
-            </motion.div>
+            </SpotlightCard>
           ))}
         </div>
 
