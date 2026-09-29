@@ -147,20 +147,28 @@ export default function ProjectModal({ isOpen, onClose }) {
           {!submitted ? (
             <form onSubmit={handleSubmit} className="pt-6 space-y-6">
               {/* Step indicator */}
-              <div className="flex items-center justify-between text-xs font-mono-code text-slate-400">
+              <div className={`flex items-center justify-between text-xs font-mono-code ${
+                isDark ? 'text-slate-400' : 'text-slate-600'
+              }`}>
                 <span>{step === 1 ? 'Step 1 of 2: Scope & Budget' : 'Step 2 of 2: Contact Details'}</span>
-                <span className="text-cyan-400">{step === 1 ? '50% Complete' : 'Almost There'}</span>
+                <span className={isDark ? 'text-cyan-400 font-semibold' : 'text-cyan-700 font-bold'}>
+                  {step === 1 ? '50% Complete' : 'Almost There'}
+                </span>
               </div>
 
               {step === 1 ? (
                 <div className="space-y-6">
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-sm font-semibold text-white font-display">
+                      <label className={`block text-sm font-semibold font-display ${
+                        isDark ? 'text-white' : 'text-slate-900'
+                      }`}>
                         Select Services ({selectedServices.length} selected)
                       </label>
-                      <span className="text-[11px] font-mono-code text-cyan-400">
-                {serviceCategories.reduce((total, category) => total + category.services.length, 0)} Services Available
+                      <span className={`text-[11px] font-mono-code font-semibold ${
+                        isDark ? 'text-cyan-400' : 'text-cyan-700'
+                      }`}>
+                        {serviceCategories.reduce((total, category) => total + category.services.length, 0)} Services Available
                       </span>
                     </div>
 
@@ -180,10 +188,14 @@ export default function ProjectModal({ isOpen, onClose }) {
                             sound.click();
                             setActiveCategoryTab(tab.id);
                           }}
-                          className={`px-2.5 py-1 rounded-lg text-[11px] font-mono-code transition-all border ${
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-mono-code transition-all border cursor-pointer ${
                             activeCategoryTab === tab.id
-                              ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300'
-                              : 'bg-white/[0.02] border-white/10 text-slate-400 hover:text-white'
+                              ? isDark
+                                ? 'bg-cyan-500/25 border-cyan-400 text-cyan-200 font-semibold shadow-sm'
+                                : 'bg-cyan-600 border-cyan-600 text-white font-bold shadow-sm'
+                              : isDark
+                                ? 'bg-white/[0.02] border-white/10 text-slate-400 hover:text-white'
+                                : 'bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
                           }`}
                         >
                           {tab.label}
@@ -197,8 +209,12 @@ export default function ProjectModal({ isOpen, onClose }) {
                         .filter(cat => activeCategoryTab === 'all' || cat.id === activeCategoryTab)
                         .map(cat => (
                           <div key={cat.id} className="space-y-1.5">
-                            <div className="text-[10px] font-mono-code uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                              <span className="text-cyan-400">{cat.number}</span>
+                            <div className={`text-[10px] font-mono-code uppercase tracking-wider flex items-center gap-1.5 ${
+                              isDark ? 'text-slate-400' : 'text-slate-700 font-semibold'
+                            }`}>
+                              <span className={isDark ? 'text-cyan-400 font-bold' : 'text-cyan-700 font-bold'}>
+                                {cat.number}
+                              </span>
                               <span>{cat.title}</span>
                             </div>
                             <div className="flex flex-wrap gap-1.5">
@@ -210,13 +226,21 @@ export default function ProjectModal({ isOpen, onClose }) {
                                     key={srv.slug}
                                     onClick={() => toggleService(srv.title)}
                                     onMouseEnter={() => sound.hover()}
-                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all border cursor-pointer ${
                                       isSelected
-                                        ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 shadow-sm shadow-cyan-500/20 font-semibold'
-                                        : 'bg-white/[0.03] border-white/10 text-slate-300 hover:text-white hover:border-white/20'
+                                        ? isDark
+                                          ? 'bg-cyan-500/25 border-cyan-400 text-cyan-100 shadow-sm shadow-cyan-500/20 font-semibold'
+                                          : 'bg-cyan-600 border-cyan-600 text-white shadow-md shadow-cyan-600/25 font-semibold'
+                                        : isDark
+                                          ? 'bg-white/[0.03] border-white/10 text-slate-300 hover:text-white hover:border-white/20'
+                                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 hover:text-slate-950'
                                     }`}
                                   >
-                                    {isSelected && <span className="mr-1 text-cyan-400">✓</span>}
+                                    {isSelected && (
+                                      <span className={`mr-1 font-bold ${isDark ? 'text-cyan-300' : 'text-white'}`}>
+                                        ✓
+                                      </span>
+                                    )}
                                     {srv.title}
                                   </button>
                                 );
@@ -228,7 +252,9 @@ export default function ProjectModal({ isOpen, onClose }) {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-white mb-2 font-display">
+                    <label className={`block text-sm font-semibold mb-2 font-display ${
+                      isDark ? 'text-white' : 'text-slate-900'
+                    }`}>
                       Budget planning
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -241,10 +267,14 @@ export default function ProjectModal({ isOpen, onClose }) {
                             setBudget(b);
                           }}
                           onMouseEnter={() => sound.hover()}
-                          className={`p-2.5 rounded-xl text-xs font-mono-code transition-all border text-center ${
+                          className={`p-2.5 rounded-xl text-xs font-mono-code transition-all border text-center cursor-pointer ${
                             budget === b
-                              ? 'bg-violet-600/30 border-violet-400 text-white'
-                              : 'bg-white/[0.03] border-white/10 text-slate-400 hover:text-white'
+                              ? isDark
+                                ? 'bg-violet-600/35 border-violet-400 text-violet-100 font-semibold shadow-sm shadow-violet-500/20'
+                                : 'bg-violet-600 border-violet-600 text-white font-semibold shadow-md shadow-violet-600/25'
+                              : isDark
+                                ? 'bg-white/[0.03] border-white/10 text-slate-400 hover:text-white'
+                                : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-950'
                           }`}
                         >
                           {b}
@@ -272,7 +302,9 @@ export default function ProjectModal({ isOpen, onClose }) {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono-code text-slate-300 uppercase mb-1.5">
+                      <label className={`block text-xs font-mono-code uppercase mb-1.5 ${
+                        isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'
+                      }`}>
                         Your Name *
                       </label>
                       <input
@@ -281,11 +313,17 @@ export default function ProjectModal({ isOpen, onClose }) {
                         placeholder="e.g. Alex Mercer"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-sm focus:outline-none focus:border-cyan-400"
+                        className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
+                          isDark
+                            ? 'bg-white/[0.04] border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-400'
+                            : 'bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-cyan-600'
+                        }`}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-mono-code text-slate-300 uppercase mb-1.5">
+                      <label className={`block text-xs font-mono-code uppercase mb-1.5 ${
+                        isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'
+                      }`}>
                         Work Email *
                       </label>
                       <input
@@ -294,13 +332,19 @@ export default function ProjectModal({ isOpen, onClose }) {
                         placeholder="alex@company.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-sm focus:outline-none focus:border-cyan-400"
+                        className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
+                          isDark
+                            ? 'bg-white/[0.04] border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-400'
+                            : 'bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-cyan-600'
+                        }`}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono-code text-slate-300 uppercase mb-1.5">
+                    <label className={`block text-xs font-mono-code uppercase mb-1.5 ${
+                      isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'
+                    }`}>
                       Company / Organization
                     </label>
                     <input
@@ -308,12 +352,18 @@ export default function ProjectModal({ isOpen, onClose }) {
                       placeholder="e.g. Acme Tech Labs"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
+                        isDark
+                          ? 'bg-white/[0.04] border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-400'
+                          : 'bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-cyan-600'
+                      }`}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono-code text-slate-300 uppercase mb-1.5">
+                    <label className={`block text-xs font-mono-code uppercase mb-1.5 ${
+                      isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'
+                    }`}>
                       Tell us about your project vision
                     </label>
                     <textarea
@@ -321,7 +371,11 @@ export default function ProjectModal({ isOpen, onClose }) {
                       placeholder="Briefly describe your objectives, existing stack, and ideal timeline..."
                       value={formData.details}
                       onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-sm focus:outline-none focus:border-cyan-400 resize-none"
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors resize-none ${
+                        isDark
+                          ? 'bg-white/[0.04] border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-400'
+                          : 'bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-cyan-600'
+                      }`}
                     />
                   </div>
 
@@ -333,7 +387,9 @@ export default function ProjectModal({ isOpen, onClose }) {
                         setStep(1);
                       }}
                       onMouseEnter={() => sound.hover()}
-                      className="text-xs font-mono-code text-slate-400 hover:text-white"
+                      className={`text-xs font-mono-code transition-colors cursor-pointer ${
+                        isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-950 font-semibold'
+                      }`}
                     >
                       ← Back
                     </button>
@@ -341,7 +397,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                     <button
                       type="submit"
                       onMouseEnter={() => sound.hover()}
-                      className="px-7 py-3 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-xl shadow-cyan-500/25 flex items-center gap-2"
+                      className="px-7 py-3 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-xl shadow-cyan-500/25 flex items-center gap-2 cursor-pointer"
                     >
                       <span>Transmit Project Brief</span>
                       <Send size={14} />
@@ -356,16 +412,24 @@ export default function ProjectModal({ isOpen, onClose }) {
               <div className="w-16 h-16 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-400/40 flex items-center justify-center mx-auto">
                 <CheckCircle2 size={32} />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-display font-bold text-white">
+              <h3 className={`text-2xl sm:text-3xl font-display font-bold ${
+                isDark ? 'text-white' : 'text-slate-900'
+              }`}>
                 Your project brief is ready
               </h3>
-              <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                Thank you, <span className="text-cyan-300 font-semibold">{formData.name || 'there'}</span>. Your email app should open with this brief addressed to <span className="text-cyan-300">info@sarirait.com</span>. Review it and press Send to complete your enquiry. If no email app opens, you can write to us directly.
+              <p className={`text-sm max-w-md mx-auto leading-relaxed ${
+                isDark ? 'text-slate-300' : 'text-slate-600'
+              }`}>
+                Thank you, <span className={isDark ? 'text-cyan-300 font-semibold' : 'text-cyan-700 font-bold'}>{formData.name || 'there'}</span>. Your email app should open with this brief addressed to <span className={isDark ? 'text-cyan-300' : 'text-cyan-700 font-semibold'}>info@sarirait.com</span>. Review it and press Send to complete your enquiry. If no email app opens, you can write to us directly.
               </p>
               <div className="pt-4">
                 <button
                   onClick={handleClose}
-                  className="px-6 py-2.5 rounded-full text-xs font-mono-code uppercase bg-white/[0.06] hover:bg-white/[0.12] text-white transition-colors"
+                  className={`px-6 py-2.5 rounded-full text-xs font-mono-code uppercase transition-colors cursor-pointer ${
+                    isDark
+                      ? 'bg-white/[0.06] hover:bg-white/[0.12] text-white'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 font-semibold'
+                  }`}
                 >
                   Return to Homepage
                 </button>
@@ -374,8 +438,10 @@ export default function ProjectModal({ isOpen, onClose }) {
           )}
 
           {/* Privacy Note */}
-          <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-center gap-2 text-[11px] font-mono-code text-slate-500">
-            <ShieldCheck size={14} className="text-cyan-400" />
+          <div className={`mt-6 pt-4 border-t flex items-center justify-center gap-2 text-[11px] font-mono-code ${
+            isDark ? 'border-white/[0.06] text-slate-500' : 'border-slate-200 text-slate-600'
+          }`}>
+            <ShieldCheck size={14} className={isDark ? 'text-cyan-400' : 'text-cyan-700'} />
             <span>Your details are for discussing this project enquiry.</span>
           </div>
         </motion.div>

@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { sound } from '../utils/sound';
 import { useLenis } from './SmoothScroll';
+import { useTheme } from '../context/ThemeContext';
 
 export default function CaseStudyModal({ project, isOpen, onClose, onOpenProjectModal }) {
+  const { isDark } = useTheme();
   const lenis = useLenis();
 
   useEffect(() => {
@@ -47,7 +49,9 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
           className="relative w-full max-w-4xl bg-[#0a0e1a] border border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-500/20 overflow-hidden z-10 my-8 max-h-[90vh] flex flex-col"
         >
           {/* Top Bar with Client Logo Badge */}
-          <div className="px-6 py-4 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.02]">
+          <div className={`px-6 py-4 border-b flex items-center justify-between ${
+            isDark ? 'border-white/[0.08] bg-white/[0.02]' : 'border-slate-200 bg-slate-50'
+          }`}>
             <div className="flex items-center gap-3.5">
               {/* Logo icon */}
               <div className="w-11 h-11 rounded-2xl bg-black/80 border border-cyan-400/40 p-1 flex items-center justify-center overflow-hidden shrink-0 shadow-lg shadow-cyan-500/10">
@@ -63,7 +67,9 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
 
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-base font-bold text-white font-display">
+                  <span className={`text-base font-bold font-display ${
+                    isDark ? 'text-white' : 'text-slate-900'
+                  }`}>
                     {project.client}
                   </span>
                   <span className="inline-flex items-center gap-1 text-[10px] font-mono-code px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-400/30">
@@ -71,7 +77,9 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
                     Verified Project
                   </span>
                 </div>
-                <span className="text-[11px] font-mono-code text-cyan-300">
+                <span className={`text-[11px] font-mono-code ${
+                  isDark ? 'text-cyan-300' : 'text-cyan-700 font-semibold'
+                }`}>
                   {project.industry} // {project.year}
                 </span>
               </div>
@@ -83,7 +91,11 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
                 onClose();
               }}
               onMouseEnter={() => sound.hover()}
-              className="w-9 h-9 rounded-full bg-white/[0.06] hover:bg-white/[0.15] text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                isDark
+                  ? 'bg-white/[0.06] hover:bg-white/[0.15] text-slate-300 hover:text-white'
+                  : 'bg-slate-200 hover:bg-slate-300 text-slate-700 hover:text-slate-950'
+              }`}
             >
               <X size={18} />
             </button>
