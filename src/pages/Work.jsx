@@ -134,7 +134,7 @@ export default function Work() {
                 isDark ? 'text-slate-300' : 'text-slate-600'
               }`}>
                 Explore our verified archive of commercial work spanning high-conversion e-commerce storefronts, 
-                scalable web applications, native mobile apps, and authoritative brand identities delivered by Oreo Digital &amp; Sarirait.
+                scalable web applications, native mobile apps, and authoritative brand identities delivered by Sarirait.
               </p>
             </div>
 

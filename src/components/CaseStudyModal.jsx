@@ -102,7 +102,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
                         {project.client} Official Brand Logo
                       </div>
                       <div className="text-[10px] sm:text-[11px] font-mono-code text-cyan-400">
-                        Designed &amp; Developed by Oreo Digital &amp; Sarirait
+                        Designed &amp; Developed by Sarirait
                       </div>
                     </div>
                   </div>

@@ -10,7 +10,7 @@ export default function TrustSection() {
     { value: "04", label: "Keep improving", detail: "Learn from real feedback" }
   ];
 
-  // Verified client brand logos delivered by Oreo Digital & Sarirait
+  // Verified client brand logos delivered by Sarirait
   const clientBrands = [
     { name: "DiaraShine", logo: "/projects/diarashine.jpg", category: "Luxury Jewelry" },
     { name: "Rydap", logo: "/projects/rydap.jpg", category: "Mobility App" },
@@ -74,7 +74,7 @@ export default function TrustSection() {
         <div className="relative overflow-hidden py-6 border-t border-white/[0.05]">
           <div className="text-center mb-4">
             <span className="text-[11px] font-mono-code uppercase tracking-widest text-slate-500">
-              Trusted by Ambitious Brands Across India &amp; Globally // Oreo Digital &amp; Sarirait
+              Trusted by Ambitious Brands Across India &amp; Globally // Sarirait
             </span>
           </div>
 

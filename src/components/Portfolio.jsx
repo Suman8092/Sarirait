@@ -288,7 +288,7 @@ export default function Portfolio({ onOpenProjectModal }) {
               “Creative vision, <br className="hidden sm:inline" />engineered for real impact.”
             </h3>
             <p className="text-slate-400 text-xs sm:text-base mt-3">
-              Explore how Oreo Digital &amp; Sarirait turn ambitious business concepts into responsive, high-performing digital realities.
+              Explore how Sarirait turns ambitious business concepts into responsive, high-performing digital realities.
             </p>
           </div>
 

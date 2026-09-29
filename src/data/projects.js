@@ -1,4 +1,4 @@
-// Real client projects and authentic brand identity case studies delivered by Oreo Digital & Sarirait
+// Real client projects and authentic brand identity case studies delivered by Sarirait
 export const projectsData = [
   {
     id: "diarashine-jewelry",
