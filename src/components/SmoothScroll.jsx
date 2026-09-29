@@ -25,6 +25,14 @@ export default function SmoothScroll({ children }) {
       wheelMultiplier: 0.95,
       touchMultiplier: 1.5,
       infinite: false,
+      prevent: (node) => {
+        return (
+          node?.hasAttribute?.('data-lenis-prevent') ||
+          !!node?.closest?.('[data-lenis-prevent]') ||
+          !!node?.closest?.('.custom-scrollbar') ||
+          !!node?.closest?.('.overflow-y-auto')
+        );
+      },
     });
 
     lenisRef.current = instance;

@@ -113,6 +113,7 @@ export default function ProjectModal({ isOpen, onClose }) {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          data-lenis-prevent="true"
           className="relative w-full max-w-2xl bg-[#0a0e1a] border border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-500/20 overflow-hidden z-10 my-8 p-6 sm:p-8"
         >
           {/* Header */}
@@ -204,7 +205,14 @@ export default function ProjectModal({ isOpen, onClose }) {
                     </div>
 
                     {/* Scrollable list of categorized pills */}
-                    <div className="max-h-48 overflow-y-auto pr-1 space-y-3 custom-scrollbar">
+                    <div
+                      data-lenis-prevent="true"
+                      data-lenis-prevent-wheel="true"
+                      data-lenis-prevent-touch="true"
+                      onWheel={(e) => e.stopPropagation()}
+                      className="max-h-60 sm:max-h-72 overflow-y-auto pr-1 space-y-3 custom-scrollbar"
+                      style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}
+                    >
                       {serviceCategories
                         .filter(cat => activeCategoryTab === 'all' || cat.id === activeCategoryTab)
                         .map(cat => (

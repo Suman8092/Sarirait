@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { CheckCircle2, Clock } from 'lucide-react';
 import { processSteps } from '../data/process';
 import SpotlightCard from './SpotlightCard';

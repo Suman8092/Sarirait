@@ -102,7 +102,14 @@ export default function CaseStudyModal({ project, isOpen, onClose, onOpenProject
           </div>
 
           {/* Modal Scrollable Body */}
-          <div className="p-6 sm:p-8 overflow-y-auto space-y-8">
+          <div
+            data-lenis-prevent="true"
+            data-lenis-prevent-wheel="true"
+            data-lenis-prevent-touch="true"
+            onWheel={(e) => e.stopPropagation()}
+            className="p-6 sm:p-8 overflow-y-auto space-y-8 custom-scrollbar"
+            style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}
+          >
             
             {/* OFFICIAL LOGO & BRAND ARTWORK HERO SHOWCASE */}
             <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-[#0c1220] to-[#07090e] shadow-2xl group">

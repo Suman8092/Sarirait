@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Terminal, BarChart3, Cpu, Sparkles } from 'lucide-react';
 import { serviceCategories } from '../data/servicesData';

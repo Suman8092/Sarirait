@@ -597,4 +597,49 @@ html.lenis, html.lenis body {
   overflow: hidden;
 }
 
+/* ==========================================================================
+   CUSTOM MODAL & INNER CONTAINER SCROLLBAR
+   ========================================================================== */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 240, 255, 0.4) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.35);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.65);
+}
+
+html.light .custom-scrollbar {
+  scrollbar-color: rgba(2, 132, 199, 0.45) transparent;
+}
+
+html.light .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.03);
+}
+
+html.light .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(2, 132, 199, 0.4);
+}
+
+html.light .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(2, 132, 199, 0.7);
+}
+
+
 
