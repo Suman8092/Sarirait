@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal } from 'lucide-react';
 import { technologiesData, techCategories } from '../data/technologies';
 import SpotlightCard from './SpotlightCard';
+import TechIcon from './TechIcons';
 import { sound } from '../utils/sound';
 
 export default function Technologies() {
@@ -85,9 +86,20 @@ export default function Technologies() {
 
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-xl font-display font-bold text-white group-hover:text-cyan-300 transition-colors">
-                      {tech.name}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="p-2 rounded-xl bg-white/[0.06] border border-white/[0.08] group-hover:border-white/20 transition-all group-hover:scale-110 shrink-0"
+                      >
+                        <TechIcon
+                          name={tech.name}
+                          className="w-5 h-5"
+                          style={{ color: tech.accent }}
+                        />
+                      </div>
+                      <span className="text-xl font-display font-bold text-white group-hover:text-cyan-300 transition-colors">
+                        {tech.name}
+                      </span>
+                    </div>
                     <span className="text-[10px] font-mono-code px-2 py-0.5 rounded bg-white/[0.05] text-slate-400 border border-white/[0.06]">
                       {tech.tag}
                     </span>
