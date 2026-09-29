@@ -4,11 +4,6 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import Hero3D from './Hero3D';
 import { sound } from '../utils/sound';
-import InteractiveParticles from './effects/InteractiveParticles';
-import TextScramble from './effects/TextScramble';
-import MagneticButton from './effects/MagneticButton';
-import CyberHUD from './effects/CyberHUD';
-import BorderBeam from './effects/BorderBeam';
 
 export default function Hero({ onOpenProjectModal }) {
   const containerVariants = {
@@ -33,14 +28,11 @@ export default function Hero({ onOpenProjectModal }) {
 
   return (
     <section id="hero" className="relative min-h-[90vh] sm:min-h-screen pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-20 flex flex-col justify-between overflow-hidden bg-mesh-grid w-full max-w-full">
-      {/* Active Theory & Resn: Real-time Interactive Canvas Particle Field */}
-      <InteractiveParticles className="opacity-80" />
-
       {/* Background ambient lighting glows - GPU accelerated */}
       <div className="ambient-glow absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] h-[350px] sm:h-[500px] bg-cyan-500/10 rounded-full blur-[90px] pointer-events-none -z-10" />
       <div className="ambient-glow absolute top-1/3 right-0 sm:right-10 w-full max-w-[450px] h-[350px] sm:h-[450px] bg-violet-600/12 rounded-full blur-[100px] pointer-events-none -z-10" />
 
-      <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center relative z-10">
+      <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           
           {/* LEFT COLUMN: HERO COPY & CTAS */}
@@ -50,7 +42,7 @@ export default function Hero({ onOpenProjectModal }) {
             animate="visible"
             className="lg:col-span-7 xl:col-span-7 2xl:col-span-7 flex flex-col items-start z-10 w-full"
           >
-            {/* STATUS / TRUST PILL WITH ACTIVE THEORY TEXT SCRAMBLE */}
+            {/* STATUS / TRUST PILL */}
             <motion.div
               variants={itemVariants}
               className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full glass-pill border border-cyan-500/30 text-[10px] sm:text-xs font-mono-code text-cyan-300 mb-6 shadow-lg shadow-cyan-500/5 max-w-full"
@@ -59,11 +51,9 @@ export default function Hero({ onOpenProjectModal }) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400" />
               </span>
-              <TextScramble
-                text="BRANDING • DESIGN • DEVELOPMENT • DIGITAL MARKETING"
-                triggerOnHover={true}
-                className="font-semibold tracking-wider uppercase truncate"
-              />
+              <span className="font-semibold tracking-wider uppercase truncate">
+                BRANDING • DESIGN • DEVELOPMENT • DIGITAL MARKETING
+              </span>
             </motion.div>
 
             {/* MAIN HEADLINE */}
@@ -88,15 +78,13 @@ export default function Hero({ onOpenProjectModal }) {
               Sarirait brings branding, design, websites, apps and digital marketing together, giving your business a clear and consistent presence across every digital touchpoint.
             </motion.p>
 
-            {/* CTAS WITH LOCOMOTIVE / 14ISLANDS MAGNETIC INERTIA */}
+            {/* CTAS */}
             <motion.div
               variants={itemVariants}
               className="flex flex-wrap items-center gap-4 sm:gap-5 w-full sm:w-auto"
             >
-              {/* Primary Magnetic CTA */}
-              <MagneticButton
-                strength={0.28}
-                textStrength={0.14}
+              {/* Primary CTA */}
+              <button
                 onClick={() => {
                   sound.click();
                   onOpenProjectModal();
@@ -106,21 +94,18 @@ export default function Hero({ onOpenProjectModal }) {
               >
                 <span>Start a Project</span>
                 <ArrowUpRight size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </MagneticButton>
+              </button>
 
-              {/* Secondary Magnetic CTA */}
-              <MagneticButton
-                strength={0.22}
-                textStrength={0.1}
-                as={Link}
+              {/* Secondary CTA */}
+              <Link
                 to="/services"
                 onClick={() => sound.click()}
                 onMouseEnter={() => sound.hover()}
-                className="w-full sm:w-auto px-7 py-4 rounded-full font-semibold text-sm sm:text-base text-slate-200 glass-card hover:text-white hover:border-cyan-400/40 hover:bg-white/[0.06] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-7 py-4 rounded-full font-semibold text-sm sm:text-base text-slate-200 glass-card hover:text-white hover:border-cyan-400/40 hover:bg-white/[0.06] transition-all flex items-center justify-center gap-2"
               >
                 <span>Explore Services</span>
                 <ArrowRight size={16} className="text-cyan-400" />
-              </MagneticButton>
+              </Link>
             </motion.div>
 
             {/* TRUST MICRO-BADGES */}
@@ -153,11 +138,6 @@ export default function Hero({ onOpenProjectModal }) {
                 </div>
               </div>
             </motion.div>
-
-            {/* CYBERNETIC LIVE TELEMETRY HUD (Inspired by Why Zero & Fantik) */}
-            <motion.div variants={itemVariants} className="mt-8 sm:mt-10 w-full">
-              <CyberHUD />
-            </motion.div>
           </motion.div>
 
           {/* RIGHT COLUMN: 3D INTERACTIVE DIGITAL CORE */}
@@ -165,11 +145,8 @@ export default function Hero({ onOpenProjectModal }) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 xl:col-span-5 2xl:col-span-5 relative w-full flex items-center justify-center rounded-3xl"
+            className="lg:col-span-5 xl:col-span-5 2xl:col-span-5 relative w-full flex items-center justify-center"
           >
-            {/* Unseen & Fantik: Border Beam Halo around 3D core */}
-            <BorderBeam size={260} duration={9} colorFrom="#00f0ff" colorTo="#8a2be2" className="hidden lg:block rounded-3xl" />
-
             {/* Ambient Floating Metric Badge - Top Left */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}

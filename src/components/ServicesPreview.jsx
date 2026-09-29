@@ -5,10 +5,6 @@ import { serviceCategories } from '../data/servicesData';
 import ServiceIcon from './ServiceIcon';
 import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
-import TiltCard from './effects/TiltCard';
-import TextScramble from './effects/TextScramble';
-import MagneticButton from './effects/MagneticButton';
-import BorderBeam from './effects/BorderBeam';
 
 export default function ServicesPreview() {
   const categoryMeta = {
@@ -67,7 +63,7 @@ export default function ServicesPreview() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <TextScramble text="DESIGN • DEVELOPMENT • MARKETING" triggerOnHover={true} />
+              <span>DESIGN • DEVELOPMENT • MARKETING</span>
             </div>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
               One team for your <br />
@@ -79,48 +75,35 @@ export default function ServicesPreview() {
             <p className="text-slate-400 text-sm sm:text-base max-w-sm">
               From a new identity to a better website and a stronger marketing plan, choose the support that fits your next step.
             </p>
-            <MagneticButton
-              strength={0.25}
-              textStrength={0.12}
-              as={Link}
+            <Link
               to="/services"
               onMouseEnter={() => sound.hover()}
               onClick={() => sound.click()}
-              className="inline-flex items-center gap-2 text-xs font-mono-code uppercase font-semibold text-cyan-400 hover:text-cyan-300 transition-colors group cursor-pointer"
+              className="inline-flex items-center gap-2 text-xs font-mono-code uppercase font-semibold text-cyan-400 hover:text-cyan-300 transition-colors group"
             >
               <span>Explore Our Services</span>
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-            </MagneticButton>
+            </Link>
           </div>
         </div>
 
-        {/* 4 MAJOR CATEGORY SHOWCASE CARDS WITH LUSION 3D TILT & UTSUBO CROSSHAIRS */}
+        {/* 4 MAJOR CATEGORY SHOWCASE CARDS (2x2 Balanced Layout Matching Services Spec) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {serviceCategories.map((cat, index) => {
             const meta = categoryMeta[cat.id] || categoryMeta.development;
             return (
-              <TiltCard
+              <SpotlightCard
                 key={cat.id}
-                maxTilt={6}
-                glare={true}
-                crosshairs={true}
-                className="h-full"
+                spotlightColor={meta.glowColor || "rgba(0, 240, 255, 0.16)"}
+                borderColor={cat.id === 'creative' ? 'rgba(138, 43, 226, 0.5)' : 'rgba(0, 240, 255, 0.45)'}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                onMouseEnter={() => sound.hover()}
+                className={`group p-6 sm:p-8 rounded-3xl glass-card border bg-gradient-to-br ${meta.accentGradient} ${meta.accentBorder} transition-all duration-300 shadow-xl`}
               >
-                <SpotlightCard
-                  spotlightColor={meta.glowColor || "rgba(0, 240, 255, 0.16)"}
-                  borderColor={cat.id === 'creative' ? 'rgba(138, 43, 226, 0.5)' : 'rgba(0, 240, 255, 0.45)'}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  onMouseEnter={() => sound.hover()}
-                  className={`group relative p-6 sm:p-8 rounded-3xl glass-card border bg-gradient-to-br ${meta.accentGradient} ${meta.accentBorder} transition-all duration-300 shadow-xl h-full flex flex-col justify-between`}
-                >
-                  {/* Fantik / Unseen Border Beam on Featured Card */}
-                  {index === 0 && (
-                    <BorderBeam size={220} duration={8} colorFrom="#00f0ff" colorTo="#8a2be2" className="rounded-3xl" />
-                  )}
-                  <div>
+                <div>
                   {/* Category Header with Pill, Icon, Title and Horizontal Divider Line */}
                   <div className="flex items-center gap-3 pb-4 mb-4 border-b border-white/[0.08] relative">
                     {/* Number Badge */}
@@ -193,9 +176,8 @@ export default function ServicesPreview() {
                   </Link>
                 </div>
               </SpotlightCard>
-            </TiltCard>
-          );
-        })}
+            );
+          })}
         </div>
 
       </div>

@@ -91,15 +91,6 @@ export default function CustomCursor() {
       const target = e.target;
       if (!target || !(target instanceof Element)) return;
 
-      const customTextEl = target.closest('[data-cursor-text]');
-      if (customTextEl) {
-        const text = customTextEl.getAttribute('data-cursor-text') || 'VIEW';
-        setCursorVariant('view');
-        setCursorText(text);
-        wakeLoop();
-        return;
-      }
-
       const viewTrigger = target.closest('[data-cursor="view"]');
       if (viewTrigger) {
         setCursorVariant('view');

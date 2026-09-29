@@ -2,8 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, MessageSquare, Sparkles, ShieldCheck, Zap } from 'lucide-react';
 import { sound } from '../utils/sound';
-import MagneticButton from './effects/MagneticButton';
-import TextScramble from './effects/TextScramble';
 
 export default function FinalCTA({ onOpenProjectModal }) {
   return (
@@ -22,10 +20,10 @@ export default function FinalCTA({ onOpenProjectModal }) {
         className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10"
       >
         
-        {/* TOP STATUS PILL WITH ACTIVE THEORY TEXT SCRAMBLE */}
+        {/* TOP STATUS PILL */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-pill text-xs font-mono-code text-cyan-300 mb-8 border border-cyan-500/40 shadow-xl shadow-cyan-500/10">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <TextScramble text="HAVE A PROJECT IN MIND? // LET'S TALK" triggerOnHover={true} />
+          <span>HAVE A PROJECT IN MIND?</span>
         </div>
 
         {/* HEADLINE */}
@@ -39,12 +37,10 @@ export default function FinalCTA({ onOpenProjectModal }) {
           Tell us what your business needs. We’ll help you explore the right mix of branding, design, development and marketing.
         </p>
 
-        {/* CTAS WITH LOCOMOTIVE / 14ISLANDS MAGNETIC INERTIA */}
+        {/* CTAS */}
         <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
-          {/* Primary Magnetic CTA */}
-          <MagneticButton
-            strength={0.28}
-            textStrength={0.14}
+          {/* Primary CTA */}
+          <button
             onClick={() => {
               sound.click();
               onOpenProjectModal();
@@ -54,12 +50,10 @@ export default function FinalCTA({ onOpenProjectModal }) {
           >
             <span>Start a Project</span>
             <ArrowUpRight size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </MagneticButton>
+          </button>
 
-          {/* Secondary Magnetic CTA */}
-          <MagneticButton
-            strength={0.22}
-            textStrength={0.1}
+          {/* Secondary CTA */}
+          <button
             onClick={() => {
               sound.click();
               onOpenProjectModal();
@@ -69,7 +63,7 @@ export default function FinalCTA({ onOpenProjectModal }) {
           >
             <MessageSquare size={18} className="text-cyan-400" />
             <span>Talk to Us</span>
-          </MagneticButton>
+          </button>
         </div>
 
         {/* TRUST COMMITMENT */}
