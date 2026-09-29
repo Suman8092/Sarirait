@@ -10,16 +10,22 @@ export default function TrustSection() {
     { value: "04", label: "Keep improving", detail: "Learn from real feedback" }
   ];
 
-  // Marquee client partner logos
-  const partners = [
-    { name: "Brand identity", tag: "Design" },
-    { name: "Print & packaging", tag: "Creative" },
-    { name: "Websites & stores", tag: "Development" },
-    { name: "Mobile applications", tag: "Product" },
-    { name: "Search visibility", tag: "Marketing" },
-    { name: "Social content", tag: "Marketing" },
-    { name: "Email campaigns", tag: "Growth" },
-    { name: "Lead generation", tag: "Growth" }
+  // Verified client brand logos delivered by Oreo Digital & Sarirait
+  const clientBrands = [
+    { name: "DiaraShine", logo: "/projects/diarashine.jpg", category: "Luxury Jewelry" },
+    { name: "Rydap", logo: "/projects/rydap.jpg", category: "Mobility App" },
+    { name: "AnabolicNutrition", logo: "/projects/anabolic.jpg", category: "Sports Nutrition" },
+    { name: "Chabhi", logo: "/projects/chabhi.jpg", category: "IoT Smart Access" },
+    { name: "SolarisMotion", logo: "/projects/solaris.jpg", category: "CleanTech" },
+    { name: "ScolaKidz", logo: "/projects/scolakidz.jpg", category: "EdTech Platform" },
+    { name: "LifeZila", logo: "/projects/lifezila.jpg", category: "Health & Habits" },
+    { name: "Mom Made Pickle", logo: "/projects/mommade.jpg", category: "Artisanal FMCG" },
+    { name: "Archanna Gupta", logo: "/projects/archanna-gupta.jpg", category: "Haute Couture" },
+    { name: "Workpunkt", logo: "/projects/workpunkt.jpg", category: "Coworking Tech" },
+    { name: "ShineFood", logo: "/projects/shinefood.jpg", category: "Packaged Foods" },
+    { name: "TheStoreyTellers", logo: "/projects/thestoreytellers.jpg", category: "Media Studio" },
+    { name: "Uniora", logo: "/projects/uniora.jpg", category: "Enterprise Cloud" },
+    { name: "Printmadly", logo: "/projects/printmadly.jpg", category: "Custom Merch" }
   ];
 
   return (
@@ -64,8 +70,14 @@ export default function TrustSection() {
           ))}
         </div>
 
-        {/* SERVICE AREAS MARQUEE */}
+        {/* AUTHENTIC CLIENT BRAND LOGOS MARQUEE */}
         <div className="relative overflow-hidden py-6 border-t border-white/[0.05]">
+          <div className="text-center mb-4">
+            <span className="text-[11px] font-mono-code uppercase tracking-widest text-slate-500">
+              Trusted by Ambitious Brands Across India &amp; Globally // Oreo Digital &amp; Sarirait
+            </span>
+          </div>
+
           {/* Gradient fade edge masks */}
           <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-36 bg-gradient-to-r from-[#070a10] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-36 bg-gradient-to-l from-[#070a10] to-transparent z-10 pointer-events-none" />
@@ -74,18 +86,25 @@ export default function TrustSection() {
           <div className="flex w-max animate-marquee-infinite">
             {/* Primary Track */}
             <div className="flex shrink-0 items-center gap-4 sm:gap-6 pr-4 sm:pr-6">
-              {[...partners, ...partners].map((partner, idx) => (
+              {[...clientBrands, ...clientBrands].map((client, idx) => (
                 <div
-                  key={`track1-${idx}`}
+                  key={`client-track1-${idx}`}
                   onMouseEnter={() => sound.hover()}
-                  className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/[0.02] border border-white/[0.06] hover:border-cyan-500/40 hover:bg-white/[0.06] transition-all cursor-default group"
+                  className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-500/40 hover:bg-white/[0.08] transition-all cursor-default group"
                 >
-                  <div className="w-2 h-2 rounded-full bg-cyan-500/60 group-hover:bg-cyan-400 group-hover:scale-125 transition-all" />
-                  <span className="font-display font-bold text-sm tracking-wider text-slate-300 group-hover:text-white transition-colors">
-                    {partner.name}
+                  <div className="w-8 h-8 rounded-xl bg-black/80 border border-white/10 p-0.5 overflow-hidden shrink-0 group-hover:border-cyan-400/60 transition-colors">
+                    <img
+                      src={client.logo}
+                      alt={client.name}
+                      className="w-full h-full object-cover rounded-lg"
+                      loading="lazy"
+                    />
+                  </div>
+                  <span className="font-display font-bold text-sm tracking-wide text-slate-200 group-hover:text-white transition-colors">
+                    {client.name}
                   </span>
-                  <span className="text-[10px] font-mono-code px-2 py-0.5 rounded bg-white/[0.04] text-slate-400 group-hover:text-cyan-300 transition-colors">
-                    {partner.tag}
+                  <span className="text-[10px] font-mono-code px-2 py-0.5 rounded-full bg-white/[0.04] text-slate-400 group-hover:text-cyan-300 transition-colors">
+                    {client.category}
                   </span>
                 </div>
               ))}
@@ -93,18 +112,25 @@ export default function TrustSection() {
 
             {/* Seamless Clone Track */}
             <div className="flex shrink-0 items-center gap-4 sm:gap-6 pr-4 sm:pr-6" aria-hidden="true">
-              {[...partners, ...partners].map((partner, idx) => (
+              {[...clientBrands, ...clientBrands].map((client, idx) => (
                 <div
-                  key={`track2-${idx}`}
+                  key={`client-track2-${idx}`}
                   onMouseEnter={() => sound.hover()}
-                  className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/[0.02] border border-white/[0.06] hover:border-cyan-500/40 hover:bg-white/[0.06] transition-all cursor-default group"
+                  className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-500/40 hover:bg-white/[0.08] transition-all cursor-default group"
                 >
-                  <div className="w-2 h-2 rounded-full bg-cyan-500/60 group-hover:bg-cyan-400 group-hover:scale-125 transition-all" />
-                  <span className="font-display font-bold text-sm tracking-wider text-slate-300 group-hover:text-white transition-colors">
-                    {partner.name}
+                  <div className="w-8 h-8 rounded-xl bg-black/80 border border-white/10 p-0.5 overflow-hidden shrink-0 group-hover:border-cyan-400/60 transition-colors">
+                    <img
+                      src={client.logo}
+                      alt={client.name}
+                      className="w-full h-full object-cover rounded-lg"
+                      loading="lazy"
+                    />
+                  </div>
+                  <span className="font-display font-bold text-sm tracking-wide text-slate-200 group-hover:text-white transition-colors">
+                    {client.name}
                   </span>
-                  <span className="text-[10px] font-mono-code px-2 py-0.5 rounded bg-white/[0.04] text-slate-400 group-hover:text-cyan-300 transition-colors">
-                    {partner.tag}
+                  <span className="text-[10px] font-mono-code px-2 py-0.5 rounded-full bg-white/[0.04] text-slate-400 group-hover:text-cyan-300 transition-colors">
+                    {client.category}
                   </span>
                 </div>
               ))}

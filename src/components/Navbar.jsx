@@ -65,7 +65,7 @@ export default function Navbar({ onOpenProjectModal }) {
   };
 
   const navLinks = [
-    { name: 'Work', to: '/#work' },
+    { name: 'Work', to: '/work' },
     { name: 'About', to: '/#why-us' },
     { name: 'Process', to: '/#process' },
     { name: 'Technology', to: '/#technology' },
@@ -100,11 +100,9 @@ export default function Navbar({ onOpenProjectModal }) {
               aria-label="Sarirait Homepage"
             >
               <img
-                src="/logo.png"
+                src={isDark ? "/logo.png" : "/logo-light.png"}
                 alt="Sarirait"
-                className={`h-7 sm:h-8.5 md:h-10 max-w-[130px] sm:max-w-none w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_15px_rgba(0,240,255,0.4)] ${
-                  !isDark ? 'brand-logo-light' : ''
-                }`}
+                className="h-7 sm:h-8.5 md:h-10 max-w-[130px] sm:max-w-none w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]"
               />
             </Link>
 
@@ -165,21 +163,28 @@ export default function Navbar({ onOpenProjectModal }) {
                 </button>
               </div>
 
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.to}
-                  onMouseEnter={() => sound.hover()}
-                  onClick={() => sound.click()}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                    isDark
-                      ? 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = link.to === location.pathname;
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.to}
+                    onMouseEnter={() => sound.hover()}
+                    onClick={() => sound.click()}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                      isActive
+                        ? isDark
+                          ? 'text-cyan-300 bg-white/[0.08] shadow-sm font-semibold'
+                          : 'text-cyan-700 bg-white shadow-sm font-semibold'
+                        : isDark
+                          ? 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* DESKTOP RIGHT SIDE ACTIONS (hidden on mobile and tablet) */}

@@ -399,9 +399,13 @@ html.light .text-gradient-primary {
   -webkit-text-fill-color: transparent !important;
 }
 
-/* Light Mode Brand Logo Filter */
+/* Light Mode Brand Logo */
 html.light .brand-logo-light {
-  filter: invert(0.92) hue-rotate(180deg) brightness(0.95);
+  filter: none !important;
+}
+
+html.light img[src="/logo.png"] {
+  content: url("/logo-light.png");
 }
 
 /* Light Mode Navigation */

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, ArrowRight, Send, ShieldCheck, Terminal, BarChart3, Sparkles, Cpu } from 'lucide-react';
+import { X, CheckCircle2, ArrowRight, Send, ShieldCheck } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sound } from '../utils/sound';
 import { serviceCategories } from '../data/servicesData';
+import { useTheme } from '../context/ThemeContext';
 
 export default function ProjectModal({ isOpen, onClose }) {
+  const { isDark } = useTheme();
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState(['Website Development']);
   const [activeCategoryTab, setActiveCategoryTab] = useState('all');
@@ -52,7 +54,7 @@ export default function ProjectModal({ isOpen, onClose }) {
       '',
       formData.details || 'Project details not provided yet.'
     ].join('\n'));
-    window.location.href = `mailto:contact@sarirait.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:info@sarirait.com?subject=${subject}&body=${body}`;
     
     // Trigger celebratory confetti
     try {
@@ -98,17 +100,29 @@ export default function ProjectModal({ isOpen, onClose }) {
           className="relative w-full max-w-2xl bg-[#0a0e1a] border border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-500/20 overflow-hidden z-10 my-8 p-6 sm:p-8"
         >
           {/* Header */}
-          <div className="flex items-center justify-between pb-6 border-b border-white/[0.08]">
+          <div className={`flex items-center justify-between pb-6 border-b ${
+            isDark ? 'border-white/[0.08]' : 'border-slate-200'
+          }`}>
             <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="Sarirait" className="h-6 sm:h-7 w-auto object-contain" />
-              <span className="text-[11px] sm:text-xs font-mono-code uppercase tracking-wider text-cyan-300 border-l border-white/10 pl-3">
+              <img 
+                src={isDark ? "/logo.png" : "/logo-light.png"} 
+                alt="Sarirait" 
+                className="h-6 sm:h-7 w-auto object-contain" 
+              />
+              <span className={`text-[11px] sm:text-xs font-mono-code uppercase tracking-wider border-l pl-3 font-semibold ${
+                isDark ? 'text-cyan-300 border-white/10' : 'text-cyan-700 border-slate-200'
+              }`}>
                 Project Briefing
               </span>
             </div>
             <button
               onClick={handleClose}
               onMouseEnter={() => sound.hover()}
-              className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.15] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                isDark
+                  ? 'bg-white/[0.06] hover:bg-white/[0.15] text-slate-300 hover:text-white'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border border-slate-200'
+              }`}
             >
               <X size={18} />
             </button>
@@ -330,7 +344,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                 Your project brief is ready
               </h3>
               <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                Thank you, <span className="text-cyan-300 font-semibold">{formData.name || 'there'}</span>. Your email app should open with this brief addressed to <span className="text-cyan-300">contact@sarirait.com</span>. Review it and press Send to complete your enquiry. If no email app opens, you can write to us directly.
+                Thank you, <span className="text-cyan-300 font-semibold">{formData.name || 'there'}</span>. Your email app should open with this brief addressed to <span className="text-cyan-300">info@sarirait.com</span>. Review it and press Send to complete your enquiry. If no email app opens, you can write to us directly.
               </p>
               <div className="pt-4">
                 <button

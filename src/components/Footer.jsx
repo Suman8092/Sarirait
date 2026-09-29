@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Mail, Phone, MapPin } from 'lucide-react';
 import { sound } from '../utils/sound';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Footer({ onOpenProjectModal }) {
+  const { isDark } = useTheme();
+
   return (
     <footer id="footer" className="relative border-t border-white/[0.08] bg-[#05070b] text-slate-300 pt-16 sm:pt-20 pb-12 overflow-hidden w-full max-w-full">
       {/* Background ambient lighting */}
@@ -24,7 +27,7 @@ export default function Footer({ onOpenProjectModal }) {
               aria-label="Sarirait Homepage"
             >
               <img
-                src="/logo.png"
+                src={isDark ? "/logo.png" : "/logo-light.png"}
                 alt="Sarirait"
                 className="h-9 w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_18px_rgba(0,240,255,0.35)]"
               />
@@ -34,6 +37,21 @@ export default function Footer({ onOpenProjectModal }) {
               Brand design, digital experiences and marketing for businesses ready to grow.
             </p>
 
+            <div className="space-y-1.5 text-xs text-slate-400 pt-1">
+              <div className="flex items-start gap-2">
+                <MapPin size={13} className="text-cyan-400 shrink-0 mt-0.5" />
+                <span className="leading-snug">1601, 16th floor, Fairfox, EON, Noida Sector 140A</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone size={13} className="text-emerald-400 shrink-0" />
+                <a href="tel:+918709901636" className="hover:text-cyan-300 transition-colors">+91 8709901636</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail size={13} className="text-cyan-400 shrink-0" />
+                <a href="mailto:info@sarirait.com" className="hover:text-cyan-300 transition-colors">info@sarirait.com</a>
+              </div>
+            </div>
+
             <button
               type="button"
               onClick={() => {
@@ -41,7 +59,9 @@ export default function Footer({ onOpenProjectModal }) {
                 onOpenProjectModal();
               }}
               onMouseEnter={() => sound.hover()}
-              className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-300 hover:text-white transition-colors"
+              className={`inline-flex items-center gap-2 text-xs font-semibold transition-colors cursor-pointer ${
+                isDark ? 'text-cyan-300 hover:text-white' : 'text-cyan-700 hover:text-cyan-900 font-bold'
+              }`}
             >
               Tell us about your project <ArrowUpRight size={14} />
             </button>
@@ -57,7 +77,7 @@ export default function Footer({ onOpenProjectModal }) {
                 <Link to="/#why-us" className="hover:text-cyan-400 transition-colors">About</Link>
               </li>
               <li>
-                <Link to="/#work" className="hover:text-cyan-400 transition-colors">Work</Link>
+                <Link to="/work" className="hover:text-cyan-400 transition-colors">Work</Link>
               </li>
               <li>
                 <Link to="/services" className="hover:text-cyan-400 transition-colors">Services</Link>
@@ -136,9 +156,6 @@ export default function Footer({ onOpenProjectModal }) {
               <li>
                 <Link to="/services/ppc-marketing" className="hover:text-cyan-400 transition-colors">Lead Generation &amp; Paid Campaigns</Link>
               </li>
-              <li>
-                <Link to="/services/content-strategy" className="hover:text-cyan-400 transition-colors">Content Strategy</Link>
-              </li>
             </ul>
           </div>
 
@@ -162,9 +179,6 @@ export default function Footer({ onOpenProjectModal }) {
               </li>
               <li>
                 <Link to="/services/logo-branding" className="hover:text-cyan-400 transition-colors">Logo &amp; Branding</Link>
-              </li>
-              <li>
-                <Link to="/services/photography" className="hover:text-cyan-400 transition-colors">Brand Photography</Link>
               </li>
             </ul>
           </div>
@@ -198,8 +212,18 @@ export default function Footer({ onOpenProjectModal }) {
         {/* BOTTOM STRIP: SOCIALS & COPYRIGHT */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs font-mono-code">
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-slate-400">
-            <a href="mailto:contact@sarirait.com" className="hover:text-cyan-300 transition-colors">contact@sarirait.com</a>
-            <a href="tel:+919153835687" className="hover:text-cyan-300 transition-colors">+91 91538 35687</a>
+            <a href="mailto:info@sarirait.com" className="hover:text-cyan-300 transition-colors flex items-center gap-1.5">
+              <Mail size={12} className="text-cyan-400" />
+              <span>info@sarirait.com</span>
+            </a>
+            <a href="tel:+918709901636" className="hover:text-cyan-300 transition-colors flex items-center gap-1.5">
+              <Phone size={12} className="text-emerald-400" />
+              <span>+91 8709901636</span>
+            </a>
+            <span className="flex items-center gap-1.5">
+              <MapPin size={12} className="text-cyan-400 shrink-0" />
+              <span>1601, 16th floor, Fairfox, EON, Noida Sector 140A</span>
+            </span>
           </div>
 
           {/* Legal / Copyright */}

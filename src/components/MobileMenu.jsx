@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ArrowUpRight, ArrowRight, Phone, Mail, Sparkles } from 'lucide-react';
+import { ChevronDown, ArrowUpRight, ArrowRight, Phone, Mail, MapPin, Sparkles } from 'lucide-react';
 import { serviceCategories } from '../data/servicesData';
 import ServiceIcon from './ServiceIcon';
 import { sound } from '../utils/sound';
@@ -56,7 +56,7 @@ export default function MobileMenu({ isOpen, onClose, onOpenProjectModal }) {
 
   const navLinks = [
     { name: 'Home', to: '/' },
-    { name: 'Work', to: '/#work' },
+    { name: 'Work', to: '/work' },
     { name: 'About', to: '/#why-us' },
     { name: 'Process', to: '/#process' },
     { name: 'Insights', to: '/#technology' },
@@ -214,29 +214,40 @@ export default function MobileMenu({ isOpen, onClose, onOpenProjectModal }) {
             </div>
 
             {/* DIRECT CONTACT SHORTCUTS */}
-            <div className="grid grid-cols-2 gap-2 pt-2">
-              <a
-                href="tel:+919153835687"
-                className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs font-medium transition-colors ${
-                  isDark
-                    ? 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:text-white'
-                    : 'border-slate-200 bg-slate-50 text-slate-700 hover:text-slate-900'
-                }`}
-              >
-                <Phone size={14} className="text-emerald-400" />
-                <span>+91 9153835687</span>
-              </a>
-              <a
-                href="mailto:contact@sarirait.com"
-                className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs font-medium transition-colors ${
-                  isDark
-                    ? 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:text-white'
-                    : 'border-slate-200 bg-slate-50 text-slate-700 hover:text-slate-900'
-                }`}
-              >
-                <Mail size={14} className="text-cyan-400" />
-                <span>contact@sarirait.com</span>
-              </a>
+            <div className="space-y-2 pt-2">
+              <div className="grid grid-cols-2 gap-2">
+                <a
+                  href="tel:+918709901636"
+                  className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs font-medium transition-colors ${
+                    isDark
+                      ? 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:text-white'
+                      : 'border-slate-200 bg-slate-50 text-slate-700 hover:text-slate-900'
+                  }`}
+                >
+                  <Phone size={14} className="text-emerald-400" />
+                  <span>+91 8709901636</span>
+                </a>
+                <a
+                  href="mailto:info@sarirait.com"
+                  className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs font-medium transition-colors ${
+                    isDark
+                      ? 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:text-white'
+                      : 'border-slate-200 bg-slate-50 text-slate-700 hover:text-slate-900'
+                  }`}
+                >
+                  <Mail size={14} className="text-cyan-400" />
+                  <span>info@sarirait.com</span>
+                </a>
+              </div>
+
+              <div className={`flex items-start gap-2 p-2.5 rounded-xl border text-[11px] ${
+                isDark
+                  ? 'border-white/[0.08] bg-white/[0.02] text-slate-400'
+                  : 'border-slate-200 bg-slate-50 text-slate-600'
+              }`}>
+                <MapPin size={14} className="text-cyan-400 shrink-0 mt-0.5" />
+                <span className="leading-snug">1601, 16th floor, Fairfox, EON, Noida Sector 140A</span>
+              </div>
             </div>
 
           </div>
