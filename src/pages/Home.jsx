@@ -12,7 +12,6 @@ import Testimonials from '../components/Testimonials';
 import FAQ from '../components/FAQ';
 import FinalCTA from '../components/FinalCTA';
 import Footer from '../components/Footer';
-import CustomCursor from '../components/CustomCursor';
 import ProjectModal from '../components/ProjectModal';
 
 export default function Home() {
@@ -28,9 +27,6 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden">
-      {/* Premium Desktop Custom Cursor */}
-      <CustomCursor />
-
       {/* Global Navigation */}
       <Navbar onOpenProjectModal={handleOpenProjectModal} />
 
@@ -81,3 +77,4 @@ export default function Home() {
     </div>
   );
 }
+

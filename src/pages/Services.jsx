@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import CustomCursor from '../components/CustomCursor';
 import ProjectModal from '../components/ProjectModal';
 import ServiceIcon from '../components/ServiceIcon';
 import { serviceCategories } from '../data/servicesData';
@@ -67,8 +66,6 @@ export default function Services() {
 
   return (
     <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden">
-      <CustomCursor />
-      
       {/* Global Navbar */}
       <Navbar onOpenProjectModal={() => setProjectModalOpen(true)} />
 
@@ -656,6 +653,7 @@ export default function Services() {
               We can discuss how brand, website and marketing work could fit together around your goals.
             </p>
             <motion.button
+              data-magnetic
               onClick={() => {
                 sound.click();
                 setProjectModalOpen(true);

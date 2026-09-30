@@ -2,8 +2,8 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
     --bg-primary: #07090e;
     --bg-secondary: #0c101a;
@@ -38,6 +38,10 @@
     overflow-x: clip;
     position: relative;
     -webkit-overflow-scrolling: touch;
+  }
+
+  button, input, textarea, select {
+    font-family: 'Poppins', sans-serif;
   }
 
   #root {
@@ -221,6 +225,28 @@
   animation-play-state: paused;
 }
 
+/* Reverse Infinite Marquee */
+@keyframes marquee-scroll-reverse {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll-reverse 45s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
+
 /* Accessibility: reduce motion */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -228,6 +254,22 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  #process .process-track {
+    flex-direction: column !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  #process .process-card-item {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #process .process-vignette-left,
+  #process .process-vignette-right {
+    display: none !important;
   }
 }
 
@@ -641,5 +683,480 @@ html.light .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(2, 132, 199, 0.7);
 }
 
+/* Zeyna Inspired Typography & Process Utilities */
+.font-bebas {
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.03em;
+}
 
+.font-dm-mono {
+  font-family: 'Archivo', sans-serif;
+}
 
+/* ==========================================================================
+   PROCESS SECTION (ZEYNA PINNED SCROLL) - LIGHT / DARK THEME PERFECTION
+   ========================================================================== */
+html.light #process {
+  background-color: #f8fafc !important;
+}
+
+html.light #process .process-vignette-left {
+  background: linear-gradient(to right, #f8fafc, transparent) !important;
+}
+
+html.light #process .process-vignette-right {
+  background: linear-gradient(to left, #f8fafc, transparent) !important;
+}
+
+html.light #process .process-card-item {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light #process .process-card-item.card-alt {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+html.light #process .process-card-item h3 {
+  color: #0f172a !important;
+}
+
+html.light #process .process-card-item p {
+  color: #475569 !important;
+}
+
+html.light #process .process-card-item .card-deliverable-text {
+  color: #334155 !important;
+}
+
+html.light #process .process-card-item .card-tagline {
+  color: #0369a1 !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light #process .process-card-item .card-meta-badge {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  color: #334155 !important;
+}
+
+html.light #process .process-border {
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+html.light #process .step-btn-inactive {
+  background-color: #ffffff !important;
+  color: #475569 !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light #process .step-btn-inactive:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+html.light #process .arrow-btn-enabled {
+  background-color: #ffffff !important;
+  color: #334155 !important;
+  border-color: rgba(15, 23, 42, 0.14) !important;
+}
+
+html.light #process .arrow-btn-enabled:hover {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #0284c7 !important;
+}
+
+/* ==========================================================================
+   TECHNOLOGY SECTION (COMPACT ANIMATED MATRIX) - LIGHT / DARK MODES
+   ========================================================================== */
+html.light #technology {
+  background-color: #ffffff !important;
+}
+
+html.light #technology .tech-vignette-left {
+  background: linear-gradient(to right, #ffffff, transparent) !important;
+}
+
+html.light #technology .tech-vignette-right {
+  background: linear-gradient(to left, #ffffff, transparent) !important;
+}
+
+html.light #technology .tech-chip-item {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light #technology .tech-chip-item:hover {
+  border-color: rgba(2, 132, 199, 0.4) !important;
+  box-shadow: 0 10px 25px -4px rgba(2, 132, 199, 0.15) !important;
+}
+
+html.light #technology .tech-hud-panel {
+  background-color: #f8fafc !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  color: #334155 !important;
+}
+
+/* ==========================================================================
+   FEATURED WORK SECTION - LIGHT MODE REFINEMENTS
+   ========================================================================== */
+html.light #work {
+  background-color: #f8fafc !important;
+}
+
+html.light #work .glass-card {
+  background-color: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  color: #0f172a !important;
+  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03) !important;
+}
+
+html.light #work .glass-pill {
+  background-color: rgba(2, 132, 199, 0.08) !important;
+  border-color: rgba(2, 132, 199, 0.25) !important;
+}
+
+html.light #work .work-showcase-stage {
+  background: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light #work .work-metric-box {
+  background-color: #f8fafc !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  color: #0f172a !important;
+}
+
+html.light #work .work-metric-title {
+  color: #0f172a !important;
+}
+
+html.light #work .work-heading {
+  color: #0f172a !important;
+}
+
+html.light #work .work-text-sub {
+  color: #475569 !important;
+}
+
+/* ==========================================================================
+   SITE MOTION SYSTEM
+   ========================================================================== */
+.site-scroll-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 70;
+  height: 2px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.site-scroll-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, #22d3ee 0%, #3b82f6 52%, #8b5cf6 100%);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
+  will-change: transform;
+}
+
+.route-motion-shell {
+  min-height: 100vh;
+  transform-origin: 50% 0;
+}
+
+html.motion-ready [data-motion-reveal]:not(.is-motion-visible) {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0) scale(0.99);
+}
+
+html.motion-ready [data-motion-reveal="left"]:not(.is-motion-visible) {
+  transform: translate3d(-30px, 0, 0);
+}
+
+html.motion-ready [data-motion-reveal="right"]:not(.is-motion-visible) {
+  transform: translate3d(30px, 0, 0);
+}
+
+html.motion-ready [data-motion-reveal="scale"]:not(.is-motion-visible) {
+  transform: translate3d(0, 12px, 0) scale(0.96);
+}
+
+[data-motion-reveal] {
+  transition:
+    opacity 720ms cubic-bezier(0.22, 1, 0.36, 1) var(--motion-delay, 0ms),
+    transform 820ms cubic-bezier(0.22, 1, 0.36, 1) var(--motion-delay, 0ms);
+}
+
+[data-motion-reveal].is-motion-visible {
+  opacity: 1;
+  transform: none;
+}
+
+[data-magnetic] {
+  translate: var(--magnetic-x, 0px) var(--magnetic-y, 0px);
+  transition: translate 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-magnetic].is-magnetic-active {
+  transition-duration: 80ms;
+}
+
+.spotlight-card {
+  transform-style: preserve-3d;
+}
+
+.spotlight-card__content {
+  transform-style: preserve-3d;
+  transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.spotlight-card:hover .spotlight-card__content {
+  transition-duration: 70ms;
+}
+
+.spotlight-card__glow {
+  background: radial-gradient(
+    450px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+    var(--spotlight-color),
+    transparent 65%
+  );
+}
+
+.spotlight-card__border {
+  border: 1px solid var(--spotlight-border);
+  mask-image: radial-gradient(
+    350px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+    black 30%,
+    transparent 70%
+  );
+  -webkit-mask-image: radial-gradient(
+    350px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+    black 30%,
+    transparent 70%
+  );
+}
+
+@keyframes work-progress-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.work-autoplay-progress {
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: work-progress-fill 6500ms linear both;
+}
+
+.work-thumbnail-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (min-width: 1024px) {
+  .work-thumbnail-grid {
+    grid-template-columns: repeat(var(--work-thumbnail-columns, 6), minmax(0, 1fr));
+  }
+}
+
+[data-scroll-depth] {
+  translate: 0 var(--scroll-parallax-y, 0px);
+}
+
+[data-scroll-depth].is-scroll-parallax-active {
+  will-change: translate;
+}
+
+[data-glossy] {
+  isolation: isolate;
+}
+
+[data-glossy]::after {
+  content: '';
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    300px circle at var(--gloss-x, 50%) var(--gloss-y, 50%),
+    rgba(255, 255, 255, 0.22),
+    transparent 68%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 320ms ease;
+}
+
+[data-glossy].is-glossy-active::after {
+  opacity: 0.72;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-scroll-progress span {
+    will-change: auto;
+  }
+
+  [data-motion-reveal],
+  [data-motion-reveal].is-motion-visible,
+  [data-magnetic] {
+    opacity: 1;
+    transform: none;
+    translate: none;
+    transition: none !important;
+    will-change: auto;
+  }
+
+  .spotlight-card__content {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .spotlight-card__glow,
+  .spotlight-card__border {
+    display: none;
+  }
+
+  [data-scroll-depth] {
+    translate: none;
+    will-change: auto;
+  }
+
+  [data-glossy]::after {
+    display: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  [data-glossy]::after {
+    display: none;
+  }
+}
+
+/* Calmer home surfaces: use spacing and typography for hierarchy instead of heavy cards. */
+.glass-card,
+.glass-panel {
+  background-image: none !important;
+  border-color: rgba(255, 255, 255, 0.055) !important;
+  box-shadow: none !important;
+}
+
+.glass-card {
+  background-color: rgba(255, 255, 255, 0.018) !important;
+  border-radius: 1rem !important;
+}
+
+.glass-card:hover {
+  background-color: rgba(255, 255, 255, 0.035) !important;
+  border-color: rgba(255, 255, 255, 0.11) !important;
+  box-shadow: none !important;
+}
+
+.glass-pill {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html.light .glass-card,
+html.light .glass-card:hover,
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.56) !important;
+  background-image: none !important;
+  border-color: rgba(15, 23, 42, 0.07) !important;
+  box-shadow: none !important;
+}
+
+html.light .glass-pill {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+main [class*="rounded-3xl"][class*="shadow-xl"]:not([class*="text-center"]) {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  border-radius: 1rem !important;
+  box-shadow: none !important;
+}
+
+html.light main [class*="rounded-3xl"][class*="shadow-xl"]:not([class*="text-center"]) {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+main [class*="rounded-3xl"][class*="shadow-2xl"] {
+  border-radius: 1.25rem !important;
+  box-shadow: none !important;
+}
+
+#services [class*="rounded-xl"][class*="border"],
+#trust [class*="rounded-2xl"][class*="border"],
+#faq [class*="rounded-2xl"][class*="border"],
+#ai-future [class*="rounded-xl"][class*="border"] {
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.045) !important;
+  box-shadow: none !important;
+}
+
+html.light #services [class*="rounded-xl"][class*="border"],
+html.light #trust [class*="rounded-2xl"][class*="border"],
+html.light #faq [class*="rounded-2xl"][class*="border"],
+html.light #ai-future [class*="rounded-xl"][class*="border"] {
+  border-color: rgba(15, 23, 42, 0.065) !important;
+}
+
+#technology .tech-chip-item {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html.light #technology .tech-chip-item {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.ambient-glow {
+  opacity: 0.32;
+}
+
+@media (min-width: 1024px) {
+  #trust,
+  #services,
+  #why-us,
+  #technology,
+  #ai-future,
+  #testimonials,
+  #faq,
+  #final-cta {
+    padding-block: clamp(3rem, 6.5vh, 4.75rem) !important;
+  }
+
+  #faq [class*="rounded-2xl"] {
+    border-radius: 0.75rem !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 820px) {
+  #trust,
+  #services,
+  #why-us,
+  #technology,
+  #ai-future,
+  #testimonials,
+  #faq,
+  #final-cta {
+    padding-block: 2.75rem !important;
+  }
+}

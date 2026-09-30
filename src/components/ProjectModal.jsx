@@ -418,6 +418,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                       </button>
 
                       <button
+                        data-magnetic
                         type="submit"
                         onMouseEnter={() => sound.hover()}
                         className="flex-1 sm:flex-none justify-center px-6 py-3 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-xl shadow-cyan-500/25 flex items-center gap-2 cursor-pointer active:scale-95 transition-transform"

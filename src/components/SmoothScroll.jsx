@@ -2,6 +2,10 @@ import React, { createContext, useContext, useEffect, useState, useRef } from 'r
 import { useLocation } from 'react-router-dom';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const LenisContext = createContext(null);
 
@@ -15,9 +19,14 @@ export default function SmoothScroll({ children }) {
   const location = useLocation();
 
   useEffect(() => {
+    const canUseSmoothWheel = window.matchMedia(
+      '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+    ).matches;
+    if (!canUseSmoothWheel) return undefined;
+
     // Initialize Lenis with award-class inertia configuration
     const instance = new Lenis({
-      duration: 1.15,
+      duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Silky exponential ease-out
       orientation: 'vertical',
       gestureOrientation: 'vertical',
@@ -37,6 +46,9 @@ export default function SmoothScroll({ children }) {
 
     lenisRef.current = instance;
     setLenis(instance);
+
+    // Sync Lenis scroll with GSAP ScrollTrigger
+    instance.on('scroll', ScrollTrigger.update);
 
     // Connect Lenis to requestAnimationFrame loop
     let rafId;

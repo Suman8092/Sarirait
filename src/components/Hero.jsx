@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import Hero3D from './Hero3D';
+import CountUpValue from './CountUpValue';
 import { sound } from '../utils/sound';
 
 export default function Hero({ onOpenProjectModal }) {
@@ -85,6 +86,7 @@ export default function Hero({ onOpenProjectModal }) {
             >
               {/* Primary CTA */}
               <button
+                data-magnetic
                 onClick={() => {
                   sound.click();
                   onOpenProjectModal();
@@ -98,6 +100,7 @@ export default function Hero({ onOpenProjectModal }) {
 
               {/* Secondary CTA */}
               <Link
+                data-magnetic
                 to="/services"
                 onClick={() => sound.click()}
                 onMouseEnter={() => sound.hover()}
@@ -149,6 +152,7 @@ export default function Hero({ onOpenProjectModal }) {
           >
             {/* Ambient Floating Metric Badge - Top Left */}
             <motion.div
+              data-scroll-depth="22"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
@@ -158,13 +162,14 @@ export default function Hero({ onOpenProjectModal }) {
                 <Sparkles size={14} />
               </div>
               <div className="text-left">
-                <div className="text-xs font-bold text-white font-display leading-tight">99.4% Client Score</div>
+                <div className="text-xs font-bold text-white font-display leading-tight"><CountUpValue value="99.4%" /> Client Score</div>
                 <div className="text-[10px] text-cyan-300 font-mono-code leading-tight">Delivered Excellence</div>
               </div>
             </motion.div>
 
             {/* Ambient Floating Metric Badge - Bottom Right */}
             <motion.div
+              data-scroll-depth="-18"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.0, duration: 0.8 }}
@@ -206,3 +211,5 @@ export default function Hero({ onOpenProjectModal }) {
     </section>
   );
 }
+
+

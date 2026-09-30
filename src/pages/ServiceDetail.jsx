@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import CustomCursor from '../components/CustomCursor';
 import ProjectModal from '../components/ProjectModal';
 import ServiceIcon from '../components/ServiceIcon';
 import { getServiceBySlug } from '../data/servicesData';
@@ -102,8 +101,6 @@ export default function ServiceDetail() {
 
   return (
     <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden">
-      <CustomCursor />
-      
       {/* Global Sticky Navbar */}
       <Navbar onOpenProjectModal={() => setProjectModalOpen(true)} />
 
@@ -167,6 +164,7 @@ export default function ServiceDetail() {
 
               <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
                 <motion.button
+                  data-magnetic
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => {
@@ -579,6 +577,7 @@ export default function ServiceDetail() {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <motion.button
+                data-magnetic
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => {

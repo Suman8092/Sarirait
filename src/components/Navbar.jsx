@@ -221,6 +221,7 @@ export default function Navbar({ onOpenProjectModal }) {
 
               {/* Primary CTA */}
               <button
+                data-magnetic
                 onClick={() => {
                   sound.click();
                   onOpenProjectModal();
@@ -240,6 +241,7 @@ export default function Navbar({ onOpenProjectModal }) {
             <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0 ml-auto z-10">
               {/* Tablet Quick CTA */}
               <button
+                data-magnetic
                 type="button"
                 onClick={() => {
                   sound.click();
@@ -330,3 +332,4 @@ export default function Navbar({ onOpenProjectModal }) {
     </>
   );
 }
+

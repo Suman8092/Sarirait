@@ -33,7 +33,7 @@ export default function TrustSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div data-motion-reveal className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-3 block">
             A connected digital presence
           </span>
@@ -74,7 +74,7 @@ export default function TrustSection() {
         </div>
 
         {/* AUTHENTIC CLIENT BRAND LOGOS MARQUEE */}
-        <div className="relative overflow-hidden py-6 border-t border-white/[0.05]">
+        <div data-motion-reveal="scale" className="relative overflow-hidden py-6 border-t border-white/[0.05]">
           <div className="text-center mb-4">
             <span className="text-[11px] font-mono-code uppercase tracking-widest text-slate-500">
               Trusted by Ambitious Brands Across India &amp; Globally // Sarirait

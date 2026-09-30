@@ -278,3 +278,4 @@ export default function MobileMenu({ isOpen, onClose, onOpenProjectModal }) {
     </AnimatePresence>
   );
 }
+

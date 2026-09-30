@@ -1,9 +1,13 @@
 import React from 'react';
-import { Target, Sparkles, Cpu, BarChart3, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Target, Sparkles, Cpu, BarChart3, ArrowRight, CheckCircle2 } from 'lucide-react';
 import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
+import { useTheme } from '../context/ThemeContext';
 
 export default function WhySarirait() {
+  const { isDark } = useTheme();
+
   const principles = [
     {
       number: "01",
@@ -11,9 +15,10 @@ export default function WhySarirait() {
       subtitle: "Every project starts with understanding the business.",
       description: "We start by learning about your business, your audience and what you want to achieve. That context guides the design and build decisions that follow.",
       icon: <Target className="w-6 h-6 text-cyan-400" />,
-      accent: "border-cyan-500/30 group-hover:border-cyan-400",
-      spotlight: "rgba(0, 240, 255, 0.16)",
-      glowBorder: "rgba(0, 240, 255, 0.45)"
+      accent: isDark ? "border-cyan-500/30 group-hover:border-cyan-400" : "border-slate-200 group-hover:border-sky-400",
+      spotlight: isDark ? "rgba(0, 240, 255, 0.16)" : "rgba(2, 132, 199, 0.12)",
+      glowBorder: isDark ? "rgba(0, 240, 255, 0.45)" : "rgba(2, 132, 199, 0.4)",
+      deliverables: ["Audience & Market Mapping", "Tech Stack Architecture", "Roadmap & Scope Lock"]
     },
     {
       number: "02",
@@ -21,9 +26,10 @@ export default function WhySarirait() {
       subtitle: "Beautiful interfaces with meaningful user experiences.",
       description: "A strong identity and a clear, easy-to-use experience help people understand what you offer and feel confident taking the next step.",
       icon: <Sparkles className="w-6 h-6 text-violet-400" />,
-      accent: "border-violet-500/30 group-hover:border-violet-400",
-      spotlight: "rgba(138, 43, 226, 0.18)",
-      glowBorder: "rgba(138, 43, 226, 0.45)"
+      accent: isDark ? "border-violet-500/30 group-hover:border-violet-400" : "border-slate-200 group-hover:border-purple-400",
+      spotlight: isDark ? "rgba(138, 43, 226, 0.18)" : "rgba(147, 51, 234, 0.12)",
+      glowBorder: isDark ? "rgba(138, 43, 226, 0.45)" : "rgba(147, 51, 234, 0.4)",
+      deliverables: ["Visual Identity Systems", "High-Fidelity Wireframes", "Design Tokens & UI Kit"]
     },
     {
       number: "03",
@@ -31,9 +37,10 @@ export default function WhySarirait() {
       subtitle: "Clean architecture designed for future growth.",
       description: "We choose practical tools for your needs and build with performance, accessibility and future updates in mind.",
       icon: <Cpu className="w-6 h-6 text-blue-400" />,
-      accent: "border-blue-500/30 group-hover:border-blue-400",
-      spotlight: "rgba(59, 130, 246, 0.16)",
-      glowBorder: "rgba(59, 130, 246, 0.45)"
+      accent: isDark ? "border-blue-500/30 group-hover:border-blue-400" : "border-slate-200 group-hover:border-blue-400",
+      spotlight: isDark ? "rgba(59, 130, 246, 0.16)" : "rgba(37, 99, 235, 0.12)",
+      glowBorder: isDark ? "rgba(59, 130, 246, 0.45)" : "rgba(37, 99, 235, 0.4)",
+      deliverables: ["Sub-Second Load Times", "Modern Headless Stacks", "Accessible & SEO-Engineered"]
     },
     {
       number: "04",
@@ -41,35 +48,51 @@ export default function WhySarirait() {
       subtitle: "Every digital product should create measurable value.",
       description: "We agree on the project scope and priorities with you, then use feedback and real-world results to decide what to improve next.",
       icon: <BarChart3 className="w-6 h-6 text-emerald-400" />,
-      accent: "border-emerald-500/30 group-hover:border-emerald-400",
-      spotlight: "rgba(16, 185, 129, 0.16)",
-      glowBorder: "rgba(16, 185, 129, 0.45)"
+      accent: isDark ? "border-emerald-500/30 group-hover:border-emerald-400" : "border-slate-200 group-hover:border-emerald-400",
+      spotlight: isDark ? "rgba(16, 185, 129, 0.16)" : "rgba(5, 150, 105, 0.12)",
+      glowBorder: isDark ? "rgba(16, 185, 129, 0.45)" : "rgba(5, 150, 105, 0.4)",
+      deliverables: ["Conversion-Optimized Flow", "Platform Telemetry & KPIs", "Ongoing Maintenance Sprints"]
     }
   ];
 
   return (
-    <section id="why-us" className="relative py-20 sm:py-28 bg-[#090d16] border-t border-white/[0.06] overflow-hidden w-full max-w-full">
+    <section 
+      id="why-us" 
+      className={`relative py-20 sm:py-28 transition-colors duration-300 overflow-hidden w-full max-w-full ${
+        isDark 
+          ? 'bg-[#090d16] border-t border-white/[0.06] text-slate-100' 
+          : 'bg-slate-50 border-t border-slate-200 text-slate-900'
+      }`}
+    >
       {/* Background ambient lighting */}
-      <div className="ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-[350px] sm:h-[400px] bg-cyan-500/5 rounded-full blur-[90px] pointer-events-none -z-10" />
+      <div 
+        className={`ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-[350px] sm:h-[400px] rounded-full blur-[100px] pointer-events-none -z-10 ${
+          isDark ? 'bg-cyan-500/5' : 'bg-sky-400/10'
+        }`} 
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
-        <div className="max-w-3xl mb-12 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-            <span>WHY SARIRAIT</span>
+        <div data-motion-reveal className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code mb-4 border border-cyan-500/30">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span className={isDark ? 'text-cyan-400 font-semibold' : 'text-sky-700 font-semibold'}>
+              WHY SARIRAIT // 4 CORE PILLARS
+            </span>
           </div>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.12]">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight leading-[1.12]">
             Thoughtful design. <br />
             <span className="text-gradient-cyan">Useful digital work.</span>
           </h2>
-          <p className="text-slate-400 text-sm sm:text-lg mt-5 leading-relaxed">
-            We connect the parts of your online presence so your brand looks consistent, works smoothly and is ready to grow.
+          <p className={`text-sm sm:text-base lg:text-lg mt-4 leading-relaxed ${
+            isDark ? 'text-slate-400' : 'text-slate-600'
+          }`}>
+            We connect every dimension of your online presence so your brand looks world-class, operates friction-free, and converts visitors into loyal clients.
           </p>
         </div>
 
-        {/* 4 CORE PRINCIPLES WITH LARGE TYPOGRAPHY & SPOTLIGHT CARDS */}
+        {/* 4 CORE PRINCIPLES WITH STAGGERED ENTRANCE & SPOTLIGHT CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {principles.map((p, index) => (
             <SpotlightCard
@@ -79,37 +102,88 @@ export default function WhySarirait() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
+              transition={{ delay: index * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5, transition: { type: 'spring', stiffness: 260, damping: 20 } }}
               onMouseEnter={() => sound.hover()}
-              className={`group p-6 sm:p-10 rounded-3xl glass-card border transition-all duration-300 relative flex flex-col justify-between ${p.accent}`}
+              className={`group p-6 sm:p-9 rounded-3xl transition-all duration-300 relative flex flex-col justify-between border shadow-xl ${
+                isDark 
+                  ? 'bg-[#0c1220]/80 border-white/[0.08] hover:border-cyan-500/40 shadow-black/40' 
+                  : 'bg-white border-slate-200/90 hover:border-sky-400 shadow-slate-200/70'
+              } ${p.accent}`}
             >
               <div>
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-mono-code text-3xl sm:text-4xl font-extrabold text-white/20 group-hover:text-cyan-400 transition-colors">
+                <div className="flex items-center justify-between mb-6">
+                  {/* Large Stylized Number with Theme Contrast */}
+                  <span className={`font-mono-code text-3xl sm:text-4xl font-extrabold tracking-tight transition-colors ${
+                    isDark 
+                      ? 'text-white/20 group-hover:text-cyan-400' 
+                      : 'text-slate-300 group-hover:text-sky-600'
+                  }`}>
                     {p.number}
                   </span>
-                  <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 group-hover:scale-110 transition-transform">
+
+                  {/* Icon Container with Theme Contrast */}
+                  <div className={`p-3 rounded-2xl border transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ${
+                    isDark 
+                      ? 'bg-white/[0.04] border-white/10 group-hover:border-cyan-400/40' 
+                      : 'bg-slate-100 border-slate-200 group-hover:border-sky-400 shadow-sm'
+                  }`}>
                     {p.icon}
                   </div>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">
+                <h3 className={`text-2xl sm:text-3xl font-display font-bold mb-2 transition-colors ${
+                  isDark ? 'text-white group-hover:text-cyan-300' : 'text-slate-900 group-hover:text-sky-700'
+                }`}>
                   {p.title}
                 </h3>
-                <div className="text-sm font-semibold text-cyan-400 font-mono-code mb-4">
+
+                <div className={`text-xs sm:text-sm font-semibold font-mono-code mb-3.5 ${
+                  isDark ? 'text-cyan-400' : 'text-sky-600'
+                }`}>
                   {p.subtitle}
                 </div>
-                <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+
+                <p className={`text-xs sm:text-sm leading-relaxed mb-6 ${
+                  isDark ? 'text-slate-400' : 'text-slate-600'
+                }`}>
                   {p.description}
                 </p>
+
+                {/* Micro-deliverables badges */}
+                <div className="flex flex-wrap gap-2 pt-2 mb-4">
+                  {p.deliverables.map((item, idx) => (
+                    <span 
+                      key={idx}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono-code border ${
+                        isDark 
+                          ? 'bg-white/[0.03] text-slate-300 border-white/[0.06]' 
+                          : 'bg-slate-50 text-slate-700 border-slate-200'
+                      }`}
+                    >
+                      <CheckCircle2 size={11} className={isDark ? "text-cyan-400" : "text-sky-600"} />
+                      <span>{item}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-white/[0.06] flex items-center justify-between">
-                <span className="text-xs font-mono-code text-slate-500 uppercase">
-                  Pillar {p.number} // Core Tenet
+              {/* Bottom Card Footer */}
+              <div className={`pt-5 border-t flex items-center justify-between ${
+                isDark ? 'border-white/[0.06]' : 'border-slate-100'
+              }`}>
+                <span className={`text-[11px] font-mono-code uppercase font-semibold ${
+                  isDark ? 'text-slate-500' : 'text-slate-400'
+                }`}>
+                  Pillar {p.number} // Core Standard
                 </span>
-                <div className="w-8 h-8 rounded-full bg-white/[0.04] flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-cyan-500/20 transition-all">
-                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                  isDark 
+                    ? 'bg-white/[0.04] text-slate-400 group-hover:text-white group-hover:bg-cyan-500/20' 
+                    : 'bg-slate-100 text-slate-500 group-hover:text-sky-700 group-hover:bg-sky-100'
+                }`}>
+                  <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
             </SpotlightCard>

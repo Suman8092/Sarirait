@@ -15,7 +15,7 @@ export default function Footer({ onOpenProjectModal }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* MAIN 6-COLUMN BALANCED FOOTER GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-16 border-b border-white/[0.08]">
+        <div data-motion-reveal="scale" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-16 border-b border-white/[0.08]">
           
           {/* BRAND COLUMN (2 COLS) */}
           <div className="lg:col-span-2 space-y-4">
@@ -53,6 +53,7 @@ export default function Footer({ onOpenProjectModal }) {
             </div>
 
             <button
+              data-magnetic
               type="button"
               onClick={() => {
                 sound.click();

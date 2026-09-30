@@ -11,7 +11,8 @@ export default function CustomCursor() {
     return (
       'ontouchstart' in window ||
       navigator.maxTouchPoints > 0 ||
-      window.matchMedia('(pointer: coarse)').matches
+      window.matchMedia('(pointer: coarse)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
     );
   });
   const [isVisible, setIsVisible] = useState(false);

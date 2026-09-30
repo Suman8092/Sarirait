@@ -19,11 +19,11 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import CustomCursor from '../components/CustomCursor';
 import ProjectModal from '../components/ProjectModal';
 import CaseStudyModal from '../components/CaseStudyModal';
 import { DeviceShowcase3D } from '../components/3d/DeviceShowcase3D';
 import { projectsData } from '../data/projects';
+import CountUpValue from '../components/CountUpValue';
 import { sound } from '../utils/sound';
 import { useTheme } from '../context/ThemeContext';
 
@@ -94,8 +94,6 @@ export default function Work() {
       isDark ? 'bg-[#07090e] text-slate-100' : 'bg-slate-50 text-slate-900'
     } selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden transition-colors duration-200`}>
       {/* Desktop Custom Cursor */}
-      <CustomCursor />
-
       {/* Global Navigation */}
       <Navbar onOpenProjectModal={() => setProjectModalOpen(true)} />
 
@@ -143,19 +141,19 @@ export default function Work() {
               <div className={`p-4 rounded-2xl border ${
                 isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-slate-200 shadow-sm'
               }`}>
-                <div className="text-2xl sm:text-3xl font-bold font-display text-cyan-400">18+</div>
+                <div className="text-2xl sm:text-3xl font-bold font-display text-cyan-400"><CountUpValue value="18+" /></div>
                 <div className="text-xs font-mono-code text-slate-400 uppercase mt-0.5">Verified Works</div>
               </div>
               <div className={`p-4 rounded-2xl border ${
                 isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-slate-200 shadow-sm'
               }`}>
-                <div className="text-2xl sm:text-3xl font-bold font-display text-violet-400">100%</div>
+                <div className="text-2xl sm:text-3xl font-bold font-display text-violet-400"><CountUpValue value="100%" /></div>
                 <div className="text-xs font-mono-code text-slate-400 uppercase mt-0.5">Custom Code</div>
               </div>
               <div className={`p-4 rounded-2xl border ${
                 isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-slate-200 shadow-sm'
               }`}>
-                <div className="text-2xl sm:text-3xl font-bold font-display text-emerald-400">4.9★</div>
+                <div className="text-2xl sm:text-3xl font-bold font-display text-emerald-400"><CountUpValue value="4.9★" /></div>
                 <div className="text-xs font-mono-code text-slate-400 uppercase mt-0.5">Client Rating</div>
               </div>
               <div className={`p-4 rounded-2xl border ${
@@ -473,8 +471,8 @@ export default function Work() {
         {/* INTERACTIVE 3D DEVICE SHOWCASE */}
         {/* ========================================================================= */}
         <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-24">
-          <div className="relative rounded-3xl p-6 sm:p-10 lg:p-16 glass-card border border-cyan-500/20 overflow-hidden bg-gradient-to-b from-[#0c1220]/90 via-[#07090e] to-[#07090e] w-full max-w-full shadow-2xl">
-            <div className="relative z-10 text-center max-w-3xl mx-auto mb-8">
+            <div data-motion-reveal="scale" className="relative rounded-3xl p-6 sm:p-10 lg:p-16 glass-card border border-cyan-500/20 overflow-hidden bg-gradient-to-b from-[#0c1220]/90 via-[#07090e] to-[#07090e] w-full max-w-full shadow-2xl">
+            <div data-motion-reveal className="relative z-10 text-center max-w-3xl mx-auto mb-8">
               <span className="text-xs font-mono-code uppercase tracking-widest text-cyan-400 mb-2 block">
                 Interactive Multi-Device Experience
               </span>
@@ -482,7 +480,7 @@ export default function Work() {
                 Seamless responsive architecture across all screens.
               </h2>
               <p className="text-slate-400 text-xs sm:text-base mt-3">
-                Every solution we deliver is tested for pixel precision, touch-speed reactivity, and fluid cross-device execution.
+                Explore three featured projects inside the interactive device preview, then open each live website.
               </p>
             </div>
 
@@ -513,7 +511,7 @@ export default function Work() {
         {/* ========================================================================= */}
         <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className={`p-6 sm:p-8 rounded-3xl border ${
+            <div data-motion-reveal style={{ '--motion-delay': '0ms' }} className={`p-6 sm:p-8 rounded-3xl border ${
               isDark ? 'glass-card border-white/10' : 'bg-white border-slate-200 shadow-sm'
             }`}>
               <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-5 border border-cyan-500/20">
@@ -525,7 +523,7 @@ export default function Work() {
               </p>
             </div>
 
-            <div className={`p-6 sm:p-8 rounded-3xl border ${
+            <div data-motion-reveal style={{ '--motion-delay': '90ms' }} className={`p-6 sm:p-8 rounded-3xl border ${
               isDark ? 'glass-card border-white/10' : 'bg-white border-slate-200 shadow-sm'
             }`}>
               <div className="w-12 h-12 rounded-2xl bg-violet-500/10 text-violet-400 flex items-center justify-center mb-5 border border-violet-500/20">
@@ -537,7 +535,7 @@ export default function Work() {
               </p>
             </div>
 
-            <div className={`p-6 sm:p-8 rounded-3xl border ${
+            <div data-motion-reveal style={{ '--motion-delay': '180ms' }} className={`p-6 sm:p-8 rounded-3xl border ${
               isDark ? 'glass-card border-white/10' : 'bg-white border-slate-200 shadow-sm'
             }`}>
               <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-5 border border-emerald-500/20">
@@ -555,7 +553,7 @@ export default function Work() {
         {/* BOTTOM FINAL INQUIRY CTA */}
         {/* ========================================================================= */}
         <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="relative rounded-3xl p-8 sm:p-12 lg:p-16 border border-cyan-500/30 overflow-hidden bg-gradient-to-r from-cyan-950/40 via-[#0c1220] to-purple-950/40 shadow-2xl text-center">
+          <div data-motion-reveal="scale" className="relative rounded-3xl p-8 sm:p-12 lg:p-16 border border-cyan-500/30 overflow-hidden bg-gradient-to-r from-cyan-950/40 via-[#0c1220] to-purple-950/40 shadow-2xl text-center">
             <div className="ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none -z-10" />
 
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-6 border border-cyan-500/30">
@@ -574,6 +572,7 @@ export default function Work() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
+                data-magnetic
                 onClick={() => {
                   sound.click();
                   setProjectModalOpen(true);

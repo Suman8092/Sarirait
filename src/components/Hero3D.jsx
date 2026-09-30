@@ -1,8 +1,10 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { useReducedMotion } from 'framer-motion';
 import { DigitalCore } from './3d/DigitalCore';
 
 export default function Hero3D() {
+  const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef(null);
   const [isInView, setIsInView] = useState(true);
 
@@ -82,7 +84,7 @@ export default function Hero3D() {
           }
         >
           <Canvas
-            frameloop={isInView ? "always" : "never"}
+            frameloop={isInView && !prefersReducedMotion ? "always" : "never"}
             camera={{ position: [0, 0, 7.0], fov: 45 }}
             dpr={isMobile ? 1 : [1, 1.5]}
             gl={{ 
