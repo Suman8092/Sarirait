@@ -62,14 +62,12 @@ export default function FAQ({ onOpenProjectModal }) {
         </div>
 
         {/* ACCORDION LIST */}
-        <div className="space-y-3.5">
-          {faqsData.map((faq, idx) => {
+        <div data-motion-reveal className="space-y-3.5">
+          {faqsData.map((faq) => {
             const isOpen = openId === faq.id;
             return (
               <div
                 key={faq.id}
-                data-motion-reveal
-                style={{ '--motion-delay': `${Math.min(idx, 3) * 45}ms` }}
                 className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
                   isOpen
                     ? isDark

@@ -22,6 +22,7 @@ export default function MotionSystem() {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-motion-visible');
+        entry.target.setAttribute('data-motion-revealed', 'true');
         pendingTargets.delete(entry.target);
         currentObserver.unobserve(entry.target);
       });
@@ -31,7 +32,7 @@ export default function MotionSystem() {
     });
 
     const observeTarget = (target) => {
-      if (target.classList.contains('is-motion-visible') || pendingTargets.has(target)) return;
+      if (target.classList.contains('is-motion-visible') || target.hasAttribute('data-motion-revealed') || pendingTargets.has(target)) return;
       pendingTargets.add(target);
       observer.observe(target);
     };
@@ -44,7 +45,15 @@ export default function MotionSystem() {
     scanNode(document);
 
     const mutations = new MutationObserver((records) => {
-      records.forEach((record) => record.addedNodes.forEach(scanNode));
+      records.forEach((record) => {
+        record.addedNodes.forEach(scanNode);
+        if (record.type === 'attributes' && record.attributeName === 'class') {
+          const el = record.target;
+          if (el instanceof Element && el.hasAttribute('data-motion-revealed') && !el.classList.contains('is-motion-visible')) {
+            el.classList.add('is-motion-visible');
+          }
+        }
+      });
       pendingTargets.forEach((target) => {
         if (!target.isConnected) {
           observer.unobserve(target);
@@ -55,6 +64,8 @@ export default function MotionSystem() {
     mutations.observe(document.getElementById('root') || document.body, {
       childList: true,
       subtree: true,
+      attributes: true,
+      attributeFilter: ['class'],
     });
 
     // A keyboard user can focus a card before its entrance finishes.
@@ -63,6 +74,7 @@ export default function MotionSystem() {
       while (target) {
         if (target.matches('[data-motion-reveal]')) {
           target.classList.add('is-motion-visible');
+          target.setAttribute('data-motion-revealed', 'true');
           pendingTargets.delete(target);
           observer.unobserve(target);
         }
