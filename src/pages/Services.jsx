@@ -1,671 +1,526 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
 import { 
-  ArrowRight, 
   ArrowUpRight, 
   CheckCircle2, 
-  TrendingUp, 
-  Layers, 
-  Cpu, 
+  Search,
   Sparkles, 
-  Database, 
-  Activity, 
-  BarChart, 
-  Server, 
-  Globe 
+  Cpu, 
+  Plus, 
+  Check, 
+  Sliders, 
+  Clock, 
+  ShieldCheck,
+  Send,
+  X
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProjectModal from '../components/ProjectModal';
 import ServiceIcon from '../components/ServiceIcon';
+import SpotlightCard from '../components/SpotlightCard';
+import MaskedHeading from '../components/MaskedHeading';
 import { serviceCategories } from '../data/servicesData';
 import { sound } from '../utils/sound';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Services() {
+  const { isDark } = useTheme();
+  const { hash } = useLocation();
+  const hashCategory = serviceCategories.find(category => `#${category.id}` === hash)?.id;
+  const reducedMotion = useReducedMotion();
   const [projectModalOpen, setProjectModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('all');
+  const [directoryFilters, setDirectoryFilters] = useState(() => ({
+    hash,
+    category: hashCategory || 'all',
+    query: ''
+  }));
+  // Sync before anchors commit, while keeping manual filters for non-category hashes.
+  const filters = directoryFilters.hash !== hash
+    ? { hash, category: hashCategory || directoryFilters.category, query: hashCategory ? '' : directoryFilters.query }
+    : directoryFilters;
+  if (directoryFilters.hash !== hash) setDirectoryFilters(filters);
+  const activeTab = filters.category;
+  const searchQuery = filters.query;
+  const setActiveTab = category => setDirectoryFilters({ ...filters, hash, category });
+  const setSearchQuery = query => setDirectoryFilters({ ...filters, hash, query });
+  const [scopeFeedback, setScopeFeedback] = useState('');
+  const [scopeServices, setScopeServices] = useState([
+    'Website Development',
+    'Brand Strategy & Branding'
+  ]);
 
-  const devCat = serviceCategories[0];
-  const marketingCat = serviceCategories[1];
-  const creativeCat = serviceCategories[2];
-  const businessCat = serviceCategories[3];
+  // Flattened all services with category metadata
+  const allServices = useMemo(() => {
+    return serviceCategories.flatMap(cat => 
+      cat.services.map(srv => ({
+        ...srv,
+        category: cat.id,
+        categoryTitle: cat.title,
+        categoryNumber: cat.number
+      }))
+    );
+  }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
+  // Filtered services based on category and search
+  const filteredServices = useMemo(() => {
+    return allServices.filter(srv => {
+      const matchesTab = activeTab === 'all' || srv.category === activeTab;
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch = !q || 
+        srv.title.toLowerCase().includes(q) || 
+        srv.shortDesc.toLowerCase().includes(q) ||
+        srv.badge.toLowerCase().includes(q) ||
+        srv.features.some(f => f.toLowerCase().includes(q));
+
+      return matchesTab && matchesSearch;
+    });
+  }, [allServices, activeTab, searchQuery]);
+
+  const toggleScope = (title) => {
+    sound.click();
+    if (scopeServices.includes(title) && scopeServices.length === 1) {
+      setScopeFeedback('Keep at least one capability in your project scope.');
+      return;
     }
+    setScopeFeedback(`${title} ${scopeServices.includes(title) ? 'removed from' : 'added to'} your scope.`);
+    setScopeServices(prev => 
+      prev.includes(title) 
+        ? (prev.length > 1 ? prev.filter(t => t !== title) : prev) 
+        : [...prev, title]
+    );
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 22 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+  const categoryMeta = {
+    development: {
+      color: "#00f0ff",
+      badge: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10",
+      spotlight: "rgba(0, 240, 255, 0.16)",
+      glowBorder: "rgba(0, 240, 255, 0.45)"
+    },
+    marketing: {
+      color: "#38bdf8",
+      badge: "text-sky-400 border-sky-500/30 bg-sky-500/10",
+      spotlight: "rgba(56, 189, 248, 0.16)",
+      glowBorder: "rgba(56, 189, 248, 0.45)"
+    },
+    creative: {
+      color: "#a855f7",
+      badge: "text-violet-400 border-violet-500/30 bg-violet-500/10",
+      spotlight: "rgba(168, 85, 247, 0.18)",
+      glowBorder: "rgba(168, 85, 247, 0.45)"
+    },
+    business: {
+      color: "#6366f1",
+      badge: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10",
+      spotlight: "rgba(99, 102, 241, 0.16)",
+      glowBorder: "rgba(99, 102, 241, 0.45)"
     }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 28 },
-    visible: (custom = 0) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: custom * 0.07,
-        duration: 0.55,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    })
   };
 
   return (
-    <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden">
+    <div className={`relative min-h-screen transition-colors duration-300 w-full max-w-full overflow-x-hidden ${
+      isDark 
+        ? 'bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200' 
+        : 'bg-slate-50 text-slate-900 selection:bg-sky-500/30 selection:text-sky-900'
+    }`}>
       {/* Global Navbar */}
       <Navbar onOpenProjectModal={() => setProjectModalOpen(true)} />
 
       <main className="pt-24 sm:pt-32 pb-16 sm:pb-24 w-full max-w-full overflow-x-hidden">
+        
         {/* HERO SECTION */}
-        <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16 sm:mb-20 overflow-hidden w-full max-w-full">
-          <motion.div 
-            animate={{ scale: [1, 1.15, 1], opacity: [0.08, 0.16, 0.08] }}
-            transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-            className="ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[700px] h-[350px] bg-cyan-500/10 rounded-full blur-[90px] pointer-events-none -z-10" 
-          />
+        <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-14 sm:mb-18 text-center">
+          {/* Animated Ambient Glow */}
+          <div data-scroll-depth="22" aria-hidden="true" className="ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-[350px] bg-cyan-500/10 rounded-full blur-[110px] pointer-events-none -z-10" />
 
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="text-center max-w-4xl mx-auto"
+          <motion.div
+            initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-4xl mx-auto"
           >
-            <motion.div 
-              variants={itemVariants}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-6 border border-cyan-500/30 shadow-lg shadow-cyan-500/5"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span>DESIGN • DEVELOPMENT • MARKETING</span>
-            </motion.div>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill text-xs font-mono-code mb-5 border border-cyan-500/30">
+              <span className={`w-1.5 h-1.5 rounded-full bg-cyan-400 ${reducedMotion ? '' : 'animate-pulse'}`} />
+              <span className={isDark ? 'text-cyan-400 font-semibold' : 'text-sky-700 font-semibold'}>
+                FULL-SERVICE DIGITAL STUDIO // 20+ CAPABILITIES
+              </span>
+            </div>
 
-            <motion.h1 
-              variants={itemVariants}
-              className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight leading-[1.08] mb-6"
-            >
-              Everything your brand needs <br />
-              <span className="text-gradient-cyan">to show up online.</span>
-            </motion.h1>
+            <MaskedHeading
+              as="h1"
+              lines={['Everything your brand needs', <span key="accent" className="text-gradient-cyan">to dominate online.</span>]}
+              className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-[1.08] mb-6"
+            />
 
-            <motion.p 
-              variants={itemVariants}
-              className="text-slate-300 text-base sm:text-xl max-w-3xl mx-auto leading-relaxed mb-10"
-            >
-              Explore branding and design, websites and apps, e-commerce, marketing and digital tools. Choose one service or start with a wider brief.
-            </motion.p>
+            <p className={`text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mb-8 ${
+              isDark ? 'text-slate-300' : 'text-slate-600'
+            }`}>
+              From bespoke identity and high-performance web engineering to multi-channel customer acquisition and custom cloud tools.
+            </p>
 
-            {/* Quick Filter Category Pills */}
-            <motion.div 
-              variants={itemVariants}
-              className="flex flex-wrap items-center justify-center gap-2 sm:gap-3"
-            >
+            {/* SEARCH & QUICK DISCOVERY BAR */}
+            <div className="max-w-xl mx-auto relative mb-8">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+              <input
+                type="text"
+                aria-label="Search service capabilities"
+                aria-controls="service-capabilities"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search capabilities (e.g. Next.js, SEO, Branding, E-Commerce, Mobile)..."
+                className={`w-full pl-11 pr-16 py-3 rounded-full text-xs sm:text-sm font-mono-code transition-all border outline-none ${
+                  isDark 
+                    ? 'bg-white/[0.04] border-white/10 text-white placeholder:text-slate-500 focus:border-cyan-400 focus:bg-white/[0.07] focus:shadow-lg focus:shadow-cyan-500/10' 
+                    : 'bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:shadow-md'
+                }`}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className={`absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono-code text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${isDark ? 'hover:text-white' : 'hover:text-slate-900'}`}
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {/* CATEGORY SELECTOR PILLS */}
+            <div role="group" aria-label="Filter service capabilities by category" className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
               {[
-                { id: 'all', label: 'All Services' },
-                { id: 'development', label: 'Web, Apps & E-commerce' },
-                { id: 'marketing', label: 'Marketing' },
-                { id: 'creative', label: 'Brand & Design' },
-                { id: 'business', label: 'Digital Tools' }
+                { id: 'all', label: 'All Capabilities', count: allServices.length },
+                { id: 'development', label: 'Web & Apps', count: serviceCategories[0].services.length },
+                { id: 'marketing', label: 'Digital Marketing', count: serviceCategories[1].services.length },
+                { id: 'creative', label: 'Brand & Creative', count: serviceCategories[2].services.length },
+                { id: 'business', label: 'Business Tools', count: serviceCategories[3].services.length }
               ].map((tab) => {
                 const isActive = activeTab === tab.id;
+
                 return (
                   <motion.button
                     key={tab.id}
+                    aria-pressed={isActive}
+                    aria-controls="service-capabilities"
+                    whileHover={reducedMotion ? undefined : { y: -2 }}
+                    whileTap={reducedMotion ? undefined : { scale: 0.97 }}
                     onClick={() => {
                       sound.click();
                       setActiveTab(tab.id);
-                      if (tab.id !== 'all') {
-                        const el = document.getElementById(tab.id);
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
-                      }
                     }}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
                     onMouseEnter={() => sound.hover()}
-                    className={`relative px-4 py-2 rounded-full text-xs font-mono-code uppercase font-semibold transition-all border cursor-pointer ${
+                    className={`relative px-4 py-2 rounded-full text-xs font-mono-code font-bold transition-colors duration-300 flex items-center gap-2 cursor-pointer border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 ${
                       isActive
-                        ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400 shadow-lg shadow-cyan-500/15'
-                        : 'bg-white/[0.03] text-slate-400 border-white/[0.08] hover:text-white hover:border-white/20'
+                        ? isDark
+                          ? 'text-white border-cyan-400/60 shadow-lg shadow-cyan-500/20'
+                          : 'text-slate-900 border-sky-500 shadow-md shadow-sky-500/10'
+                        : isDark
+                          ? 'bg-white/[0.03] border-white/[0.08] text-slate-400 hover:text-white hover:border-white/20'
+                          : 'bg-white border-slate-200 text-slate-600 hover:text-slate-950'
                     }`}
                   >
-                    {tab.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId={reducedMotion ? undefined : 'servicesTabGlider'}
+                        className={`absolute inset-0 rounded-full ${
+                          isDark ? 'bg-cyan-500/25 border-cyan-400' : 'bg-sky-100 border-sky-400'
+                        }`}
+                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative z-10">{tab.label}</span>
+                    <span className={`relative z-10 text-[10px] px-1.5 py-0.2 rounded-full ${
+                      isActive ? isDark ? 'bg-white/20 text-white' : 'bg-sky-200 text-sky-800' : isDark ? 'bg-white/[0.06] text-slate-400' : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      {tab.count}
+                    </span>
                   </motion.button>
                 );
               })}
-            </motion.div>
+            </div>
+          </motion.div>
+          <p className="sr-only" role="status" aria-live="polite">{scopeFeedback}</p>
+        </section>
+
+        {/* DYNAMIC SERVICE CARDS GRID */}
+        <section id={activeTab === 'all' ? 'service-directory' : activeTab} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 sm:mb-28 scroll-mt-24">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <span role="status" aria-live="polite" className={`text-xs font-mono-code uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              Showing {filteredServices.length} of {allServices.length} Capabilities
+            </span>
+
+            {searchQuery && (
+              <span className="text-xs font-mono-code text-cyan-400 font-bold">
+                Filtered by: “{searchQuery}”
+              </span>
+            )}
+            <a href="#project-scope" className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-mono-code transition-colors hover:border-cyan-400/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${isDark ? 'border-white/10 text-cyan-300' : 'border-sky-200 text-sky-700'}`}>
+              <Sliders size={13} />
+              <span>Your scope</span>
+              <motion.span key={scopeServices.length} initial={reducedMotion ? false : { scale: 0.75 }} animate={{ scale: 1 }} className="rounded-full bg-cyan-500/15 px-2 py-0.5 font-bold">{scopeServices.length}</motion.span>
+              <ArrowUpRight size={13} />
+            </a>
+          </div>
+
+          <motion.div 
+            id="service-capabilities"
+            layout={!reducedMotion}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredServices.map((srv, idx) => {
+                const meta = categoryMeta[srv.category] || categoryMeta.development;
+                const isInScope = scopeServices.includes(srv.title);
+
+                return (
+                  <motion.div
+                    key={srv.slug}
+                    layout={reducedMotion ? false : 'position'}
+                    initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.12, margin: '0px 0px -28px 0px' }}
+                    exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
+                    transition={{ duration: reducedMotion ? 0.1 : 0.55, delay: reducedMotion ? 0 : (idx % 3) * 0.055, ease: [0.22, 1, 0.36, 1], layout: { duration: 0.35 } }}
+                  >
+                    <SpotlightCard
+                      spotlightColor={meta.spotlight}
+                      borderColor={meta.glowBorder}
+                      onMouseEnter={() => sound.hover()}
+                      className={`p-7 rounded-3xl glass-card border transition-all duration-300 flex flex-col justify-between group h-full ${
+                        isDark 
+                          ? 'bg-[#090d16] border-white/[0.08] hover:border-cyan-500/40' 
+                          : 'bg-white border-slate-200 hover:border-sky-400 shadow-sm'
+                      }`}
+                    >
+                      <div>
+                        {/* Top Row: Icon + Badge + Scope Add Button */}
+                        <div className="flex items-center justify-between gap-3 mb-5">
+                          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-transform duration-300 group-hover:scale-110 ${
+                            isDark 
+                              ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400' 
+                              : 'bg-sky-50 border-sky-200 text-sky-600'
+                          }`}>
+                            <ServiceIcon name={srv.icon} className="w-6 h-6" />
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <span className={`text-[10px] font-mono-code px-2.5 py-1 rounded-full border ${meta.badge}`}>
+                              {srv.badge}
+                            </span>
+                            
+                            {/* Toggle in interactive scope builder */}
+                            <motion.button
+                              onClick={() => toggleScope(srv.title)}
+                              aria-pressed={isInScope}
+                              aria-label={`${isInScope ? 'Remove' : 'Add'} ${srv.title} ${isInScope ? 'from' : 'to'} project scope`}
+                              whileTap={reducedMotion ? undefined : { scale: 0.88 }}
+                              title={isInScope ? "Remove from my project scope" : "Add to my project scope"}
+                              className={`w-9 h-9 rounded-full flex items-center justify-center border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 ${
+                                isInScope
+                                  ? 'bg-cyan-400 border-cyan-400 text-black font-bold shadow-md shadow-cyan-400/30 scale-105'
+                                  : isDark
+                                    ? 'bg-white/[0.04] border-white/10 text-slate-400 hover:text-white hover:border-white/20'
+                                    : 'bg-slate-100 border-slate-200 text-slate-500 hover:text-slate-900'
+                              }`}
+                            >
+                              <motion.span key={isInScope ? 'selected' : 'available'} initial={reducedMotion ? false : { opacity: 0, rotate: -45, scale: 0.7 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} transition={{ duration: 0.2 }}>
+                                {isInScope ? <Check size={13} /> : <Plus size={13} />}
+                              </motion.span>
+                            </motion.button>
+                          </div>
+                        </div>
+
+                        {/* Title & Short Description */}
+                        <h3 className={`text-xl font-display font-bold mb-2 group-hover:text-cyan-400 transition-colors ${
+                          isDark ? 'text-white' : 'text-slate-900'
+                        }`}>
+                          {srv.title}
+                        </h3>
+
+                        <p className={`text-xs sm:text-sm leading-relaxed mb-5 ${
+                          isDark ? 'text-slate-400' : 'text-slate-600'
+                        }`}>
+                          {srv.shortDesc}
+                        </p>
+
+                        {/* Key deliverables pills */}
+                        <div className="space-y-2 pt-4 border-t border-current/5 mb-6">
+                          <span className={`text-[10px] font-mono-code uppercase tracking-wider block font-bold ${
+                            isDark ? 'text-slate-500' : 'text-slate-500'
+                          }`}>
+                            What we engineer:
+                          </span>
+                          {srv.features.slice(0, 3).map((feat, fIdx) => (
+                            <div key={fIdx} className="flex items-start gap-2 text-xs">
+                              <CheckCircle2 size={13} className="text-cyan-400 shrink-0 mt-0.5" />
+                              <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>{feat}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Card Footer Link */}
+                      <div className="pt-4 border-t border-current/5 flex items-center justify-between">
+                        <span className="text-[11px] font-mono-code text-cyan-400 font-bold">
+                          {srv.benefits[0]?.value || 'Proven Impact'}
+                        </span>
+                        
+                        <Link
+                          to={`/services/${srv.slug}`}
+                          onClick={() => sound.click()}
+                          className={`btn-shimmer inline-flex items-center gap-1.5 text-xs font-mono-code font-bold uppercase transition-colors group/link px-3 py-1.5 rounded-full border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${isDark ? 'text-white hover:text-cyan-300 bg-white/[0.04] border-white/10 hover:border-cyan-400/40' : 'text-sky-700 hover:text-sky-900 bg-sky-50 border-sky-200 hover:border-sky-400'}`}
+                        >
+                          <span>Explore Deeply</span>
+                          <ArrowUpRight size={13} className="text-cyan-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                        </Link>
+                      </div>
+                    </SpotlightCard>
+                  </motion.div>
+                );
+              })}
+              {filteredServices.length === 0 && (
+                <motion.div key="no-capabilities" initial={reducedMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`col-span-full rounded-3xl border px-6 py-14 text-center ${isDark ? 'border-white/10 bg-white/[0.02]' : 'border-slate-200 bg-white'}`}>
+                  <Search className="mx-auto mb-4 text-cyan-400" size={28} />
+                  <h2 className="font-display text-xl font-bold mb-2">No capabilities match yet.</h2>
+                  <p className={`mb-6 text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Try a different keyword or explore the full directory.</p>
+                  <button onClick={() => setDirectoryFilters({ hash, category: 'all', query: '' })} className="rounded-full border border-cyan-400/40 bg-cyan-500/10 px-5 py-2 text-sm font-semibold text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">Reset filters</button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </section>
 
-        {/* CATEGORY SECTIONS CONTAINER WITH SMOOTH ANIMATION */}
-        <AnimatePresence mode="wait">
+        {/* INTERACTIVE "BUILD YOUR PROJECT SCOPE" SPRINT CALCULATOR */}
+        <section id="project-scope" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 sm:mb-24 scroll-mt-24">
           <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            initial={reducedMotion ? false : { opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.7 }}
+            className={`p-8 sm:p-12 rounded-3xl border relative overflow-hidden shadow-2xl ${
+              isDark 
+                ? 'bg-gradient-to-br from-[#0c1222] via-[#070a12] to-[#120e24] border-cyan-500/30' 
+                : 'bg-gradient-to-br from-white via-sky-50 to-slate-50 border-sky-300 shadow-xl'
+            }`}
           >
-            {/* SECTION 1: DEVELOPMENT SOLUTIONS */}
-            {(activeTab === 'all' || activeTab === 'development') && (
-              <section id="development" className="py-16 border-t border-white/[0.06] relative">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 text-cyan-400 font-mono-code text-xs mb-2">
-                        <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30">01</span>
-                        <span>WE DEVELOP</span>
-                      </div>
-                      <h2 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight">
-                        {devCat.title}
-                      </h2>
-                      <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-xl">
-                        {devCat.description}
-                      </p>
-                    </div>
+            {/* Ambient Background Aura */}
+            <div data-scroll-depth="-18" aria-hidden="true" className="ambient-glow absolute top-0 right-0 w-[500px] h-[300px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-                    <div className="flex items-center gap-2 text-xs font-mono-code text-slate-500">
-                      <Globe size={14} className="text-cyan-400" />
-                      <span>Websites • Apps • Online stores</span>
-                    </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              
+              {/* Left Column: Scope Overview */}
+              <div className="lg:col-span-7 space-y-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono-code mb-3 border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 font-bold">
+                    <Sliders size={13} />
+                    <span>INTERACTIVE SPRINT PLANNER</span>
+                  </div>
+                  <MaskedHeading lines={['Custom-built scope', <span key="accent" className="text-gradient-cyan">for your commercial milestones.</span>]} className="text-2xl sm:text-3xl lg:text-4xl font-display font-extrabold tracking-tight" />
+                  <p className={`text-xs sm:text-sm mt-3 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    Select capabilities from the directory above or customize your project brief below. We engineer unified teams around your exact stack and timeline.
+                  </p>
+                </div>
+
+                {/* Selected Scope Badges */}
+                <div className="space-y-2">
+                  <div className="text-xs font-mono-code uppercase tracking-wider text-slate-400 font-bold">
+                    Active Sprint Scope ({scopeServices.length} Selected):
+                  </div>
+                  <motion.div layout={!reducedMotion} className="flex flex-wrap gap-2">
+                    <AnimatePresence initial={false} mode="popLayout">
+                    {scopeServices.map((title) => (
+                      <motion.button
+                        key={title}
+                        layout={!reducedMotion}
+                        initial={reducedMotion ? false : { opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.2 }}
+                        onClick={() => toggleScope(title)}
+                        aria-label={`Remove ${title} from project scope`}
+                        title={`Remove ${title} from project scope`}
+                        className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-mono-code border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
+                          isDark 
+                            ? 'bg-cyan-500/10 border-cyan-400/40 text-cyan-300' 
+                            : 'bg-white border-sky-400 text-sky-800 shadow-xs'
+                        }`}
+                      >
+                        <Check size={12} className="text-cyan-400 font-bold" />
+                        <span>{title}</span>
+                        <X size={12} className="opacity-60" />
+                      </motion.button>
+                    ))}
+                    </AnimatePresence>
                   </motion.div>
-
-                  {/* 5 Development Service Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {devCat.services.map((srv, idx) => (
-                      <motion.div
-                        key={srv.slug}
-                        custom={idx}
-                        variants={cardVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-40px" }}
-                        whileHover={{ y: -7, transition: { duration: 0.22, ease: "easeOut" } }}
-                        className="p-7 rounded-3xl glass-card border border-white/[0.08] hover:border-cyan-500/40 transition-colors flex flex-col justify-between group shadow-xl"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between mb-5">
-                            <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                              <ServiceIcon name={srv.icon} className="w-6 h-6" />
-                            </div>
-                            <span className="text-xs font-mono-code text-cyan-400 px-2.5 py-1 rounded-full bg-black/40 border border-cyan-500/20">
-                              {srv.badge}
-                            </span>
-                          </div>
-
-                          <h3 className="text-xl font-display font-bold text-white group-hover:text-cyan-200 transition-colors">
-                            {srv.title}
-                          </h3>
-                          <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                            {srv.shortDesc}
-                          </p>
-
-                          {/* Key capabilities list */}
-                          <div className="mt-5 pt-4 border-t border-white/[0.06] space-y-2">
-                            <span className="text-[11px] font-mono-code uppercase tracking-wider text-slate-500 block">
-                              Possible project elements:
-                            </span>
-                            {srv.features.slice(0, 3).map((feat, fIdx) => (
-                              <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
-                                <CheckCircle2 size={13} className="text-cyan-400 shrink-0 mt-0.5" />
-                                <span className="line-clamp-1">{feat}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between">
-                          <div className="text-[11px] font-mono-code text-cyan-400 font-bold">
-                            {srv.benefits[0].value} {srv.benefits[0].label}
-                          </div>
-                          <Link
-                            to={`/services/${srv.slug}`}
-                            onClick={() => sound.click()}
-                            onMouseEnter={() => sound.hover()}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono-code font-bold uppercase text-white hover:text-cyan-300 transition-colors group/link"
-                          >
-                            <span>Explore Service</span>
-                            <ArrowUpRight size={14} className="text-cyan-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                          </Link>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-
                 </div>
-              </section>
-            )}
 
-            {/* SECTION 2: DIGITAL MARKETING */}
-            {(activeTab === 'all' || activeTab === 'marketing') && (
-              <section id="marketing" className="py-20 border-t border-white/[0.06] bg-[#080c16]/50 relative">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-16">
-                    <motion.div 
-                      initial={{ opacity: 0, x: -25 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-40px" }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      className="lg:col-span-6"
-                    >
-                      <div className="flex items-center gap-2 text-sky-400 font-mono-code text-xs mb-2">
-                        <span className="px-2 py-0.5 rounded bg-sky-500/10 border border-sky-500/30">02</span>
-                        <span>WE MARKET</span>
-                      </div>
-                      <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
-                        {marketingCat.title}
-                      </h2>
-                      <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-                        {marketingCat.description}
-                      </p>
-                    </motion.div>
-
-                    {/* MARKETING DASHBOARD-STYLE VISUAL COMPONENT */}
-                    <motion.div 
-                      initial={{ opacity: 0, x: 25 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-40px" }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                      className="lg:col-span-6 rounded-2xl glass-card border border-sky-500/30 p-6 bg-[#0a0f1d] shadow-2xl relative overflow-hidden"
-                    >
-                      <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
-                        <div className="flex items-center gap-2">
-                          <Activity size={16} className="text-sky-400 animate-pulse" />
-                          <span className="text-xs font-mono-code text-white font-semibold">A marketing plan can include</span>
-                        </div>
-                        <span className="text-[10px] font-mono-code text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
-                          GOALS // AUDIENCE // CHANNELS
-                        </span>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-3 my-4">
-                        <motion.div whileHover={{ scale: 1.03 }} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] transition-transform">
-                          <span className="text-[10px] font-mono-code text-slate-400 uppercase">Search</span>
-                          <div className="text-lg font-bold text-white font-mono-code mt-0.5">Be found</div>
-                          <span className="text-[10px] text-emerald-400 font-mono-code">Useful pages</span>
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.03 }} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] transition-transform">
-                          <span className="text-[10px] font-mono-code text-slate-400 uppercase">Social</span>
-                          <div className="text-lg font-bold text-white font-mono-code mt-0.5">Show up</div>
-                          <span className="text-[10px] text-sky-400 font-mono-code">Good content</span>
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.03 }} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] transition-transform">
-                          <span className="text-[10px] font-mono-code text-slate-400 uppercase">Email</span>
-                          <div className="text-lg font-bold text-white font-mono-code mt-0.5">Stay in touch</div>
-                          <span className="text-[10px] text-violet-400 font-mono-code">Timely updates</span>
-                        </motion.div>
-                      </div>
-
-                      <div className="space-y-2 pt-2">
-                        <div className="flex justify-between text-xs font-mono-code text-slate-400">
-                          <span>Choose channels to suit your audience</span>
-                          <span className="text-sky-400">Plan • Publish • Learn</span>
-                        </div>
-                        <div className="w-full h-2 rounded-full bg-white/[0.06] overflow-hidden flex">
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            whileInView={{ width: '40%' }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                            className="h-full bg-sky-400" 
-                          />
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            whileInView={{ width: '33%' }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                            className="h-full bg-blue-500" 
-                          />
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            whileInView={{ width: '27%' }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                            className="h-full bg-violet-500" 
-                          />
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Marketing Services Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {marketingCat.services.map((srv, idx) => (
-                      <motion.div
-                        key={srv.slug}
-                        custom={idx}
-                        variants={cardVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-40px" }}
-                        whileHover={{ y: -7, transition: { duration: 0.22, ease: "easeOut" } }}
-                        className="p-7 rounded-3xl glass-card border border-white/[0.08] hover:border-sky-500/40 transition-colors flex flex-col justify-between group shadow-xl"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                              <ServiceIcon name={srv.icon} className="w-6 h-6" />
-                            </div>
-                            <span className="text-xs font-mono-code text-sky-300 px-2.5 py-1 rounded-full bg-black/40 border border-sky-500/20">
-                              {srv.badge}
-                            </span>
-                          </div>
-
-                          <h3 className="text-xl font-display font-bold text-white group-hover:text-sky-200 transition-colors">
-                            {srv.title}
-                          </h3>
-                          <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                            {srv.shortDesc}
-                          </p>
-
-                          <div className="mt-5 pt-4 border-t border-white/[0.06] space-y-2">
-                            {srv.features.slice(0, 3).map((feat, fIdx) => (
-                              <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
-                                <CheckCircle2 size={13} className="text-sky-400 shrink-0 mt-0.5" />
-                                <span className="line-clamp-1">{feat}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between">
-                          <div className="text-[11px] font-mono-code text-sky-400 font-bold">
-                            {srv.benefits[0].value} {srv.benefits[0].label}
-                          </div>
-                          <Link
-                            to={`/services/${srv.slug}`}
-                            onClick={() => sound.click()}
-                            onMouseEnter={() => sound.hover()}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono-code font-bold uppercase text-white hover:text-sky-300 transition-colors group/link"
-                          >
-                            <span>Explore Service</span>
-                            <ArrowUpRight size={14} className="text-sky-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                          </Link>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                </div>
-              </section>
-            )}
-
-            {/* SECTION 3: CREATIVE SERVICES */}
-            {(activeTab === 'all' || activeTab === 'creative') && (
-              <section id="creative" className="py-20 border-t border-white/[0.06] bg-[#0a0814]/50 relative">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 text-violet-400 font-mono-code text-xs mb-2">
-                        <span className="px-2 py-0.5 rounded bg-violet-500/10 border border-violet-500/30">03</span>
-                        <span>WE DESIGN</span>
-                      </div>
-                      <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
-                        {creativeCat.title}
-                      </h2>
-                      <p className="text-slate-300 text-sm sm:text-base mt-2 max-w-xl">
-                        {creativeCat.description}
-                      </p>
+                {/* Scope Estimations Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                  <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-white/[0.02] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
+                    <div className="flex items-center gap-1.5 text-[10px] font-mono-code text-cyan-400 uppercase font-bold mb-1">
+                      <Clock size={12} />
+                      <span>Sprint Velocity</span>
                     </div>
+                    <motion.div key={scopeServices.length <= 2 ? 'short' : scopeServices.length <= 4 ? 'medium' : 'long'} initial={reducedMotion ? false : { opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-base sm:text-lg font-display font-bold">
+                      {scopeServices.length <= 2 ? '2 - 3 Weeks' : scopeServices.length <= 4 ? '4 - 6 Weeks' : '6 - 9 Weeks'}
+                    </motion.div>
+                  </div>
 
-                    <div className="flex items-center gap-2 text-xs font-mono-code text-slate-500">
-                      <Sparkles size={14} className="text-violet-400 animate-pulse" />
-                      <span>Identity • Graphics • Packaging • Video</span>
+                  <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-white/[0.02] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
+                    <div className="flex items-center gap-1.5 text-[10px] font-mono-code text-violet-400 uppercase font-bold mb-1">
+                      <Cpu size={12} />
+                      <span>Architecture</span>
                     </div>
-                  </motion.div>
-
-                  {/* Creative Services Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {creativeCat.services.map((srv, idx) => (
-                      <motion.div
-                        key={srv.slug}
-                        custom={idx}
-                        variants={cardVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-40px" }}
-                        whileHover={{ y: -7, transition: { duration: 0.22, ease: "easeOut" } }}
-                        className="p-7 rounded-3xl glass-card border border-white/[0.08] hover:border-violet-500/40 transition-colors flex flex-col justify-between group shadow-xl"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="w-12 h-12 rounded-2xl bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-violet-400 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                              <ServiceIcon name={srv.icon} className="w-6 h-6" />
-                            </div>
-                            <span className="text-xs font-mono-code text-violet-300 px-2.5 py-1 rounded-full bg-black/40 border border-violet-500/20">
-                              {srv.badge}
-                            </span>
-                          </div>
-
-                          <h3 className="text-xl font-display font-bold text-white group-hover:text-violet-200 transition-colors">
-                            {srv.title}
-                          </h3>
-                          <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                            {srv.shortDesc}
-                          </p>
-
-                          <div className="mt-5 pt-4 border-t border-white/[0.06] space-y-2">
-                            {srv.features.slice(0, 3).map((feat, fIdx) => (
-                              <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
-                                <CheckCircle2 size={13} className="text-violet-400 shrink-0 mt-0.5" />
-                                <span className="line-clamp-1">{feat}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between">
-                          <div className="text-[11px] font-mono-code text-violet-400 font-bold">
-                            {srv.benefits[0].value} {srv.benefits[0].label}
-                          </div>
-                          <Link
-                            to={`/services/${srv.slug}`}
-                            onClick={() => sound.click()}
-                            onMouseEnter={() => sound.hover()}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono-code font-bold uppercase text-white hover:text-violet-300 transition-colors group/link"
-                          >
-                            <span>Explore Service</span>
-                            <ArrowUpRight size={14} className="text-violet-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                          </Link>
-                        </div>
-                      </motion.div>
-                    ))}
+                    <div className="text-base sm:text-lg font-display font-bold">
+                      100% Custom
+                    </div>
                   </div>
 
+                  <div className={`p-3.5 rounded-2xl border col-span-2 sm:col-span-1 ${isDark ? 'bg-white/[0.02] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
+                    <div className="flex items-center gap-1.5 text-[10px] font-mono-code text-emerald-400 uppercase font-bold mb-1">
+                      <ShieldCheck size={12} />
+                      <span>Ownership</span>
+                    </div>
+                    <div className="text-base sm:text-lg font-display font-bold">
+                      Full IP &amp; Code
+                    </div>
+                  </div>
                 </div>
-              </section>
-            )}
+              </div>
 
-            {/* SECTION 4: BUSINESS SOLUTIONS */}
-            {(activeTab === 'all' || activeTab === 'business') && (
-              <section id="business" className="py-20 border-t border-white/[0.06] relative">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-16">
-                    <motion.div 
-                      initial={{ opacity: 0, x: -25 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-40px" }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      className="lg:col-span-6"
-                    >
-                      <div className="flex items-center gap-2 text-indigo-400 font-mono-code text-xs mb-2">
-                        <span className="px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30">04</span>
-                        <span>DIGITAL BUSINESS TOOLS</span>
-                      </div>
-                      <h2 className="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
-                        {businessCat.title}
-                      </h2>
-                      <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-                        {businessCat.description}
-                      </p>
-                    </motion.div>
-
-                    {/* ENTERPRISE DASHBOARD PREVIEW UI */}
-                    <motion.div 
-                      initial={{ opacity: 0, x: 25 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-40px" }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                      className="lg:col-span-6 rounded-2xl glass-card border border-indigo-500/30 p-6 bg-[#0a0d1a] shadow-2xl relative"
-                    >
-                      <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
-                        <div className="flex items-center gap-2">
-                          <Server size={16} className="text-indigo-400" />
-                          <span className="text-xs font-mono-code text-white font-semibold">Plan tools around your team</span>
-                        </div>
-                        <span className="text-[10px] font-mono-code text-cyan-400">WORKFLOW // PEOPLE // TOOLS</span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3 my-4">
-                        <motion.div whileHover={{ scale: 1.03 }} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] transition-transform">
-                          <div className="flex items-center gap-2 text-xs text-slate-400 font-mono-code mb-1">
-                            <Database size={13} className="text-cyan-400" />
-                            <span>TEAM WORKFLOW</span>
-                          </div>
-                          <div className="text-base font-bold text-white font-mono-code">Understand</div>
-                          <span className="text-[10px] text-slate-500 font-mono-code">Map current steps</span>
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.03 }} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] transition-transform">
-                          <div className="flex items-center gap-2 text-xs text-slate-400 font-mono-code mb-1">
-                            <BarChart size={13} className="text-indigo-400" />
-                            <span>USEFUL SOFTWARE</span>
-                          </div>
-                          <div className="text-base font-bold text-white font-mono-code">Choose tools</div>
-                          <span className="text-[10px] text-emerald-400 font-mono-code">Fit the real need</span>
-                        </motion.div>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-xs text-slate-300 flex items-center justify-between">
-                        <span>Agree the scope before implementation</span>
-                        <span className="font-mono-code text-indigo-300">Clear next steps</span>
-                      </div>
-                    </motion.div>
+              {/* Right Column: Instant Action Callout */}
+              <div className={`lg:col-span-5 p-7 sm:p-8 rounded-3xl border flex flex-col justify-between text-center ${
+                isDark 
+                  ? 'bg-black/60 border-white/[0.08] shadow-2xl' 
+                  : 'bg-white border-slate-200 shadow-xl'
+              }`}>
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center justify-center mx-auto mb-4">
+                    <Sparkles size={22} />
                   </div>
-
-                  {/* Business Services Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {businessCat.services.map((srv, idx) => (
-                      <motion.div
-                        key={srv.slug}
-                        custom={idx}
-                        variants={cardVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-40px" }}
-                        whileHover={{ y: -7, transition: { duration: 0.22, ease: "easeOut" } }}
-                        className="p-7 rounded-3xl glass-card border border-white/[0.08] hover:border-indigo-500/40 transition-colors flex flex-col justify-between group shadow-xl"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                              <ServiceIcon name={srv.icon} className="w-6 h-6" />
-                            </div>
-                            <span className="text-xs font-mono-code text-indigo-300 px-2.5 py-1 rounded-full bg-black/40 border border-indigo-500/20">
-                              {srv.badge}
-                            </span>
-                          </div>
-
-                          <h3 className="text-xl font-display font-bold text-white group-hover:text-indigo-200 transition-colors">
-                            {srv.title}
-                          </h3>
-                          <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                            {srv.shortDesc}
-                          </p>
-
-                          <div className="mt-5 pt-4 border-t border-white/[0.06] space-y-2">
-                            {srv.features.slice(0, 3).map((feat, fIdx) => (
-                              <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
-                                <CheckCircle2 size={13} className="text-indigo-400 shrink-0 mt-0.5" />
-                                <span className="line-clamp-1">{feat}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between">
-                          <div className="text-[11px] font-mono-code text-indigo-400 font-bold">
-                            {srv.benefits[0].value} {srv.benefits[0].label}
-                          </div>
-                          <Link
-                            to={`/services/${srv.slug}`}
-                            onClick={() => sound.click()}
-                            onMouseEnter={() => sound.hover()}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono-code font-bold uppercase text-white hover:text-indigo-300 transition-colors group/link"
-                          >
-                            <span>Explore Service</span>
-                            <ArrowUpRight size={14} className="text-indigo-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                          </Link>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-
+                  <h3 className="text-xl sm:text-2xl font-display font-bold mb-2">
+                    Ready to build this scope?
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed mb-6 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    We will convert your selected services into a milestone-based project proposal with transparent deliverables.
+                  </p>
                 </div>
-              </section>
-            )}
-          </motion.div>
-        </AnimatePresence>
 
-        {/* BOTTOM INVITATION CTA BANNER */}
-        <section className="mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 30, scale: 0.98 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="p-10 sm:p-14 rounded-3xl glass-card border border-cyan-500/30 text-center relative overflow-hidden bg-gradient-to-r from-cyan-950/20 via-[#07090e] to-violet-950/20 shadow-2xl"
-          >
-            <div className="ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none -z-10" />
+                <button
+                  data-magnetic
+                  onClick={() => {
+                    sound.click();
+                    setProjectModalOpen(true);
+                  }}
+                  onMouseEnter={() => sound.hover()}
+                  className="btn-shimmer w-full py-4 rounded-full font-mono-code font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-xl shadow-cyan-500/25 flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all"
+                >
+                  <span>Start Project With This Scope</span>
+                  <Send size={14} />
+                </button>
+              </div>
 
-            <h3 className="text-xl sm:text-3xl font-display font-bold text-white mb-4">
-              Need a mix of services?
-            </h3>
-            <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8">
-              We can discuss how brand, website and marketing work could fit together around your goals.
-            </p>
-            <motion.button
-              data-magnetic
-              onClick={() => {
-                sound.click();
-                setProjectModalOpen(true);
-              }}
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.96 }}
-              onMouseEnter={() => sound.hover()}
-              className="px-8 py-3.5 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-xl shadow-cyan-500/25 hover:brightness-110 transition-all inline-flex items-center gap-2 cursor-pointer"
-            >
-              <span>Tell Us About Your Project</span>
-              <ArrowRight size={15} />
-            </motion.button>
+            </div>
           </motion.div>
         </section>
 
@@ -677,6 +532,7 @@ export default function Services() {
       {/* Interactive Modal */}
       <ProjectModal
         isOpen={projectModalOpen}
+        initialServices={scopeServices}
         onClose={() => setProjectModalOpen(false)}
       />
     </div>

@@ -39,7 +39,7 @@ export default function CountUpValue({ value, duration = 1250, className = '' })
 
       const startedAt = performance.now();
       const animate = (now) => {
-        const progress = Math.min(1, (now - startedAt) / duration);
+        const progress = Math.max(0, Math.min(1, (now - startedAt) / Math.max(duration, 1)));
         const easedProgress = 1 - Math.pow(1 - progress, 3);
         const current = parts.amount * easedProgress;
         node.textContent = `${parts.prefix}${numberFormat.format(current)}${parts.suffix}`;

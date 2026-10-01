@@ -1,13 +1,15 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { useInView, useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
+import usePageVisibility from '../../hooks/usePageVisibility';
 
 function pseudoRandom(seed) {
   const x = Math.sin(seed) * 10000;
   return x - Math.floor(x);
 }
 
-function NeuralNetworkMesh({ nodeCount = 55 }) {
+function NeuralNetworkMesh({ nodeCount = 55, animate = true }) {
   const group = useRef();
 
   // Generate 3D nodes clustered in a spherical cloud with synaptic connections
@@ -64,9 +66,10 @@ function NeuralNetworkMesh({ nodeCount = 55 }) {
   }, [nodeCount]);
 
   useFrame((state, delta) => {
+    if (!animate) return;
     const { pointer } = state;
     if (group.current) {
-      group.current.rotation.y += delta * 0.18;
+      group.current.rotation.y += Math.min(delta, 0.04) * 0.18;
       group.current.rotation.x = THREE.MathUtils.lerp(
         group.current.rotation.x,
         pointer.y * 0.4,
@@ -142,19 +145,10 @@ function NeuralNetworkMesh({ nodeCount = 55 }) {
 
 export function NeuralBrain3D() {
   const containerRef = useRef(null);
-  const [isInView, setIsInView] = useState(false);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInView(entry.isIntersecting);
-      },
-      { threshold: 0.05, rootMargin: '100px' }
-    );
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const isInView = useInView(containerRef, { amount: 0.05 });
+  const reduceMotion = useReducedMotion();
+  const pageVisible = usePageVisibility();
+  const animate = isInView && pageVisible && !reduceMotion;
 
   return (
     <div 
@@ -162,7 +156,7 @@ export function NeuralBrain3D() {
       className="relative w-full h-[360px] sm:h-[440px] md:h-[500px] flex items-center justify-center"
     >
       <Canvas
-        frameloop={isInView ? "always" : "never"}
+        frameloop={animate ? 'always' : 'demand'}
         camera={{ position: [0, 0, 4.8], fov: 45 }}
         dpr={[1, 1.5]}
         gl={{ 
@@ -175,7 +169,7 @@ export function NeuralBrain3D() {
         <ambientLight intensity={0.5} />
         <pointLight position={[5, 5, 5]} intensity={1.8} color="#00f0ff" />
         <pointLight position={[-5, -5, -3]} intensity={2.0} color="#8a2be2" />
-        <NeuralNetworkMesh />
+        <NeuralNetworkMesh animate={animate} />
       </Canvas>
     </div>
   );

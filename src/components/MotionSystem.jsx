@@ -1,13 +1,15 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { useReducedMotion } from 'framer-motion';
+import useMotionPointer from '../hooks/useMotionPointer';
 
 export default function MotionSystem() {
   const progressRef = useRef(null);
+  const reducedMotion = useReducedMotion();
+  const pointerMotion = useMotionPointer();
 
   useLayoutEffect(() => {
     const root = document.documentElement;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    if (reducedMotion || !('IntersectionObserver' in window)) {
       document.querySelectorAll('[data-motion-reveal]').forEach((target) => {
         target.classList.add('is-motion-visible');
       });
@@ -15,19 +17,23 @@ export default function MotionSystem() {
     }
 
     root.classList.add('motion-ready');
+    const pendingTargets = new Set();
     const observer = new IntersectionObserver((entries, currentObserver) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-motion-visible');
+        pendingTargets.delete(entry.target);
         currentObserver.unobserve(entry.target);
       });
     }, {
-      threshold: 0.16,
-      rootMargin: '0px 0px -48px 0px',
+      threshold: 0.08,
+      rootMargin: '0px 0px -24px 0px',
     });
 
     const observeTarget = (target) => {
-      if (!target.classList.contains('is-motion-visible')) observer.observe(target);
+      if (target.classList.contains('is-motion-visible') || pendingTargets.has(target)) return;
+      pendingTargets.add(target);
+      observer.observe(target);
     };
 
     const scanNode = (node) => {
@@ -39,45 +45,75 @@ export default function MotionSystem() {
 
     const mutations = new MutationObserver((records) => {
       records.forEach((record) => record.addedNodes.forEach(scanNode));
+      pendingTargets.forEach((target) => {
+        if (!target.isConnected) {
+          observer.unobserve(target);
+          pendingTargets.delete(target);
+        }
+      });
     });
     mutations.observe(document.getElementById('root') || document.body, {
       childList: true,
       subtree: true,
     });
 
+    // A keyboard user can focus a card before its entrance finishes.
+    const revealFocused = (event) => {
+      let target = event.target instanceof Element ? event.target : null;
+      while (target) {
+        if (target.matches('[data-motion-reveal]')) {
+          target.classList.add('is-motion-visible');
+          pendingTargets.delete(target);
+          observer.unobserve(target);
+        }
+        target = target.parentElement;
+      }
+    };
+    document.addEventListener('focusin', revealFocused);
+
     return () => {
       observer.disconnect();
       mutations.disconnect();
+      document.removeEventListener('focusin', revealFocused);
       root.classList.remove('motion-ready');
     };
-  }, []);
+  }, [reducedMotion]);
 
   useEffect(() => {
     if (
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
       !('IntersectionObserver' in window)
     ) return undefined;
 
     const activeTargets = new Set();
     const observedTargets = new Set();
+    const activeSections = new Set();
+    const observedSections = new Set();
+    const root = document.documentElement;
     let frameId = 0;
 
     const updateTargets = () => {
       frameId = 0;
+      if (document.hidden) return;
       const viewportHeight = Math.max(window.innerHeight, 1);
       const depthScale = window.innerWidth < 640 ? 0.42 : window.innerWidth < 1024 ? 0.68 : 1;
 
-      activeTargets.forEach((target) => {
+      if (!reducedMotion) activeTargets.forEach((target) => {
         const bounds = target.getBoundingClientRect();
         const distanceFromCenter = (bounds.top + bounds.height / 2 - viewportHeight / 2) / viewportHeight;
         const normalizedDistance = Math.max(-1, Math.min(1, distanceFromCenter));
         const depth = Number(target.dataset.scrollDepth) || 14;
         target.style.setProperty('--scroll-parallax-y', `${normalizedDistance * depth * depthScale}px`);
       });
+
+      activeSections.forEach((section) => {
+        const bounds = section.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, (viewportHeight - bounds.top) / (viewportHeight + bounds.height)));
+        section.style.setProperty('--section-progress', progress.toFixed(3));
+      });
     };
 
     const scheduleUpdate = () => {
-      if (!frameId) frameId = window.requestAnimationFrame(updateTargets);
+      if (!frameId && !document.hidden) frameId = window.requestAnimationFrame(updateTargets);
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -92,7 +128,16 @@ export default function MotionSystem() {
           entry.target.classList.remove('is-scroll-parallax-active');
         }
       });
-    }, { rootMargin: '120px 0px' });
+    }, { rootMargin: '80px 0px' });
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        target.classList.toggle('is-section-active', isIntersecting);
+        if (isIntersecting) activeSections.add(target);
+        else activeSections.delete(target);
+      });
+      scheduleUpdate();
+    });
 
     const observeTarget = (target) => {
       if (observedTargets.has(target)) return;
@@ -100,37 +145,74 @@ export default function MotionSystem() {
       observer.observe(target);
     };
 
+    const observeSection = (section) => {
+      if (observedSections.has(section)) return;
+      observedSections.add(section);
+      section.classList.add('motion-section');
+      sectionObserver.observe(section);
+    };
+
     const scanNode = (node) => {
-      if (node instanceof Element && node.matches('[data-scroll-depth]')) observeTarget(node);
-      node.querySelectorAll?.('[data-scroll-depth]').forEach(observeTarget);
+      if (!reducedMotion) {
+        if (node instanceof Element && node.matches('[data-scroll-depth]')) observeTarget(node);
+        node.querySelectorAll?.('[data-scroll-depth]').forEach(observeTarget);
+      }
+      if (node instanceof Element && node.matches('main > section, footer')) observeSection(node);
+      node.querySelectorAll?.('main > section, footer').forEach(observeSection);
     };
 
     scanNode(document);
     const mutations = new MutationObserver((records) => {
       records.forEach((record) => record.addedNodes.forEach(scanNode));
+      // Route transitions and filters remove nodes; release their observer references.
+      observedTargets.forEach((target) => {
+        if (!target.isConnected) {
+          observer.unobserve(target);
+          observedTargets.delete(target);
+          activeTargets.delete(target);
+        }
+      });
+      observedSections.forEach((section) => {
+        if (!section.isConnected) {
+          sectionObserver.unobserve(section);
+          observedSections.delete(section);
+          activeSections.delete(section);
+        }
+      });
     });
     mutations.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
 
     window.addEventListener('scroll', scheduleUpdate, { passive: true });
     window.addEventListener('resize', scheduleUpdate, { passive: true });
+    const handleVisibility = () => {
+      root.classList.toggle('motion-paused', document.hidden);
+      if (document.hidden && frameId) {
+        window.cancelAnimationFrame(frameId);
+        frameId = 0;
+      }
+      scheduleUpdate();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    handleVisibility();
 
     return () => {
       mutations.disconnect();
       observer.disconnect();
+      sectionObserver.disconnect();
       window.removeEventListener('scroll', scheduleUpdate);
       window.removeEventListener('resize', scheduleUpdate);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      root.classList.remove('motion-paused');
       if (frameId) window.cancelAnimationFrame(frameId);
       activeTargets.forEach((target) => {
         target.style.setProperty('--scroll-parallax-y', '0px');
         target.classList.remove('is-scroll-parallax-active');
       });
     };
-  }, []);
+  }, [reducedMotion]);
 
   useEffect(() => {
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!finePointer.matches || reducedMotion.matches) return undefined;
+    if (!pointerMotion) return undefined;
 
     let activeTarget = null;
     let activeGlossyTarget = null;
@@ -201,15 +283,17 @@ export default function MotionSystem() {
     document.addEventListener('pointermove', handlePointerMove, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('blur', handleBlur);
+    document.addEventListener('pointerleave', resetEffects);
 
     return () => {
       document.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('blur', handleBlur);
+      document.removeEventListener('pointerleave', resetEffects);
       if (frameId) window.cancelAnimationFrame(frameId);
       resetEffects();
     };
-  }, []);
+  }, [pointerMotion]);
 
   useEffect(() => {
     const updateProgress = () => {
@@ -232,9 +316,12 @@ export default function MotionSystem() {
     updateProgress();
     window.addEventListener('scroll', scheduleUpdate, { passive: true });
     window.addEventListener('resize', scheduleUpdate, { passive: true });
+    const resizeObserver = new ResizeObserver(scheduleUpdate);
+    resizeObserver.observe(document.getElementById('root') || document.body);
     return () => {
       window.removeEventListener('scroll', scheduleUpdate);
       window.removeEventListener('resize', scheduleUpdate);
+      resizeObserver.disconnect();
       if (frameId) window.cancelAnimationFrame(frameId);
     };
   }, []);

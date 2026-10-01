@@ -1,10 +1,13 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 import { useReducedMotion } from 'framer-motion';
 import { DigitalCore } from './3d/DigitalCore';
+import usePageVisibility from '../hooks/usePageVisibility';
 
 export default function Hero3D() {
   const prefersReducedMotion = useReducedMotion();
+  const pageVisible = usePageVisibility();
   const containerRef = useRef(null);
   const [isInView, setIsInView] = useState(true);
 
@@ -36,7 +39,7 @@ export default function Hero3D() {
 
   // Track visibility to pause 3D render loop when user scrolls down
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !('IntersectionObserver' in window)) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsInView(entry.isIntersecting);
@@ -84,7 +87,7 @@ export default function Hero3D() {
           }
         >
           <Canvas
-            frameloop={isInView && !prefersReducedMotion ? "always" : "never"}
+            frameloop={isInView && pageVisible && !prefersReducedMotion ? 'always' : 'demand'}
             camera={{ position: [0, 0, 7.0], fov: 45 }}
             dpr={isMobile ? 1 : [1, 1.5]}
             gl={{ 
@@ -105,6 +108,7 @@ export default function Hero3D() {
 
             {/* The 3D Digital Transformation Core with enlarged visual scale */}
             <DigitalCore scale={deviceScale} />
+            <OrbitControls enableZoom={false} enablePan={false} enableDamping={!prefersReducedMotion} />
           </Canvas>
         </Suspense>
       ) : (
@@ -118,15 +122,12 @@ export default function Hero3D() {
         </div>
       )}
 
-      {/* Floating high-tech HUD badges - contained cleanly within canvas */}
-      <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 md:top-8 md:right-4 z-10 glass-pill px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-mono-code text-cyan-300 border border-cyan-500/30 shadow-lg shadow-cyan-500/10 flex items-center gap-1.5 sm:gap-2 backdrop-blur-md pointer-events-none max-w-[48%] truncate">
-        <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400 animate-ping shrink-0" />
-        <span className="truncate">R3F ENGINE • ACTIVE</span>
-      </div>
-
-      <div className="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 md:bottom-8 md:left-4 z-10 glass-pill px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-mono-code text-slate-300 border border-white/10 shadow-lg flex items-center gap-1.5 sm:gap-2 backdrop-blur-md pointer-events-none max-w-[48%] truncate">
-        <span className="text-violet-400 shrink-0">FPS:</span>
-        <span className="text-white font-semibold truncate">60 • LOW LATENCY</span>
+      {/* Clean Interactive 3D Orbit Cue */}
+      <div className="absolute bottom-2.5 right-2.5 sm:bottom-4 sm:right-4 z-10 glass-pill px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-mono-code text-slate-300 border border-white/10 shadow-lg flex items-center gap-2 backdrop-blur-md pointer-events-none">
+        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
+        <span className="text-white font-medium">Interactive 3D</span>
+        <span className="text-slate-500">•</span>
+        <span className="text-slate-400 text-[10px]">Drag to rotate</span>
       </div>
     </div>
   );

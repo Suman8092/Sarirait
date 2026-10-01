@@ -1,24 +1,29 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useInView, useReducedMotion } from 'framer-motion';
+import usePageVisibility from '../../hooks/usePageVisibility';
 
-function MiniCore() {
+function MiniCore({ animate = true }) {
   const meshRef = useRef();
   const ringRef1 = useRef();
   const ringRef2 = useRef();
+  const elapsedRef = useRef(0);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
+    if (!animate) return;
+    const step = Math.min(delta, 0.04);
+    elapsedRef.current += step;
     if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.4;
-      meshRef.current.rotation.x += delta * 0.2;
+      meshRef.current.rotation.y += step * 0.4;
+      meshRef.current.rotation.x += step * 0.2;
     }
     if (ringRef1.current) {
-      ringRef1.current.rotation.z += delta * 0.6;
-      ringRef1.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.8) * 0.3 + 0.4;
+      ringRef1.current.rotation.z += step * 0.6;
+      ringRef1.current.rotation.x = Math.sin(elapsedRef.current * 0.8) * 0.3 + 0.4;
     }
     if (ringRef2.current) {
-      ringRef2.current.rotation.y -= delta * 0.5;
-      ringRef2.current.rotation.z -= delta * 0.3;
+      ringRef2.current.rotation.y -= step * 0.5;
+      ringRef2.current.rotation.z -= step * 0.3;
     }
   });
 
@@ -48,7 +53,7 @@ function MiniCore() {
       </mesh>
 
       {/* Orbiting Ring 1 */}
-      <group ref={ringRef1}>
+      <group ref={ringRef1} rotation={[0.4, 0, 0]}>
         <mesh>
           <torusGeometry args={[1.4, 0.015, 12, 64]} />
           <meshBasicMaterial color="#00f0ff" transparent opacity={0.7} />
@@ -67,9 +72,16 @@ function MiniCore() {
 }
 
 export default function MegaMenu3D() {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { amount: 0.05 });
+  const reduceMotion = useReducedMotion();
+  const pageVisible = usePageVisibility();
+  const animate = isInView && pageVisible && !reduceMotion;
+
   return (
-    <div className="w-full h-36 relative flex items-center justify-center pointer-events-none">
+    <div ref={containerRef} className="w-full h-36 relative flex items-center justify-center pointer-events-none">
       <Canvas
+        frameloop={animate ? 'always' : 'demand'}
         camera={{ position: [0, 0, 3.8], fov: 45 }}
         dpr={[1, 1.5]}
         gl={{ alpha: true, antialias: true }}
@@ -78,7 +90,7 @@ export default function MegaMenu3D() {
         <ambientLight intensity={0.6} />
         <pointLight position={[3, 3, 3]} intensity={2.5} color="#00f0ff" />
         <pointLight position={[-3, -3, -2]} intensity={2.0} color="#8a2be2" />
-        <MiniCore />
+        <MiniCore animate={animate} />
       </Canvas>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Target, Sparkles, Cpu, BarChart3, ArrowRight, CheckCircle2 } from 'lucide-react';
 import SpotlightCard from './SpotlightCard';
+import MaskedHeading from './MaskedHeading';
 import { sound } from '../utils/sound';
 import { useTheme } from '../context/ThemeContext';
 
@@ -58,14 +58,16 @@ export default function WhySarirait() {
   return (
     <section 
       id="why-us" 
-      className={`relative py-20 sm:py-28 transition-colors duration-300 overflow-hidden w-full max-w-full ${
+      className={`motion-section relative py-20 sm:py-28 transition-colors duration-300 overflow-hidden w-full max-w-full ${
         isDark 
-          ? 'bg-[#090d16] border-t border-white/[0.06] text-slate-100' 
-          : 'bg-slate-50 border-t border-slate-200 text-slate-900'
+          ? 'text-slate-100' 
+          : 'bg-slate-50 text-slate-900'
       }`}
     >
       {/* Background ambient lighting */}
       <div 
+        aria-hidden="true"
+        data-scroll-depth="-24"
         className={`ambient-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-[350px] sm:h-[400px] rounded-full blur-[100px] pointer-events-none -z-10 ${
           isDark ? 'bg-cyan-500/5' : 'bg-sky-400/10'
         }`} 
@@ -74,18 +76,24 @@ export default function WhySarirait() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
-        <div data-motion-reveal className="max-w-3xl mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code mb-4 border border-cyan-500/30">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+        <div
+          className="max-w-3xl mb-12 sm:mb-16"
+        >
+          <div data-motion-reveal className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code mb-4 border border-cyan-500/30">
+            <span className="motion-status-dot w-2 h-2 rounded-full bg-cyan-400" />
             <span className={isDark ? 'text-cyan-400 font-semibold' : 'text-sky-700 font-semibold'}>
               WHY SARIRAIT // 4 CORE PILLARS
             </span>
           </div>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight leading-[1.12]">
-            Thoughtful design. <br />
-            <span className="text-gradient-cyan">Useful digital work.</span>
-          </h2>
-          <p className={`text-sm sm:text-base lg:text-lg mt-4 leading-relaxed ${
+          <MaskedHeading
+            as="h2"
+            className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight leading-[1.12]"
+            lines={[
+              <span key="lead">Thoughtful design.</span>,
+              <span key="accent" className="text-gradient-cyan">Useful digital work.</span>
+            ]}
+          />
+          <p data-motion-reveal style={{ '--motion-delay': '140ms' }} className={`text-sm sm:text-base lg:text-lg mt-4 leading-relaxed ${
             isDark ? 'text-slate-400' : 'text-slate-600'
           }`}>
             We connect every dimension of your online presence so your brand looks world-class, operates friction-free, and converts visitors into loyal clients.
@@ -99,13 +107,12 @@ export default function WhySarirait() {
               key={p.number}
               spotlightColor={p.spotlight}
               borderColor={p.glowBorder}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5, transition: { type: 'spring', stiffness: 260, damping: 20 } }}
+              tiltIntensity={4.8}
+              elevation={12}
+              data-motion-reveal
+              style={{ '--motion-delay': `${(index % 2) * 100}ms` }}
               onMouseEnter={() => sound.hover()}
-              className={`group p-6 sm:p-9 rounded-3xl transition-all duration-300 relative flex flex-col justify-between border shadow-xl ${
+              className={`motion-card group p-6 sm:p-9 rounded-3xl transition-all duration-300 relative flex flex-col justify-between border shadow-xl ${
                 isDark 
                   ? 'bg-[#0c1220]/80 border-white/[0.08] hover:border-cyan-500/40 shadow-black/40' 
                   : 'bg-white border-slate-200/90 hover:border-sky-400 shadow-slate-200/70'

@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import useMotionPointer from '../hooks/useMotionPointer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,13 +15,9 @@ export function useLenis() {
 
 export default function SmoothScroll({ children }) {
   const [lenis, setLenis] = useState(null);
-  const lenisRef = useRef(null);
-  const location = useLocation();
+  const canUseSmoothWheel = useMotionPointer();
 
   useEffect(() => {
-    const canUseSmoothWheel = window.matchMedia(
-      '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
-    ).matches;
     if (!canUseSmoothWheel) return undefined;
 
     // Initialize Lenis with award-class inertia configuration
@@ -44,7 +40,6 @@ export default function SmoothScroll({ children }) {
       },
     });
 
-    lenisRef.current = instance;
     setLenis(instance);
 
     // Sync Lenis scroll with GSAP ScrollTrigger
@@ -60,12 +55,13 @@ export default function SmoothScroll({ children }) {
 
     // Smooth anchor navigation for #hash links
     const handleAnchorClick = (e) => {
-      const anchor = e.target.closest('a[href^="#"]');
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const anchor = e.target instanceof Element ? e.target.closest('a[href^="#"]') : null;
       if (!anchor) return;
       const href = anchor.getAttribute('href');
       if (!href || href === '#' || href.length < 2) return;
 
-      const targetEl = document.querySelector(href);
+      const targetEl = document.getElementById(href.slice(1));
       if (targetEl) {
         e.preventDefault();
         instance.scrollTo(targetEl, {
@@ -82,17 +78,9 @@ export default function SmoothScroll({ children }) {
       document.removeEventListener('click', handleAnchorClick);
       cancelAnimationFrame(rafId);
       instance.destroy();
-      lenisRef.current = null;
       setLenis(null);
     };
-  }, []);
-
-  // When route changes, scroll smoothly to the top immediately
-  useEffect(() => {
-    if (lenis) {
-      lenis.scrollTo(0, { immediate: true });
-    }
-  }, [location.pathname, lenis]);
+  }, [canUseSmoothWheel]);
 
   return (
     <LenisContext.Provider value={lenis}>

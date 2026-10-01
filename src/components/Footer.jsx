@@ -1,11 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Mail, Phone, MapPin } from 'lucide-react';
+import { ArrowUpRight, ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
 import { sound } from '../utils/sound';
 import { useTheme } from '../context/ThemeContext';
+import { useReducedMotion } from 'framer-motion';
+import { useLenis } from './SmoothScroll';
 
 export default function Footer({ onOpenProjectModal }) {
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
+  const lenis = useLenis();
+
+  const scrollToTop = () => {
+    sound.click();
+    if (lenis) lenis.scrollTo(0, { duration: 1.1 });
+    else window.scrollTo({ top: 0, behavior: reducedMotion ? 'instant' : 'smooth' });
+  };
 
   return (
     <footer id="footer" className="relative border-t border-white/[0.08] bg-[#05070b] text-slate-300 pt-16 sm:pt-20 pb-12 overflow-hidden w-full max-w-full">
@@ -15,10 +25,10 @@ export default function Footer({ onOpenProjectModal }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* MAIN 6-COLUMN BALANCED FOOTER GRID */}
-        <div data-motion-reveal="scale" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-16 border-b border-white/[0.08]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-16 border-b border-white/[0.08]">
           
           {/* BRAND COLUMN (2 COLS) */}
-          <div className="lg:col-span-2 space-y-4">
+          <div data-motion-reveal className="lg:col-span-2 space-y-4">
             <Link
               to="/"
               onMouseEnter={() => sound.hover()}
@@ -69,7 +79,7 @@ export default function Footer({ onOpenProjectModal }) {
           </div>
 
           {/* COLUMN 1: COMPANY (2 COLS) */}
-          <div className="lg:col-span-2 space-y-3">
+          <div data-motion-reveal style={{ '--motion-delay': '45ms' }} className="lg:col-span-2 space-y-3">
             <h4 className="text-xs font-mono-code uppercase tracking-widest text-white font-semibold">
               Company
             </h4>
@@ -105,7 +115,7 @@ export default function Footer({ onOpenProjectModal }) {
           </div>
 
           {/* COLUMN 2: DEVELOPMENT (2 COLS) */}
-          <div className="lg:col-span-2 space-y-3">
+          <div data-motion-reveal style={{ '--motion-delay': '90ms' }} className="lg:col-span-2 space-y-3">
             <h4 className="text-xs font-mono-code uppercase tracking-widest text-white font-semibold">
               Development
             </h4>
@@ -125,13 +135,11 @@ export default function Footer({ onOpenProjectModal }) {
               <li>
                 <Link to="/services/website-maintenance" className="hover:text-cyan-400 transition-colors">Website Maintenance</Link>
               </li>
-              <li>
-              </li>
             </ul>
           </div>
 
           {/* COLUMN 3: MARKETING (2 COLS) */}
-          <div className="lg:col-span-2 space-y-3">
+          <div data-motion-reveal style={{ '--motion-delay': '135ms' }} className="lg:col-span-2 space-y-3">
             <h4 className="text-xs font-mono-code uppercase tracking-widest text-white font-semibold">
               Digital Marketing
             </h4>
@@ -161,7 +169,7 @@ export default function Footer({ onOpenProjectModal }) {
           </div>
 
           {/* COLUMN 4: CREATIVE SERVICES (2 COLS) */}
-          <div className="lg:col-span-2 space-y-3">
+          <div data-motion-reveal style={{ '--motion-delay': '180ms' }} className="lg:col-span-2 space-y-3">
             <h4 className="text-xs font-mono-code uppercase tracking-widest text-white font-semibold">
               Creative Services
             </h4>
@@ -185,7 +193,7 @@ export default function Footer({ onOpenProjectModal }) {
           </div>
 
           {/* COLUMN 5: BUSINESS SOLUTIONS (2 COLS) */}
-          <div className="lg:col-span-2 space-y-3">
+          <div data-motion-reveal style={{ '--motion-delay': '225ms' }} className="lg:col-span-2 space-y-3">
             <h4 className="text-xs font-mono-code uppercase tracking-widest text-white font-semibold">
               Business Solutions
             </h4>
@@ -210,8 +218,8 @@ export default function Footer({ onOpenProjectModal }) {
 
         </div>
 
-        {/* BOTTOM STRIP: SOCIALS & COPYRIGHT */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs font-mono-code">
+        {/* BOTTOM STRIP: SOCIALS & COPYRIGHT & BACK TO TOP */}
+        <div data-motion-reveal className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs font-mono-code">
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-slate-400">
             <a href="mailto:info@sarirait.com" className="hover:text-cyan-300 transition-colors flex items-center gap-1.5">
               <Mail size={12} className="text-cyan-400" />
@@ -227,9 +235,18 @@ export default function Footer({ onOpenProjectModal }) {
             </span>
           </div>
 
-          {/* Legal / Copyright */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-slate-500">
+          {/* Legal / Copyright & Back to Top */}
+          <div className="flex flex-wrap items-center justify-center gap-6 text-slate-400">
             <span>© 2026 Sarirait. All rights reserved.</span>
+            <button
+              onClick={scrollToTop}
+              onMouseEnter={() => sound.hover()}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 hover:border-cyan-400/40 bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-cyan-300 transition-all cursor-pointer group"
+              aria-label="Scroll back to top"
+            >
+              <span>Back to top</span>
+              <ArrowUp size={12} className="transition-transform group-hover:-translate-y-0.5" />
+            </button>
           </div>
         </div>
 

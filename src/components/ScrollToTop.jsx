@@ -1,10 +1,15 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { useLenis } from './SmoothScroll';
 
-export default function ScrollToTop() {
-  const { pathname, hash } = useLocation();
+export default function ScrollToTop({ location }) {
+  const { pathname, hash } = location;
+  const reducedMotion = useReducedMotion();
   const lenis = useLenis();
+  const scrollOptions = useRef({ lenis, reducedMotion });
+  useEffect(() => {
+    scrollOptions.current = { lenis, reducedMotion };
+  }, [lenis, reducedMotion]);
 
   useEffect(() => {
     if (hash) {
@@ -12,23 +17,24 @@ export default function ScrollToTop() {
         const id = hash.replace('#', '');
         const element = document.getElementById(id);
         if (element) {
+          const { lenis, reducedMotion } = scrollOptions.current;
           if (lenis) {
             lenis.scrollTo(element, { offset: -80, duration: 1.2 });
           } else {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            element.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
           }
         }
       }, 100);
       return () => clearTimeout(timer);
     } else {
+      const { lenis } = scrollOptions.current;
       if (lenis) {
         lenis.scrollTo(0, { immediate: true });
       } else {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       }
     }
-  }, [pathname, hash, lenis]);
+  }, [pathname, hash]);
 
   return null;
 }
-

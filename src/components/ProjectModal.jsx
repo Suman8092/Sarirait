@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, ArrowRight, Send, ShieldCheck } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { X, Mail, ArrowRight, Send, ShieldCheck, Copy } from 'lucide-react';
 import { sound } from '../utils/sound';
 import { serviceCategories } from '../data/servicesData';
 import { useTheme } from '../context/ThemeContext';
-import { useLenis } from './SmoothScroll';
+import { useModalDialog } from '../hooks/useModalDialog';
 
-export default function ProjectModal({ isOpen, onClose }) {
+export default function ProjectModal({ isOpen, onClose, initialServices }) {
   const { isDark } = useTheme();
-  const lenis = useLenis();
+  const dialogRef = useModalDialog(isOpen, onClose);
+  const reducedMotion = useReducedMotion();
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState(['Website Development']);
   const [activeCategoryTab, setActiveCategoryTab] = useState('all');
@@ -21,22 +21,36 @@ export default function ProjectModal({ isOpen, onClose }) {
     details: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [copyStatus, setCopyStatus] = useState('');
+  const initialServicesKey = JSON.stringify(initialServices || []);
 
   useEffect(() => {
     if (isOpen) {
-      lenis?.stop();
-      document.body.style.overflow = 'hidden';
-    } else {
-      lenis?.start();
-      document.body.style.overflow = '';
+      setSubmitted(false);
+      setCopyStatus('');
+      setStep(1);
+      const titles = new Set(serviceCategories.flatMap(category => category.services.map(service => service.title)));
+      const initialSelection = JSON.parse(initialServicesKey).filter(title => titles.has(title));
+      if (initialSelection.length) setSelectedServices([...new Set(initialSelection)]);
     }
-    return () => {
-      lenis?.start();
-      document.body.style.overflow = '';
-    };
-  }, [isOpen, lenis]);
+  }, [isOpen, initialServicesKey]);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (!isOpen) return;
+    if (submitted) document.getElementById('project-draft-title')?.focus();
+    else if (step === 2) document.getElementById('project-name')?.focus();
+  }, [isOpen, step, submitted]);
+
+  const brief = [
+    `Name: ${formData.name.trim()}`,
+    `Email: ${formData.email.trim()}`,
+    `Company: ${formData.company.trim() || 'Not provided'}`,
+    `Services: ${selectedServices.join(', ')}`,
+    `Budget: ${budget}`,
+    '',
+    formData.details.trim() || 'Project details not provided yet.'
+  ].join('\n');
+  const emailHref = `mailto:info@sarirait.com?subject=${encodeURIComponent(`Sarirait project enquiry from ${formData.name.trim()}`)}&body=${encodeURIComponent(brief)}`;
 
   const budgetTiers = [
     'Not decided yet',
@@ -58,47 +72,23 @@ export default function ProjectModal({ isOpen, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sound.success();
-
-    const subject = encodeURIComponent(`Sarirait project enquiry from ${formData.name}`);
-    const body = encodeURIComponent([
-      `Name: ${formData.name}`,
-      `Email: ${formData.email}`,
-      `Company: ${formData.company || 'Not provided'}`,
-      `Services: ${selectedServices.join(', ')}`,
-      `Budget: ${budget}`,
-      '',
-      formData.details || 'Project details not provided yet.'
-    ].join('\n'));
-    window.location.href = `mailto:info@sarirait.com?subject=${subject}&body=${body}`;
-    
-    // Trigger celebratory confetti
-    try {
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    } catch {}
-
+    if (step === 1) {
+      setStep(2);
+      return;
+    }
+    sound.click();
+    window.location.href = emailHref;
     setSubmitted(true);
-    setTimeout(() => {
-      // Keep submitted confirmation or allow reset
-    }, 4000);
   };
 
   const handleClose = () => {
     sound.click();
     onClose();
-    setTimeout(() => {
-      setSubmitted(false);
-      setStep(1);
-    }, 400);
   };
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 md:p-6 overflow-hidden">
+      {isOpen && <div className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 sm:p-4 md:p-6 overflow-hidden">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -110,7 +100,12 @@ export default function ProjectModal({ isOpen, onClose }) {
 
         {/* Modal Window */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 15 }}
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-dialog-title"
+          tabIndex={-1}
+          initial={{ opacity: 0, scale: reducedMotion ? 1 : 0.98, y: reducedMotion ? 0 : 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
@@ -130,10 +125,10 @@ export default function ProjectModal({ isOpen, onClose }) {
                 alt="Sarirait" 
                 className="h-6 sm:h-7 w-auto object-contain" 
               />
-              <span className={`text-[10px] sm:text-xs font-mono-code uppercase tracking-wider border-l pl-2.5 sm:pl-3 font-semibold ${
+              <span id="project-dialog-title" className={`text-[10px] sm:text-xs font-mono-code uppercase tracking-wider border-l pl-2.5 sm:pl-3 font-semibold ${
                 isDark ? 'text-cyan-300 border-white/10' : 'text-cyan-700 border-slate-200'
               }`}>
-                Project Briefing
+                Start a project
               </span>
             </div>
             <button
@@ -200,6 +195,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                           <button
                             type="button"
                             key={tab.id}
+                            aria-pressed={activeCategoryTab === tab.id}
                             onClick={() => {
                               sound.click();
                               setActiveCategoryTab(tab.id);
@@ -247,6 +243,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                                     <button
                                       type="button"
                                       key={srv.slug}
+                                      aria-pressed={isSelected}
                                       onClick={() => toggleService(srv.title)}
                                       onMouseEnter={() => sound.hover()}
                                       className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all border cursor-pointer ${
@@ -285,6 +282,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                           <button
                             type="button"
                             key={b}
+                            aria-pressed={budget === b}
                             onClick={() => {
                               sound.click();
                               setBudget(b);
@@ -314,7 +312,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                           setStep(2);
                         }}
                         onMouseEnter={() => sound.hover()}
-                        className="w-full sm:w-auto px-6 py-3 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-transform"
+                        className="btn-shimmer w-full sm:w-auto px-6 py-3 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-transform"
                       >
                         <span>Continue to Brief</span>
                         <ArrowRight size={14} />
@@ -325,12 +323,16 @@ export default function ProjectModal({ isOpen, onClose }) {
                   <div className="space-y-3 sm:space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
-                        <label className={`block text-xs font-mono-code uppercase mb-1.5 ${
+                        <label htmlFor="project-name" className={`block text-xs font-mono-code uppercase mb-1.5 ${
                           isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'
                         }`}>
                           Your Name *
                         </label>
                         <input
+                          id="project-name"
+                          name="name"
+                          autoComplete="name"
+                          maxLength={120}
                           type="text"
                           required
                           placeholder="e.g. Alex Mercer"
@@ -344,12 +346,16 @@ export default function ProjectModal({ isOpen, onClose }) {
                         />
                       </div>
                       <div>
-                        <label className={`block text-xs font-mono-code uppercase mb-1.5 ${
+                        <label htmlFor="project-email" className={`block text-xs font-mono-code uppercase mb-1.5 ${
                           isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'
                         }`}>
                           Work Email *
                         </label>
                         <input
+                          id="project-email"
+                          name="email"
+                          autoComplete="email"
+                          maxLength={254}
                           type="email"
                           required
                           placeholder="alex@company.com"
@@ -365,12 +371,16 @@ export default function ProjectModal({ isOpen, onClose }) {
                     </div>
 
                     <div>
-                      <label className={`block text-xs font-mono-code uppercase mb-1.5 ${
+                      <label htmlFor="project-company" className={`block text-xs font-mono-code uppercase mb-1.5 ${
                         isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'
                       }`}>
                         Company / Organization
                       </label>
                       <input
+                        id="project-company"
+                        name="company"
+                        autoComplete="organization"
+                        maxLength={160}
                         type="text"
                         placeholder="e.g. Acme Tech Labs"
                         value={formData.company}
@@ -384,12 +394,15 @@ export default function ProjectModal({ isOpen, onClose }) {
                     </div>
 
                     <div>
-                      <label className={`block text-xs font-mono-code uppercase mb-1.5 ${
+                      <label htmlFor="project-details" className={`block text-xs font-mono-code uppercase mb-1.5 ${
                         isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'
                       }`}>
                         Tell us about your project vision
                       </label>
                       <textarea
+                        id="project-details"
+                        name="details"
+                        maxLength={4000}
                         rows={3}
                         placeholder="Briefly describe your objectives, existing stack, and ideal timeline..."
                         value={formData.details}
@@ -402,6 +415,9 @@ export default function ProjectModal({ isOpen, onClose }) {
                       />
                     </div>
 
+                    <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                      This opens a draft in your email app. Review your brief there and press Send to contact us.
+                    </p>
                     <div className="pt-2 sm:pt-3 flex items-center justify-between gap-3">
                       <button
                         type="button"
@@ -421,9 +437,9 @@ export default function ProjectModal({ isOpen, onClose }) {
                         data-magnetic
                         type="submit"
                         onMouseEnter={() => sound.hover()}
-                        className="flex-1 sm:flex-none justify-center px-6 py-3 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-xl shadow-cyan-500/25 flex items-center gap-2 cursor-pointer active:scale-95 transition-transform"
+                        className="btn-shimmer flex-1 sm:flex-none justify-center px-6 py-3 rounded-full font-semibold text-xs tracking-wider uppercase bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-xl shadow-cyan-500/25 flex items-center gap-2 cursor-pointer active:scale-95 transition-transform"
                       >
-                        <span>Transmit Project Brief</span>
+                        <span>Open email draft</span>
                         <Send size={14} />
                       </button>
                     </div>
@@ -431,12 +447,12 @@ export default function ProjectModal({ isOpen, onClose }) {
                 )}
               </form>
             ) : (
-              /* SUBMITTED SUCCESS STATE */
+              /* Email handoff: the brief has not been sent by the website. */
               <div className="py-8 sm:py-12 text-center space-y-4">
                 <div className="w-16 h-16 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-400/40 flex items-center justify-center mx-auto">
-                  <CheckCircle2 size={32} />
+                  <Mail size={32} />
                 </div>
-                <h3 className={`text-xl sm:text-2xl md:text-3xl font-display font-bold ${
+                <h3 id="project-draft-title" tabIndex={-1} className={`text-xl sm:text-2xl md:text-3xl font-display font-bold ${
                   isDark ? 'text-white' : 'text-slate-900'
                 }`}>
                   Your project brief is ready
@@ -446,6 +462,28 @@ export default function ProjectModal({ isOpen, onClose }) {
                 }`}>
                   Thank you, <span className={isDark ? 'text-cyan-300 font-semibold' : 'text-cyan-700 font-bold'}>{formData.name || 'there'}</span>. Your email app should open with this brief addressed to <span className={isDark ? 'text-cyan-300' : 'text-cyan-700 font-semibold'}>info@sarirait.com</span>. Review it and press Send to complete your enquiry. If no email app opens, you can write to us directly.
                 </p>
+                <div className="flex flex-wrap justify-center gap-3 text-sm">
+                  <a href={emailHref} className="rounded-full border border-cyan-500/40 px-4 py-2 text-cyan-600 dark:text-cyan-300">Open email app again</a>
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 rounded-full border border-slate-400/30 px-4 py-2"
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(brief);
+                        setCopyStatus('Brief copied. Paste it into an email to info@sarirait.com.');
+                      } catch {
+                        setCopyStatus('Select and copy the brief below, then email info@sarirait.com.');
+                      }
+                    }}
+                  >
+                    <Copy size={14} /> Copy brief
+                  </button>
+                </div>
+                <p role="status" className="text-xs">{copyStatus}</p>
+                <details className="text-left text-sm">
+                  <summary className="cursor-pointer">View your brief</summary>
+                  <textarea aria-label="Your prepared project brief" readOnly value={brief} rows={8} className={`mt-3 w-full rounded-xl border p-3 text-sm ${isDark ? 'bg-slate-950 border-white/10 text-slate-200' : 'bg-slate-50 border-slate-200 text-slate-800'}`} />
+                </details>
                 <div className="pt-2 sm:pt-4">
                   <button
                     onClick={handleClose}
@@ -455,7 +493,7 @@ export default function ProjectModal({ isOpen, onClose }) {
                         : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 font-semibold'
                     }`}
                   >
-                    Return to Homepage
+                    Back to website
                   </button>
                 </div>
               </div>
@@ -470,7 +508,7 @@ export default function ProjectModal({ isOpen, onClose }) {
             <span className="truncate">Your details are for discussing this project enquiry.</span>
           </div>
         </motion.div>
-      </div>
+      </div>}
     </AnimatePresence>
   );
 }

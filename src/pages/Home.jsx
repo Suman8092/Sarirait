@@ -13,8 +13,10 @@ import FAQ from '../components/FAQ';
 import FinalCTA from '../components/FinalCTA';
 import Footer from '../components/Footer';
 import ProjectModal from '../components/ProjectModal';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Home() {
+  const { isDark } = useTheme();
   const [projectModalOpen, setProjectModalOpen] = useState(false);
 
   const handleOpenProjectModal = () => {
@@ -26,12 +28,16 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 w-full max-w-full overflow-x-hidden">
+    <div className={`relative min-h-screen transition-colors duration-300 w-full max-w-full overflow-x-clip ${
+      isDark
+        ? 'bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200'
+        : 'bg-slate-50 text-slate-900 selection:bg-sky-500/30 selection:text-sky-900'
+    }`}>
       {/* Global Navigation */}
       <Navbar onOpenProjectModal={handleOpenProjectModal} />
 
       {/* Main Page Flow */}
-      <main className="w-full max-w-full overflow-x-hidden">
+      <main className="w-full max-w-full overflow-x-clip">
         {/* 1. Hero with Interactive 3D Digital Core */}
         <Hero onOpenProjectModal={handleOpenProjectModal} />
 

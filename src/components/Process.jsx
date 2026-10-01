@@ -1,234 +1,342 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView, useReducedMotion } from 'framer-motion';
+import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Play, Pause } from 'lucide-react';
 import { processSteps } from '../data/process';
+import { sound } from '../utils/sound';
 import { useTheme } from '../context/ThemeContext';
-import { useLenis } from './SmoothScroll';
-
-gsap.registerPlugin(ScrollTrigger);
+import SpotlightCard from './SpotlightCard';
+import MaskedHeading from './MaskedHeading';
 
 export default function Process() {
   const { isDark } = useTheme();
-  const lenis = useLenis();
-  const stageRef = useRef(null);
-  const viewportRef = useRef(null);
-  const trackRef = useRef(null);
-  const stepRefs = useRef([]);
-  const triggerRef = useRef(null);
+  const reducedMotion = useReducedMotion();
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { amount: 0.25 });
   const [activeStep, setActiveStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(() => !reducedMotion);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isDocumentVisible, setIsDocumentVisible] = useState(() => !document.hidden);
+  const timerRef = useRef(null);
+  const shouldAutoAdvance = isPlaying && isInView && isDocumentVisible && !isInteracting && !isFocused && !reducedMotion;
 
   useEffect(() => {
-    const stage = stageRef.current;
-    const viewport = viewportRef.current;
-    const track = trackRef.current;
-    if (!stage || !viewport || !track) return undefined;
-
-    const media = gsap.matchMedia();
-    media.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
-      const getDistance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
-      const tween = gsap.to(track, {
-        x: () => -getDistance(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: stage,
-          start: 'top top+=120',
-          end: () => `+=${getDistance()}`,
-          pin: true,
-          scrub: 0.8,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const nextStep = Math.min(
-              processSteps.length - 1,
-              Math.floor(self.progress * processSteps.length),
-            );
-            setActiveStep((currentStep) => currentStep === nextStep ? currentStep : nextStep);
-          },
-        },
-      });
-
-      triggerRef.current = tween.scrollTrigger;
-      return () => {
-        triggerRef.current = null;
-      };
-    });
-
-    ScrollTrigger.refresh();
-    return () => {
-      media.revert();
-      triggerRef.current = null;
-    };
+    const handleVisibility = () => setIsDocumentVisible(!document.hidden);
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
 
+  // Allow a full reading interval after returning to the section.
   useEffect(() => {
-    const cards = stepRefs.current.filter(Boolean);
-    if (!cards.length || window.matchMedia('(min-width: 1024px) and (prefers-reduced-motion: no-preference)').matches) return undefined;
-
-    const observer = new IntersectionObserver((entries) => {
-      const mostVisible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (mostVisible) setActiveStep(Number(mostVisible.target.dataset.processStep));
-    }, { threshold: [0.35, 0.6, 0.85], rootMargin: '-12% 0px -12% 0px' });
-
-    cards.forEach((card) => observer.observe(card));
-    return () => observer.disconnect();
-  }, []);
+    if (!shouldAutoAdvance) return undefined;
+    timerRef.current = setTimeout(() => {
+      setActiveStep((prev) => (prev + 1) % processSteps.length);
+    }, 6000);
+    return () => clearTimeout(timerRef.current);
+  }, [shouldAutoAdvance, activeStep]);
 
   const goToStep = (index) => {
-    const boundedIndex = Math.max(0, Math.min(processSteps.length - 1, index));
-    const trigger = triggerRef.current;
-
-    if (trigger && window.matchMedia('(min-width: 1024px)').matches) {
-      const progress = boundedIndex / (processSteps.length - 1);
-      const targetY = trigger.start + (trigger.end - trigger.start) * progress;
-      if (lenis) lenis.scrollTo(targetY, { duration: 0.85 });
-      else window.scrollTo({ top: targetY, behavior: 'smooth' });
-      return;
-    }
-
-    stepRefs.current[boundedIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    sound.click();
+    setIsPlaying(false);
+    setActiveStep(index);
   };
 
-  const sectionClass = isDark
-    ? 'bg-[#07090e] border-t border-white/[0.06] text-slate-100'
-    : 'bg-[#f8fafc] border-t border-slate-200 text-slate-900';
+  const handlePrev = () => {
+    sound.click();
+    setIsPlaying(false);
+    setActiveStep((prev) => (prev - 1 + processSteps.length) % processSteps.length);
+  };
+
+  const handleNext = () => {
+    sound.click();
+    setIsPlaying(false);
+    setActiveStep((prev) => (prev + 1) % processSteps.length);
+  };
+
+  const handleStepKeyDown = (event, index) => {
+    let nextIndex;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % processSteps.length;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + processSteps.length) % processSteps.length;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = processSteps.length - 1;
+    if (nextIndex === undefined) return;
+    event.preventDefault();
+    goToStep(nextIndex);
+    event.currentTarget.parentElement.querySelectorAll('[role="tab"]')[nextIndex]?.focus();
+  };
+
+  const currentStep = processSteps[activeStep];
 
   return (
-    <section id="process" className={`relative py-20 sm:py-28 overflow-hidden w-full max-w-full transition-colors duration-300 ${sectionClass}`}>
-      <div className={`ambient-glow absolute top-1/3 left-1/4 w-full max-w-[600px] h-[350px] sm:h-[600px] rounded-full blur-[100px] pointer-events-none -z-10 ${isDark ? 'bg-violet-600/10' : 'bg-violet-300/20'}`} />
+    <section
+      ref={sectionRef}
+      id="process"
+      onMouseEnter={() => setIsInteracting(true)}
+      onMouseLeave={() => setIsInteracting(false)}
+      onFocusCapture={() => setIsFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setIsFocused(false);
+      }}
+      className={`relative py-20 sm:py-28 transition-colors duration-300 overflow-hidden w-full max-w-full ${
+        isDark
+          ? 'text-slate-100'
+          : 'bg-slate-50 text-slate-900'
+      }`}
+    >
+      {/* Background ambient lighting */}
+      <div
+        className={`ambient-glow absolute top-1/2 left-1/3 -translate-y-1/2 w-full max-w-[700px] h-[400px] rounded-full blur-[110px] pointer-events-none -z-10 ${
+          isDark ? 'bg-cyan-500/5' : 'bg-sky-400/10'
+        }`}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <header data-motion-reveal="left" className="max-w-3xl mb-10 sm:mb-14 lg:mb-12">
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-dm-mono mb-4 border ${isDark ? 'text-cyan-300 border-cyan-400/30 bg-cyan-400/[0.06]' : 'text-sky-700 border-sky-600/20 bg-sky-600/[0.05]'}`}>
-            <span className={`w-2 h-2 rounded-full animate-pulse ${isDark ? 'bg-cyan-400' : 'bg-sky-600'}`} />
-            <span>HOW WE WORK // 6 CLEAR STEPS</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bebas font-bold tracking-tight leading-[1.08]">
-            From first conversation<br />
-            <span className="text-gradient-cyan">to a confident launch.</span>
-          </h2>
-          <p className={`text-sm sm:text-base lg:text-lg mt-4 max-w-2xl leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-            A collaborative process keeps priorities visible, feedback useful, and each decision connected to the goals we agree on together.
-          </p>
-        </header>
 
-        <div ref={stageRef} className="relative">
-          <div ref={viewportRef} className="relative overflow-hidden">
-            <div className={`process-vignette-left hidden lg:block absolute z-10 inset-y-0 left-0 w-20 pointer-events-none bg-gradient-to-r ${isDark ? 'from-[#07090e]' : 'from-[#f8fafc]'} to-transparent`} />
-            <div className={`process-vignette-right hidden lg:block absolute z-10 inset-y-0 right-0 w-20 pointer-events-none bg-gradient-to-l ${isDark ? 'from-[#07090e]' : 'from-[#f8fafc]'} to-transparent`} />
-
-            <div ref={trackRef} className="process-track flex flex-col lg:flex-row gap-5 lg:gap-7 lg:w-max will-change-transform">
-              {processSteps.map((step, index) => (
-                <article
-                  key={step.step}
-                  ref={(node) => { stepRefs.current[index] = node; }}
-                  data-process-step={index}
-                  className={`process-card-item ${index % 2 === 1 ? 'card-alt' : ''} group relative shrink-0 w-full lg:w-[min(70vw,820px)] min-h-[420px] sm:min-h-[390px] lg:min-h-[440px] p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-3xl border flex flex-col justify-between transition-colors duration-300 ${
-                    isDark
-                      ? index % 2 === 1 ? 'bg-[#111827] text-slate-100 border-white/[0.08]' : 'bg-[#0c1220] text-slate-100 border-white/[0.08]'
-                      : index % 2 === 1 ? 'bg-slate-100 text-slate-900 border-slate-200' : 'bg-white text-slate-900 border-slate-200'
-                  }`}
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-4 mb-7">
-                    <div className="flex items-center gap-4 sm:gap-5">
-                      <span className={`font-bebas text-5xl sm:text-6xl leading-none tracking-wide ${isDark ? 'text-cyan-300' : 'text-sky-700'}`}>
-                        {step.step}
-                      </span>
-                      <div className={`h-12 w-px ${isDark ? 'bg-white/10' : 'bg-slate-300'}`} />
-                      <div>
-                        <div className={`font-dm-mono text-[11px] uppercase tracking-[0.18em] mb-1 ${isDark ? 'text-cyan-300' : 'text-sky-700'}`}>
-                          Step {step.step} / {step.phase}
-                        </div>
-                        <div className={`card-meta-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-dm-mono ${isDark ? 'bg-white/[0.04] border-white/10 text-slate-300' : 'bg-slate-100 border-slate-200 text-slate-600'}`}>
-                          <Clock size={12} className={isDark ? 'text-cyan-300' : 'text-sky-700'} />
-                          <span>{step.duration}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <span className={`font-dm-mono text-xs ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>SARIRAIT / PROCESS</span>
-                  </div>
-
-                  <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-6 lg:gap-10 flex-1">
-                    <div>
-                      <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-tight mb-4">{step.title}</h3>
-                      <p className={`text-sm sm:text-base leading-relaxed max-w-xl ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                        {step.summary}
-                      </p>
-                    </div>
-                    <div className={`lg:pl-8 lg:border-l ${isDark ? 'lg:border-white/[0.08]' : 'lg:border-slate-200'}`}>
-                      <div className={`font-dm-mono text-[11px] uppercase tracking-[0.16em] mb-4 ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
-                        What we align on
-                      </div>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
-                        {step.deliverables.map((item) => (
-                          <li key={item} className={`card-deliverable-text flex items-start gap-2.5 text-xs sm:text-sm leading-snug ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                            <CheckCircle2 size={15} className={`mt-0.5 shrink-0 ${isDark ? 'text-cyan-300' : 'text-sky-700'}`} />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className={`card-tagline mt-7 pt-4 border-t text-xs sm:text-sm font-dm-mono ${isDark ? 'text-slate-400 border-white/[0.08]' : 'text-sky-800 border-slate-200'}`}>
-                    “{step.tagline}”
-                  </div>
-                </article>
-              ))}
+        {/* SECTION HEADER */}
+        <motion.div
+          initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-14 gap-6"
+        >
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill text-xs font-mono-code mb-4 border border-cyan-500/30">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              <span className={isDark ? 'text-cyan-400 font-semibold' : 'text-sky-700 font-semibold'}>
+                DELIVERY ROADMAP // 6 AGILE SPRINTS
+              </span>
             </div>
+            <MaskedHeading
+              as="h2"
+              className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight leading-[1.12]"
+              lines={[
+                <span key="lead">From first conversation</span>,
+                <span key="accent" className="text-gradient-cyan">to a confident launch.</span>
+              ]}
+            />
           </div>
 
-          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
-            <div className="flex items-center gap-2" aria-label="Choose a process step">
-              {processSteps.map((step, index) => (
+          <div className="flex flex-col items-start md:items-end gap-3">
+            <p className={`text-xs sm:text-sm max-w-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              A transparent, sprint-based process keeping priorities visible, weekly progress demonstrable, and code production-grade.
+            </p>
+            {/* Play/Pause Autoplay Controls */}
+            {!reducedMotion && <button
+              onClick={() => {
+                sound.click();
+                setIsPlaying(!isPlaying);
+              }}
+              aria-pressed={isPlaying}
+              aria-label={isPlaying ? 'Pause automatic process steps' : 'Play automatic process steps'}
+              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono-code border transition-colors cursor-pointer ${
+                isDark
+                  ? 'bg-white/[0.04] border-white/10 text-slate-300 hover:text-white'
+                  : 'bg-white border-slate-200 text-slate-700 shadow-sm'
+              }`}
+            >
+              {isPlaying ? <Pause size={12} className="text-cyan-400" /> : <Play size={12} className="text-emerald-400" />}
+              <span>{isPlaying ? 'Auto-play · pauses while you explore' : 'Auto-play Paused'}</span>
+            </button>}
+          </div>
+        </motion.div>
+
+        {/* STEPPER PROGRESS NAVIGATION BAR */}
+        <div data-motion-reveal className="relative mb-8 sm:mb-12">
+          {/* Connecting Line */}
+          <div className={`hidden md:block absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 ${
+            isDark ? 'bg-white/10' : 'bg-slate-200'
+          }`} />
+
+          {/* Active Fill Line */}
+          <div
+            className="hidden md:block absolute top-1/2 left-0 h-0.5 -translate-y-1/2 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-500"
+            style={{ width: `${(activeStep / (processSteps.length - 1)) * 100}%` }}
+          />
+
+          {/* 6 Step Nodes */}
+          <div role="tablist" aria-label="Delivery process steps" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3 relative z-10">
+            {processSteps.map((step, idx) => {
+              const isSelected = activeStep === idx;
+              const isPast = activeStep > idx;
+
+              return (
                 <button
                   key={step.step}
-                  type="button"
-                  onClick={() => goToStep(index)}
-                  aria-label={`Go to step ${step.step}: ${step.title}`}
-                  aria-current={activeStep === index ? 'step' : undefined}
-                  className={`w-9 h-9 rounded-full border text-xs font-dm-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 ${isDark ? 'focus-visible:ring-offset-[#07090e]' : 'focus-visible:ring-offset-[#f8fafc]'} ${
-                    activeStep === index
-                      ? isDark ? 'bg-cyan-400 text-slate-950 border-cyan-300' : 'bg-sky-700 text-white border-sky-700'
-                      : `step-btn-inactive ${isDark ? 'bg-white/[0.04] text-slate-400 border-white/10' : 'bg-white text-slate-600 border-slate-300'}`
+                  id={`process-step-${step.step}`}
+                  role="tab"
+                  aria-selected={isSelected}
+                  aria-controls="process-step-panel"
+                  tabIndex={isSelected ? 0 : -1}
+                  onClick={() => goToStep(idx)}
+                  onKeyDown={(event) => handleStepKeyDown(event, idx)}
+                  onMouseEnter={() => sound.hover()}
+                  className={`relative overflow-hidden p-3 sm:p-3.5 rounded-2xl border text-left transition-all duration-300 cursor-pointer hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400 ${
+                    isSelected
+                      ? isDark
+                        ? 'bg-cyan-500/20 border-cyan-400 text-white shadow-lg shadow-cyan-500/20 scale-[1.03]'
+                        : 'bg-sky-100 border-sky-500 text-sky-950 shadow-md scale-[1.03]'
+                      : isPast
+                        ? isDark
+                          ? 'bg-white/[0.04] border-cyan-500/30 text-cyan-300'
+                          : 'bg-slate-100 border-sky-300 text-sky-800'
+                        : isDark
+                          ? 'bg-white/[0.02] border-white/[0.08] text-slate-400 hover:border-white/20 hover:text-white'
+                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
                   }`}
                 >
-                  {step.step}
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-mono-code font-bold">
+                      Step {step.step}
+                    </span>
+                    {isSelected && (
+                      <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                    )}
+                  </div>
+                  <div className="text-xs sm:text-sm font-display font-bold truncate">
+                    {step.title}
+                  </div>
+                  <div className="text-[10px] font-mono-code opacity-70 mt-1 truncate">
+                    {step.duration}
+                  </div>
+                  {isSelected && !reducedMotion && (
+                    <motion.span
+                      key={`${activeStep}-${shouldAutoAdvance}`}
+                      aria-hidden="true"
+                      className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-cyan-400"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: shouldAutoAdvance ? 1 : 0 }}
+                      transition={{ duration: shouldAutoAdvance ? 6 : 0, ease: 'linear' }}
+                    />
+                  )}
                 </button>
-              ))}
-            </div>
-
-            <div className="process-border flex-1 h-px bg-white/10 relative" aria-hidden="true">
-              <span className={`absolute left-0 top-0 h-px transition-[width] duration-300 ${isDark ? 'bg-cyan-300' : 'bg-sky-700'}`} style={{ width: `${((activeStep + 1) / processSteps.length) * 100}%` }} />
-            </div>
-
-            <div className="flex items-center justify-between sm:justify-start gap-4">
-              <span className={`font-dm-mono text-xs min-w-[58px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                {processSteps[activeStep].step} <span className={isDark ? 'text-slate-600' : 'text-slate-400'}>/ 06</span>
-              </span>
-              <button
-                type="button"
-                onClick={() => goToStep(activeStep - 1)}
-                disabled={activeStep === 0}
-                aria-label="Previous process step"
-                className={`arrow-btn-enabled w-10 h-10 rounded-full border flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed ${isDark ? 'bg-white/[0.04] border-white/10 text-slate-300 hover:border-cyan-300/50 hover:text-white focus-visible:ring-offset-[#07090e]' : 'bg-white border-slate-300 text-slate-600 hover:border-sky-600 hover:text-sky-800 focus-visible:ring-offset-[#f8fafc]'}`}
-              >
-                <ArrowLeft size={16} />
-              </button>
-              <button
-                type="button"
-                onClick={() => goToStep(activeStep + 1)}
-                disabled={activeStep === processSteps.length - 1}
-                aria-label="Next process step"
-                className={`arrow-btn-enabled w-10 h-10 rounded-full border flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed ${isDark ? 'bg-white/[0.04] border-white/10 text-slate-300 hover:border-cyan-300/50 hover:text-white focus-visible:ring-offset-[#07090e]' : 'bg-white border-slate-300 text-slate-600 hover:border-sky-600 hover:text-sky-800 focus-visible:ring-offset-[#f8fafc]'}`}
-              >
-                <ArrowRight size={16} />
-              </button>
-            </div>
+              );
+            })}
           </div>
         </div>
+
+        {/* ACTIVE STEP SPOTLIGHT STAGE */}
+        <div data-motion-reveal>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={currentStep.step}
+            id="process-step-panel"
+            role="tabpanel"
+            aria-labelledby={`process-step-${currentStep.step}`}
+            initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reducedMotion ? 0 : -8 }}
+            transition={{ duration: reducedMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <SpotlightCard
+              spotlightColor="rgba(0, 240, 255, 0.16)"
+              borderColor="rgba(0, 240, 255, 0.45)"
+              className={`p-6 sm:p-10 rounded-3xl glass-card border transition-all duration-300 shadow-2xl ${
+                isDark
+                  ? 'bg-[#0c1220]/95 border-white/[0.08]'
+                  : 'bg-white border-slate-200 shadow-xl'
+              }`}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+                {/* Left: Step Details */}
+                <div className="lg:col-span-7 space-y-5">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="text-4xl sm:text-5xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                      {currentStep.step}
+                    </span>
+                    <div className={`h-8 w-px ${isDark ? 'bg-white/10' : 'bg-slate-300'}`} />
+                    <div className="space-y-0.5">
+                      <div className="text-xs font-mono-code uppercase tracking-wider text-cyan-400 font-bold">
+                        Phase {currentStep.step} // {currentStep.phase}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs font-mono-code text-slate-400">
+                        <Clock size={12} className="text-cyan-400" />
+                        <span>Duration: {currentStep.duration}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3 className={`text-2xl sm:text-3xl lg:text-4xl font-display font-extrabold tracking-tight ${
+                    isDark ? 'text-white' : 'text-slate-900'
+                  }`}>
+                    {currentStep.title}
+                  </h3>
+
+                  <p className={`text-sm sm:text-base leading-relaxed ${
+                    isDark ? 'text-slate-300' : 'text-slate-600'
+                  }`}>
+                    {currentStep.summary}
+                  </p>
+
+                  <div className={`p-4 rounded-2xl border text-xs sm:text-sm font-mono-code leading-relaxed ${
+                    isDark ? 'bg-cyan-500/5 border-cyan-500/20 text-cyan-300' : 'bg-sky-50 border-sky-200 text-sky-800'
+                  }`}>
+                    “{currentStep.tagline}”
+                  </div>
+                </div>
+
+                {/* Right: Key Deliverables Checklist */}
+                <div className={`lg:col-span-5 p-6 rounded-2xl border ${
+                  isDark ? 'bg-white/[0.02] border-white/[0.08]' : 'bg-slate-50 border-slate-200'
+                }`}>
+                  <div className="text-xs font-mono-code uppercase tracking-wider text-slate-400 mb-4 font-bold flex items-center justify-between">
+                    <span>What We Align On</span>
+                    <span className="text-cyan-400">{currentStep.deliverables.length} Key Outputs</span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {currentStep.deliverables.map((item, idx) => (
+                      <div
+                        key={idx}
+                        data-motion-reveal
+                        style={{ '--motion-delay': `${Math.min(idx, 3) * 55}ms` }}
+                        className={`flex items-start gap-3 p-3 rounded-xl border transition-all ${
+                          isDark
+                            ? 'bg-white/[0.02] border-white/[0.04] text-slate-200 hover:border-cyan-500/30'
+                            : 'bg-white border-slate-200 text-slate-800 hover:border-sky-300 shadow-xs'
+                        }`}
+                      >
+                        <CheckCircle2 size={16} className="text-cyan-400 shrink-0 mt-0.5" />
+                        <span className="text-xs sm:text-sm font-medium">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Nav Buttons */}
+                  <div className="flex items-center justify-between pt-6 mt-6 border-t border-current/5">
+                    <button
+                      onClick={handlePrev}
+                      className={`p-2.5 rounded-full border transition-colors cursor-pointer ${
+                        isDark ? 'bg-white/[0.04] border-white/10 hover:border-cyan-400/50 text-white' : 'bg-white border-slate-300 text-slate-700 shadow-sm'
+                      }`}
+                      aria-label="Previous step"
+                    >
+                      <ArrowLeft size={16} />
+                    </button>
+
+                    <div className="text-xs font-mono-code text-slate-400 font-bold">
+                      {activeStep + 1} / {processSteps.length}
+                    </div>
+
+                    <button
+                      onClick={handleNext}
+                      className={`p-2.5 rounded-full border transition-colors cursor-pointer ${
+                        isDark ? 'bg-white/[0.04] border-white/10 hover:border-cyan-400/50 text-white' : 'bg-white border-slate-300 text-slate-700 shadow-sm'
+                      }`}
+                      aria-label="Next step"
+                    >
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </SpotlightCard>
+          </motion.div>
+        </AnimatePresence>
+        </div>
+
       </div>
     </section>
   );

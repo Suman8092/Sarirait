@@ -5,12 +5,14 @@ import MegaMenu from './MegaMenu';
 import MobileMenu from './MobileMenu';
 import { sound } from '../utils/sound';
 import { useTheme } from '../context/ThemeContext';
+import MagneticButton from './MagneticButton';
 
 export default function Navbar({ onOpenProjectModal }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [audioActive, setAudioActive] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
   const { isDark, toggleTheme } = useTheme();
   const closeTimerRef = useRef(null);
   const location = useLocation();
@@ -18,10 +20,11 @@ export default function Navbar({ onOpenProjectModal }) {
   useEffect(() => {
     let prevScrolled = false;
     let ticking = false;
+    let frameId = 0;
 
     const handleScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(() => {
+        frameId = window.requestAnimationFrame(() => {
           const isScrolled = window.scrollY > 30;
           if (isScrolled !== prevScrolled) {
             prevScrolled = isScrolled;
@@ -34,8 +37,23 @@ export default function Navbar({ onOpenProjectModal }) {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.cancelAnimationFrame(frameId);
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
   }, []);
+
+  useEffect(() => {
+    if (location.pathname !== '/' || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter(entry => entry.isIntersecting);
+      if (visible.length) setActiveSection(visible[visible.length - 1].target.id);
+    }, { rootMargin: '-15% 0px -65% 0px' });
+    document.querySelectorAll('main section[id], footer[id]').forEach(section => observer.observe(section));
+    return () => observer.disconnect();
+  }, [location.pathname]);
 
   const handleToggleTheme = () => {
     sound.click();
@@ -116,7 +134,8 @@ export default function Navbar({ onOpenProjectModal }) {
                 to="/"
                 onMouseEnter={() => sound.hover()}
                 onClick={() => sound.click()}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                aria-current={location.pathname === '/' && !['why-us', 'process', 'technology', 'footer'].includes(activeSection) ? 'page' : undefined}
+                className={`nav-motion-link px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                   isDark
                     ? 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
@@ -138,7 +157,7 @@ export default function Navbar({ onOpenProjectModal }) {
                     sound.click();
                     setMegaMenuOpen(!megaMenuOpen);
                   }}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
+                  className={`nav-motion-link px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
                     megaMenuOpen
                       ? isDark
                         ? 'text-cyan-300 bg-white/[0.08] shadow-sm'
@@ -148,6 +167,7 @@ export default function Navbar({ onOpenProjectModal }) {
                         : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                   }`}
                   aria-expanded={megaMenuOpen}
+                  aria-current={location.pathname.startsWith('/services') ? 'page' : undefined}
                 >
                   <span>Services</span>
                   <ChevronDown
@@ -164,14 +184,15 @@ export default function Navbar({ onOpenProjectModal }) {
               </div>
 
               {navLinks.map((link) => {
-                const isActive = link.to === location.pathname;
+                const isActive = link.to === location.pathname || (location.pathname === '/' && link.to === `/#${activeSection}`);
                 return (
                   <Link
                     key={link.name}
                     to={link.to}
                     onMouseEnter={() => sound.hover()}
                     onClick={() => sound.click()}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                    aria-current={isActive ? (link.to.includes('#') ? 'location' : 'page') : undefined}
+                    className={`nav-motion-link px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                       isActive
                         ? isDark
                           ? 'text-cyan-300 bg-white/[0.08] shadow-sm font-semibold'
@@ -220,21 +241,22 @@ export default function Navbar({ onOpenProjectModal }) {
               </button>
 
               {/* Primary CTA */}
-              <button
-                data-magnetic
-                onClick={() => {
-                  sound.click();
-                  onOpenProjectModal();
-                }}
-                onMouseEnter={() => sound.hover()}
-                className="relative group px-5 py-2.5 rounded-full font-semibold text-xs tracking-wider uppercase overflow-hidden flex items-center gap-1.5 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
-              >
-                <span className="relative z-10 flex items-center gap-1.5">
-                  Start a Project
-                  <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </span>
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-              </button>
+              <MagneticButton maxOffset={6}>
+                <button
+                  onClick={() => {
+                    sound.click();
+                    onOpenProjectModal();
+                  }}
+                  onMouseEnter={() => sound.hover()}
+                  className="btn-shimmer relative group px-5 py-2.5 rounded-full font-semibold text-xs tracking-wider uppercase overflow-hidden flex items-center gap-1.5 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+                >
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    Start a Project
+                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                </button>
+              </MagneticButton>
             </div>
 
             {/* MOBILE & TABLET CONTROLS (< lg) */}
@@ -247,7 +269,7 @@ export default function Navbar({ onOpenProjectModal }) {
                   sound.click();
                   onOpenProjectModal();
                 }}
-                className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-sm hover:opacity-95 active:scale-95 transition-all cursor-pointer shrink-0"
+                className="btn-shimmer hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-sm hover:opacity-95 active:scale-95 transition-all cursor-pointer shrink-0"
               >
                 <span>Start a Project</span>
                 <ArrowUpRight size={12} />
@@ -332,4 +354,3 @@ export default function Navbar({ onOpenProjectModal }) {
     </>
   );
 }
-

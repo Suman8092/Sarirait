@@ -22,11 +22,12 @@ function AnimatedRoutes() {
       <motion.div
         key={location.pathname}
         className="route-motion-shell w-full"
-        initial={enterState}
+        initial={prefersReducedMotion ? false : enterState}
         animate={{ opacity: 1 }}
-        exit={exitState}
-        transition={{ duration: prefersReducedMotion ? 0.14 : 0.42, ease: [0.22, 1, 0.36, 1] }}
+        exit={prefersReducedMotion ? { opacity: 1 } : exitState}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
       >
+        <ScrollToTop location={location} />
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/work" element={<Work />} />
@@ -48,7 +49,6 @@ export default function App() {
           <SmoothScroll>
             <CustomCursor />
             <MotionSystem />
-            <ScrollToTop />
             <AnimatedRoutes />
           </SmoothScroll>
         </MotionConfig>

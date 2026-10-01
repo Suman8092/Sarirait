@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
-  ArrowUpRight, 
-  ArrowRight, 
-  Search, 
-  X, 
-  Sparkles, 
-  ShieldCheck, 
-  Layers, 
-  ShoppingBag, 
-  Laptop, 
-  Smartphone, 
+import {
+  ArrowUpRight,
+  ArrowRight,
+  Search,
+  X,
+  Sparkles,
+  ShieldCheck,
+  Layers,
+  ShoppingBag,
+  Laptop,
+  Smartphone,
   Palette,
   ChevronRight,
   TrendingUp,
@@ -34,6 +34,7 @@ export default function Work() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('featured');
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
 
   // Scroll to top and set document title
   useEffect(() => {
@@ -98,7 +99,7 @@ export default function Work() {
       <Navbar onOpenProjectModal={() => setProjectModalOpen(true)} />
 
       <main className="w-full max-w-full overflow-x-hidden pt-24 sm:pt-32 pb-20">
-        
+
         {/* ========================================================================= */}
         {/* HERO SECTION */}
         {/* ========================================================================= */}
@@ -117,7 +118,7 @@ export default function Work() {
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-10 border-b border-current/10">
-            <div className="max-w-3xl">
+            <div data-motion-reveal className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code text-cyan-400 mb-4 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                 <span>COMPLETE PORTFOLIO ARCHIVE // 18+ DELIVERIES</span>
@@ -131,32 +132,32 @@ export default function Work() {
               <p className={`text-base sm:text-lg leading-relaxed max-w-2xl ${
                 isDark ? 'text-slate-300' : 'text-slate-600'
               }`}>
-                Explore our verified archive of commercial work spanning high-conversion e-commerce storefronts, 
+                Explore our verified archive of commercial work spanning high-conversion e-commerce storefronts,
                 scalable web applications, native mobile apps, and authoritative brand identities delivered by Sarirait.
               </p>
             </div>
 
             {/* Quick Hero Metrics */}
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-4 lg:w-80 shrink-0">
-              <div className={`p-4 rounded-2xl border ${
+              <div data-motion-reveal style={{ '--motion-delay': '50ms' }} className={`p-4 rounded-2xl border ${
                 isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-slate-200 shadow-sm'
               }`}>
                 <div className="text-2xl sm:text-3xl font-bold font-display text-cyan-400"><CountUpValue value="18+" /></div>
                 <div className="text-xs font-mono-code text-slate-400 uppercase mt-0.5">Verified Works</div>
               </div>
-              <div className={`p-4 rounded-2xl border ${
+              <div data-motion-reveal style={{ '--motion-delay': '100ms' }} className={`p-4 rounded-2xl border ${
                 isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-slate-200 shadow-sm'
               }`}>
                 <div className="text-2xl sm:text-3xl font-bold font-display text-violet-400"><CountUpValue value="100%" /></div>
                 <div className="text-xs font-mono-code text-slate-400 uppercase mt-0.5">Custom Code</div>
               </div>
-              <div className={`p-4 rounded-2xl border ${
+              <div data-motion-reveal style={{ '--motion-delay': '150ms' }} className={`p-4 rounded-2xl border ${
                 isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-slate-200 shadow-sm'
               }`}>
                 <div className="text-2xl sm:text-3xl font-bold font-display text-emerald-400"><CountUpValue value="4.9★" /></div>
                 <div className="text-xs font-mono-code text-slate-400 uppercase mt-0.5">Client Rating</div>
               </div>
-              <div className={`p-4 rounded-2xl border ${
+              <div data-motion-reveal style={{ '--motion-delay': '200ms' }} className={`p-4 rounded-2xl border ${
                 isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-slate-200 shadow-sm'
               }`}>
                 <div className="text-2xl sm:text-3xl font-bold font-display text-amber-400">₹10Cr+</div>
@@ -171,12 +172,12 @@ export default function Work() {
         {/* ========================================================================= */}
         <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-10 sticky top-[68px] z-30 pointer-events-auto">
           <div className={`p-3 sm:p-4 rounded-2xl backdrop-blur-xl border transition-all shadow-xl ${
-            isDark 
-              ? 'bg-[#0a0e18]/90 border-white/10 shadow-black/40' 
+            isDark
+              ? 'bg-[#0a0e18]/90 border-white/10 shadow-black/40'
               : 'bg-white/95 border-slate-200 shadow-slate-200/60'
           }`}>
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-              
+
               {/* Category Filter Pills */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
                 {categories.map((cat) => {
@@ -186,14 +187,17 @@ export default function Work() {
                   const isActive = activeCategory === cat.id;
 
                   return (
-                    <button
+                    <motion.button
                       key={cat.id}
+                      type="button"
+                      aria-pressed={isActive}
+                      whileTap={reducedMotion ? undefined : { scale: 0.97 }}
                       onClick={() => {
                         sound.click();
                         setActiveCategory(cat.id);
                       }}
                       onMouseEnter={() => sound.hover()}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold transition-all border flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
+                      className={`relative px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold transition-colors border flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${
                         isActive
                           ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400 shadow-md shadow-cyan-500/15'
                           : isDark
@@ -201,16 +205,17 @@ export default function Work() {
                             : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-200'
                       }`}
                     >
+                      {isActive && <motion.span layoutId="work-category-indicator" aria-hidden="true" className="absolute left-3.5 right-3.5 -bottom-px h-0.5 bg-cyan-400 rounded-full" transition={{ duration: reducedMotion ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }} />}
                       <span className={isActive ? 'text-cyan-300' : 'text-slate-400'}>{cat.icon}</span>
                       <span>{cat.label}</span>
                       <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                        isActive 
-                          ? 'bg-cyan-400 text-black' 
+                        isActive
+                          ? 'bg-cyan-400 text-black'
                           : isDark ? 'bg-white/10 text-slate-400' : 'bg-slate-200 text-slate-700'
                       }`}>
                         {count}
                       </span>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -224,6 +229,7 @@ export default function Work() {
                   <Search size={14} className="text-slate-400 mr-2 shrink-0" />
                   <input
                     type="text"
+                    aria-label="Search projects by client, technology or service"
                     placeholder="Search client, tech, tag..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -234,6 +240,7 @@ export default function Work() {
                       onClick={() => setSearchQuery('')}
                       className="p-1 hover:text-cyan-400 text-slate-400 cursor-pointer"
                       title="Clear search"
+                      aria-label="Clear project search"
                     >
                       <X size={12} />
                     </button>
@@ -243,14 +250,15 @@ export default function Work() {
                 {/* Sort Dropdown */}
                 <div className="relative shrink-0">
                   <select
+                    aria-label="Sort projects"
                     value={sortBy}
                     onChange={(e) => {
                       sound.click();
                       setSortBy(e.target.value);
                     }}
                     className={`px-3 py-2 rounded-xl text-xs font-mono-code border outline-none cursor-pointer ${
-                      isDark 
-                        ? 'bg-black/40 text-slate-300 border-white/10 hover:border-white/20' 
+                      isDark
+                        ? 'bg-black/40 text-slate-300 border-white/10 hover:border-white/20'
                         : 'bg-slate-100 text-slate-700 border-slate-200 hover:border-slate-300'
                     }`}
                   >
@@ -268,8 +276,8 @@ export default function Work() {
               <div className="mt-3 pt-3 border-t border-current/10 flex items-center justify-between text-xs font-mono-code">
                 <span className="text-slate-400">
                   Showing <strong className="text-cyan-400">{filteredProjects.length}</strong> of {projectsData.length} projects
-                  {searchQuery && <span> matching "<span className="text-white">{searchQuery}</span>"</span>}
-                  {activeCategory !== 'All' && <span> in <span className="text-white">{activeCategory}</span></span>}
+                  {searchQuery && <span> matching "<span className={isDark ? 'text-white' : 'text-slate-800'}>{searchQuery}</span>"</span>}
+                  {activeCategory !== 'All' && <span> in <span className={isDark ? 'text-white' : 'text-slate-800'}>{activeCategory}</span></span>}
                 </span>
 
                 <button
@@ -288,6 +296,7 @@ export default function Work() {
         {/* PROJECTS GRID */}
         {/* ========================================================================= */}
         <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-24">
+          <p className="sr-only" role="status" aria-live="polite">{filteredProjects.length} projects shown{activeCategory !== 'All' ? ` in ${activeCategory}` : ''}{searchQuery ? ` matching ${searchQuery}` : ''}.</p>
           {filteredProjects.length === 0 ? (
             /* Empty State */
             <div className={`text-center py-20 px-6 rounded-3xl border ${
@@ -308,25 +317,36 @@ export default function Work() {
               </button>
             </div>
           ) : (
-            <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <motion.div layout={!reducedMotion} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <AnimatePresence mode="popLayout">
-                {filteredProjects.map((project) => (
+                {filteredProjects.map((project, index) => (
                   <motion.div
-                    layout
+                    layout={!reducedMotion}
                     key={project.id}
-                    initial={{ opacity: 0, scale: 0.96, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96, y: -20 }}
-                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.12, margin: '0px 0px -24px 0px' }}
+                    exit={{ opacity: 0, scale: reducedMotion ? 1 : 0.98 }}
+                    transition={{ duration: reducedMotion ? 0 : 0.48, delay: reducedMotion ? 0 : (index % 2) * 0.065, ease: [0.16, 1, 0.3, 1], layout: { duration: reducedMotion ? 0 : 0.35, delay: 0 } }}
+                    role="button"
+                    tabIndex={0}
+                    aria-haspopup="dialog"
+                    aria-label={`View ${project.client} case study`}
                     onMouseEnter={() => sound.hover()}
                     data-cursor="view"
                     onClick={() => {
                       sound.click();
                       setSelectedProject(project);
                     }}
-                    className={`group relative rounded-3xl overflow-hidden border cursor-pointer flex flex-col justify-between shadow-2xl transition-all duration-300 ${
-                      isDark 
-                        ? 'glass-card border-white/[0.08] hover:border-cyan-500/50 bg-[#0c1220]/90' 
+                    onKeyDown={(event) => {
+                      if (event.key !== 'Enter' && event.key !== ' ') return;
+                      event.preventDefault();
+                      sound.click();
+                      setSelectedProject(project);
+                    }}
+                    className={`group relative rounded-3xl overflow-hidden border cursor-pointer flex flex-col justify-between shadow-2xl transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400 ${
+                      isDark
+                        ? 'glass-card border-white/[0.08] hover:border-cyan-500/50 bg-[#0c1220]/90'
                         : 'bg-white border-slate-200 hover:border-cyan-500 shadow-slate-200/80'
                     }`}
                   >
@@ -336,7 +356,7 @@ export default function Work() {
                       <img
                         src={project.image || project.logo}
                         alt={`${project.client} Showcase`}
-                        className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.88] group-hover:brightness-100"
+                        className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-700 ease-out brightness-[0.88] group-hover:brightness-100 group-focus-visible:brightness-100"
                         loading="lazy"
                       />
 
@@ -375,7 +395,7 @@ export default function Work() {
 
                         {/* Arrow Action Badge */}
                         <div className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-white group-hover:bg-cyan-500 group-hover:text-black group-hover:border-cyan-400 transition-all duration-300 shrink-0 shadow-lg">
-                          <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                          <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5 transition-transform" />
                         </div>
                       </div>
 
@@ -433,11 +453,11 @@ export default function Work() {
                       <div className="mt-6 pt-5 border-t border-current/10 flex items-center justify-between gap-4">
                         <div className="flex flex-wrap gap-1.5 sm:gap-2">
                           {project.services.slice(0, 2).map((srv, idx) => (
-                            <span 
-                              key={idx} 
+                            <span
+                              key={idx}
                               className={`text-xs font-mono-code px-2.5 py-1 rounded border ${
-                                isDark 
-                                  ? 'bg-white/[0.04] text-slate-300 border-white/5' 
+                                isDark
+                                  ? 'bg-white/[0.04] text-slate-300 border-white/5'
                                   : 'bg-slate-100 text-slate-700 border-slate-200'
                               }`}
                             >
@@ -445,8 +465,8 @@ export default function Work() {
                             </span>
                           ))}
                           {project.techStack?.slice(0, 1).map((tech, idx) => (
-                            <span 
-                              key={idx} 
+                            <span
+                              key={idx}
                               className="text-xs font-mono-code px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hidden sm:inline-block"
                             >
                               {tech}
@@ -589,8 +609,8 @@ export default function Work() {
                 onClick={() => sound.click()}
                 onMouseEnter={() => sound.hover()}
                 className={`w-full sm:w-auto px-6 py-4 rounded-full border text-xs font-mono-code font-semibold transition-all flex items-center justify-center gap-2 ${
-                  isDark 
-                    ? 'border-white/15 bg-white/[0.04] text-white hover:bg-white/10' 
+                  isDark
+                    ? 'border-white/15 bg-white/[0.04] text-white hover:bg-white/10'
                     : 'border-slate-300 bg-white text-slate-800 hover:bg-slate-100 shadow-sm'
                 }`}
               >

@@ -1,20 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import useMotionPointer from '../hooks/useMotionPointer';
 
 export default function CustomCursor() {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
   const [cursorText, setCursorText] = useState('');
   const [cursorVariant, setCursorVariant] = useState('default');
-  const [isTouchDevice] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return (
-      'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0 ||
-      window.matchMedia('(pointer: coarse)').matches ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    );
-  });
+  const isTouchDevice = !useMotionPointer();
   const [isVisible, setIsVisible] = useState(false);
   const { isDark } = useTheme();
 
@@ -27,7 +20,7 @@ export default function CustomCursor() {
 
   const isView = cursorVariant === 'view';
   const isHover = cursorVariant === 'hover';
-  const targetScale = isView ? 2.2 : isHover ? 1.45 : 1.0;
+  const targetScale = isHover ? 1.4 : 1.0;
   const targetScaleRef = useRef(targetScale);
   const currentScale = useRef(1.0);
 
@@ -54,9 +47,9 @@ export default function CustomCursor() {
         return;
       }
 
-      ringPos.current.x += dx * 0.25;
-      ringPos.current.y += dy * 0.25;
-      currentScale.current += ds * 0.2;
+      ringPos.current.x += dx * 0.28;
+      ringPos.current.y += dy * 0.28;
+      currentScale.current += ds * 0.22;
 
       if (ringRef.current) {
         ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%) scale(${currentScale.current})`;
@@ -92,10 +85,10 @@ export default function CustomCursor() {
       const target = e.target;
       if (!target || !(target instanceof Element)) return;
 
-      const viewTrigger = target.closest('[data-cursor="view"]');
+      const viewTrigger = target.closest('[data-cursor="view"], [data-cursor="project"]');
       if (viewTrigger) {
         setCursorVariant('view');
-        setCursorText('VIEW');
+        setCursorText('VIEW PROJECT →');
         wakeLoop();
         return;
       }
@@ -148,17 +141,19 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Outer Fluid Follower Ring - NO transition-transform to prevent animation collision */}
+      {/* Outer Fluid Follower - Transforms to Pill for Projects */}
       <div
         ref={ringRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full flex items-center justify-center font-mono-code font-bold transition-opacity transition-colors duration-150 ease-out ${
-          !isVisible ? 'opacity-0' : 'opacity-100'
+        aria-hidden="true"
+        className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full flex items-center justify-center font-mono-code font-bold transition-all duration-200 ease-out shadow-lg ${
+          !isVisible ? 'opacity-0 scale-75' : 'opacity-100'
         }`}
         style={{
-          width: 32,
-          height: 32,
+          width: isView ? 124 : 32,
+          height: isView ? 34 : 32,
+          borderRadius: 9999,
           backgroundColor: isView
-            ? 'rgba(0, 240, 255, 0.95)'
+            ? '#00f0ff'
             : isHover
             ? (isDark ? 'rgba(0, 240, 255, 0.12)' : 'rgba(2, 132, 199, 0.12)')
             : (isDark ? 'rgba(0, 240, 255, 0.04)' : 'rgba(2, 132, 199, 0.05)'),
@@ -167,20 +162,24 @@ export default function CustomCursor() {
             : isHover
             ? (isDark ? 'rgba(0, 240, 255, 0.7)' : 'rgba(2, 132, 199, 0.8)')
             : (isDark ? 'rgba(255, 255, 255, 0.22)' : 'rgba(15, 23, 42, 0.25)'),
-          borderWidth: 1.5,
+          borderWidth: isView ? 0 : 1.5,
+          boxShadow: isView 
+            ? '0 0 20px rgba(0, 240, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3)' 
+            : 'none',
           transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%) scale(1)'
         }}
       >
         {isView && (
-          <span className="text-[7px] tracking-wider text-black font-extrabold select-none">
+          <span className="text-[10px] tracking-wider text-black font-extrabold uppercase select-none px-2 whitespace-nowrap">
             {cursorText}
           </span>
         )}
       </div>
 
-      {/* Central Immediate Pointer Dot */}
+      {/* Central Pointer Dot */}
       <div
         ref={dotRef}
+        aria-hidden="true"
         className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-opacity duration-150 ${
           !isVisible || isView ? 'opacity-0' : 'opacity-100'
         }`}
