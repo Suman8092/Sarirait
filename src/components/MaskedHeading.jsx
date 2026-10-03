@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
  * MaskedHeading
  * Splits large headings into individual words with masked upward kinetic reveals.
  * Words rise sequentially one by one ("pehla word, fir dusra, fir teesra")
- * creating a high-production editorial typography effect.
+ * cleanly supporting gradient text classes by applying them directly to the word spans.
  */
 export default function MaskedHeading({
   lines = [],
@@ -13,7 +13,7 @@ export default function MaskedHeading({
   className = '',
   as: Component = 'h2',
   delay = 0,
-  stagger = 0.065,
+  stagger = 0.08,
   duration = 0.65,
   once = true
 }) {
@@ -24,24 +24,20 @@ export default function MaskedHeading({
   let globalWordIndex = 0;
   const getIndex = () => globalWordIndex++;
 
-  const renderWordsFromNode = (node) => {
+  const renderWordsFromNode = (node, inheritedClass = '') => {
     if (typeof node === 'string') {
-      const parts = node.split(/(\s+)/);
-      return parts.map((part, pIdx) => {
-        if (/^\s+$/.test(part)) {
-          return " ";
-        }
-        if (!part) return null;
+      const words = node.split(/\s+/).filter(Boolean);
+      return words.map((word) => {
         const currentIdx = getIndex();
         return (
           <span 
             key={`word-${currentIdx}`} 
-            className="inline-block overflow-hidden align-baseline py-0.5"
+            className="inline-block overflow-hidden align-baseline py-0.5 mr-[0.28em] last:mr-0"
           >
             <motion.span
-              className="inline-block will-change-transform"
-              initial={{ y: '115%', opacity: 0, rotateX: 28, filter: 'blur(3px)' }}
-              whileInView={{ y: '0%', opacity: 1, rotateX: 0, filter: 'blur(0px)' }}
+              className={`inline-block will-change-transform ${inheritedClass}`}
+              initial={{ y: '110%', opacity: 0 }}
+              whileInView={{ y: '0%', opacity: 1 }}
               viewport={{ once, amount: 0.15 }}
               transition={{
                 duration: duration,
@@ -49,7 +45,7 @@ export default function MaskedHeading({
                 ease: [0.16, 1, 0.3, 1]
               }}
             >
-              {part}
+              {word}
             </motion.span>
           </span>
         );
@@ -57,11 +53,23 @@ export default function MaskedHeading({
     }
 
     if (React.isValidElement(node)) {
+      const nodeClass = node.props.className || '';
+      const isGradient = /text-gradient/.test(nodeClass);
+      const outerClass = isGradient 
+        ? nodeClass.replace(/text-gradient-[a-z0-9_-]+/g, '').trim()
+        : nodeClass;
+      const innerClass = [
+        inheritedClass,
+        isGradient ? (nodeClass.match(/text-gradient-[a-z0-9_-]+/g) || []).join(' ') : ''
+      ].filter(Boolean).join(' ');
+
       const parsedChildren = React.Children.map(node.props.children, child =>
-        renderWordsFromNode(child)
+        renderWordsFromNode(child, innerClass)
       );
+
       return React.cloneElement(node, {
         ...node.props,
+        className: outerClass || undefined,
         children: parsedChildren
       });
     }
@@ -74,7 +82,7 @@ export default function MaskedHeading({
       {headingLines.map((line, lIdx) => (
         <span 
           key={`line-${lIdx}`} 
-          className="block py-0.5 leading-[1.12]"
+          className="block py-0.5 leading-[1.14]"
         >
           {renderWordsFromNode(line)}
         </span>
