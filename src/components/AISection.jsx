@@ -73,8 +73,12 @@ export default function AISection({ onOpenProjectModal }) {
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           
-          {/* LEFT COLUMN: AI NARRATIVE & SIMULATOR */}
-          <div
+          {/* LEFT COLUMN: AI NARRATIVE & SIMULATOR (SLIDES IN FROM LEFT) */}
+          <motion.div
+            initial={{ opacity: 0, x: -75 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 space-y-6 sm:space-y-8"
           >
             <div>
@@ -225,12 +229,14 @@ export default function AISection({ onOpenProjectModal }) {
                 <ArrowUpRight size={16} />
               </button>
             </div>
-          </div>
+          </motion.div>
 
-          {/* RIGHT COLUMN: 3D INTERACTIVE NEURAL BRAIN VISUALIZER */}
-          <div
-            data-motion-reveal="scale"
-            style={{ '--motion-delay': '100ms' }}
+          {/* RIGHT COLUMN: 3D INTERACTIVE NEURAL BRAIN VISUALIZER (SLIDES IN FROM RIGHT) */}
+          <motion.div
+            initial={{ opacity: 0, x: 75 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 w-full"
           >
             <div className={`relative rounded-3xl p-4 sm:p-6 border overflow-hidden shadow-2xl transition-all ${
@@ -265,7 +271,7 @@ export default function AISection({ onOpenProjectModal }) {
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
         </div>
 

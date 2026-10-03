@@ -1,4 +1,7 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { CheckCircle2 } from 'lucide-react';
+import FlipCard from './FlipCard';
 import SpotlightCard from './SpotlightCard';
 import { sound } from '../utils/sound';
 import MaskedHeading from './MaskedHeading';
@@ -8,10 +11,34 @@ export default function TrustSection() {
   const { isDark } = useTheme();
 
   const stats = [
-    { value: "01", label: "Shape the brand", detail: "Identity, design and content" },
-    { value: "02", label: "Build the experience", detail: "Websites, apps and stores" },
-    { value: "03", label: "Reach the audience", detail: "Search, social and campaigns" },
-    { value: "04", label: "Keep improving", detail: "Learn from real feedback" }
+    { 
+      value: "01", 
+      label: "Shape the brand", 
+      detail: "Identity, design and content",
+      deliverables: ["Brand Identity Guidelines", "Logo Mark & System", "Visual Design Tokens", "Voice & Archetype"],
+      metric: "100% Vector"
+    },
+    { 
+      value: "02", 
+      label: "Build the experience", 
+      detail: "Websites, apps and stores",
+      deliverables: ["Headless Next.js & React", "Sub-second Performance", "Custom 3D & Interactions", "Adaptive Mobile UX"],
+      metric: "99+ Lighthouse"
+    },
+    { 
+      value: "03", 
+      label: "Reach the audience", 
+      detail: "Search, social and campaigns",
+      deliverables: ["Semantic SEO Architecture", "High-ROI Paid Funnels", "Social Content Strategy", "Conversion Tracking"],
+      metric: "3.4x Target ROI"
+    },
+    { 
+      value: "04", 
+      label: "Keep improving", 
+      detail: "Learn from real feedback",
+      deliverables: ["Real-time Analytics & KPIs", "Continuous A/B Sprints", "Security & Core Backups", "Monthly Growth Roadmap"],
+      metric: "24/7 SLA Support"
+    }
   ];
 
   // Verified client brand logos delivered by Sarirait
@@ -68,57 +95,96 @@ export default function TrustSection() {
           </p>
         </div>
 
-        {/* 4 CORE STATS GRID */}
-        <div data-motion-stagger="95" className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
-          {stats.map((stat, i) => (
-            <SpotlightCard
-              key={i}
-              spotlightColor={isDark ? "rgba(0, 240, 255, 0.16)" : "rgba(2, 132, 199, 0.12)"}
-              borderColor={isDark ? "rgba(0, 240, 255, 0.45)" : "rgba(2, 132, 199, 0.45)"}
-              tiltIntensity={4.2}
-              elevation={10}
-              data-motion-reveal
-              style={{ '--motion-delay': `${i * 90}ms` }}
-              onMouseEnter={() => sound.hover()}
-              className={`motion-card p-5 sm:p-8 rounded-2xl group relative overflow-hidden flex flex-col justify-between border transition-all duration-500 ease-out hover:-translate-y-2 ${
-                isDark
-                  ? 'glass-card border-white/[0.08] hover:border-cyan-400/50 hover:shadow-cyan-500/10'
-                  : 'bg-white border-slate-200 shadow-sm hover:border-sky-400 hover:shadow-lg hover:shadow-sky-500/10'
-              }`}
-            >
-              {/* Subtle top accent bar */}
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className={`text-3xl sm:text-5xl font-display font-extrabold text-transparent bg-clip-text transition-colors ${
-                    isDark
-                      ? 'bg-gradient-to-r from-white via-slate-100 to-cyan-300 group-hover:to-cyan-400'
-                      : 'bg-gradient-to-r from-slate-900 via-sky-800 to-sky-600'
-                  }`}>
-                    {stat.value}
-                  </span>
-                  <span className={`text-[10px] font-mono-code uppercase px-2 py-0.5 rounded-full border transition-colors ${
-                    isDark 
-                      ? 'bg-white/[0.04] text-slate-400 border-white/[0.06] group-hover:border-cyan-500/30 group-hover:text-cyan-300' 
-                      : 'bg-slate-100 text-slate-600 border-slate-200 group-hover:border-sky-300 group-hover:text-sky-700'
-                  }`}>
-                    Phase {stat.value}
-                  </span>
-                </div>
-                <div className={`text-sm sm:text-base font-semibold mt-1.5 sm:mt-2 font-display ${
-                  isDark ? 'text-white' : 'text-slate-900'
-                }`}>
-                  {stat.label}
-                </div>
-                <div className={`text-xs font-mono-code mt-1 leading-relaxed ${
-                  isDark ? 'text-slate-400' : 'text-slate-600'
-                }`}>
-                  {stat.detail}
-                </div>
-              </div>
-            </SpotlightCard>
-          ))}
+        {/* 4 CORE STATS GRID WITH DUAL-SIDE SLIDE-IN & 3D INTERACTIVE FLIP CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16" style={{ perspective: '1200px' }}>
+          {stats.map((stat, i) => {
+            const isLeft = i < 2; // Phase 01 & 02 slide from left, Phase 03 & 04 from right
+            return (
+              <motion.div
+                key={stat.value}
+                initial={{
+                  opacity: 0,
+                  x: isLeft ? -80 : 80,
+                  rotateY: isLeft ? -7 : 7
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  rotateY: 0
+                }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: 0.8,
+                  delay: i * 0.1,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+                className="h-full"
+              >
+                <FlipCard
+                  minHeight="245px"
+                  front={
+                    <div className="flex flex-col justify-between h-full">
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className={`text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-transparent bg-clip-text transition-colors ${
+                            isDark
+                              ? 'bg-gradient-to-r from-white via-slate-100 to-cyan-300'
+                              : 'bg-gradient-to-r from-slate-900 via-sky-800 to-sky-600'
+                          }`}>
+                            {stat.value}
+                          </span>
+                          <span className={`text-[10px] font-mono-code uppercase px-2 py-0.5 rounded-full border transition-colors ${
+                            isDark 
+                              ? 'bg-white/[0.04] text-cyan-400 border-cyan-500/30' 
+                              : 'bg-sky-50 text-sky-700 border-sky-200'
+                          }`}>
+                            Phase {stat.value}
+                          </span>
+                        </div>
+                        <div className={`text-base sm:text-lg font-bold font-display ${
+                          isDark ? 'text-white' : 'text-slate-900'
+                        }`}>
+                          {stat.label}
+                        </div>
+                        <div className={`text-xs font-mono-code mt-1.5 leading-relaxed ${
+                          isDark ? 'text-slate-400' : 'text-slate-600'
+                        }`}>
+                          {stat.detail}
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  back={
+                    <div className="flex flex-col justify-between h-full">
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-mono-code font-bold uppercase tracking-wider text-cyan-400">
+                            Deliverables // 0{i + 1}
+                          </span>
+                          <span className={`text-[9px] font-mono-code px-2 py-0.5 rounded-full border ${
+                            isDark ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300' : 'bg-sky-100 border-sky-300 text-sky-800'
+                          }`}>
+                            {stat.metric}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1.5 pt-1">
+                          {stat.deliverables.map((item, dIdx) => (
+                            <div key={dIdx} className="flex items-center gap-2 text-xs">
+                              <CheckCircle2 size={12} className="text-cyan-400 shrink-0" />
+                              <span className={`truncate text-[11px] sm:text-xs ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                                {item}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  }
+                />
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* AUTHENTIC CLIENT BRAND LOGOS MARQUEE */}

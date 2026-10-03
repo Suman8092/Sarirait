@@ -238,8 +238,13 @@ export default function Process() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-                {/* Left: Step Details */}
-                <div className="lg:col-span-7 space-y-5">
+                {/* Left: Step Details (Slides from Left) */}
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                  className="lg:col-span-7 space-y-5"
+                >
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="text-4xl sm:text-5xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
                       {currentStep.step}
@@ -273,12 +278,17 @@ export default function Process() {
                   }`}>
                     “{currentStep.tagline}”
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Right: Key Deliverables Checklist */}
-                <div className={`lg:col-span-5 p-6 rounded-2xl border ${
-                  isDark ? 'bg-white/[0.02] border-white/[0.08]' : 'bg-slate-50 border-slate-200'
-                }`}>
+                {/* Right: Key Deliverables Checklist (Slides from Right) */}
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className={`lg:col-span-5 p-6 rounded-2xl border ${
+                    isDark ? 'bg-white/[0.02] border-white/[0.08]' : 'bg-slate-50 border-slate-200'
+                  }`}
+                >
                   <div className="text-xs font-mono-code uppercase tracking-wider text-slate-400 mb-4 font-bold flex items-center justify-between">
                     <span>What We Align On</span>
                     <span className="text-cyan-400">{currentStep.deliverables.length} Key Outputs</span>
@@ -328,7 +338,7 @@ export default function Process() {
                       <ArrowRight size={16} />
                     </button>
                   </div>
-                </div>
+                </motion.div>
 
               </div>
             </SpotlightCard>

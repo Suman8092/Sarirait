@@ -1,10 +1,11 @@
 import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 /**
  * MaskedHeading
- * Splits large headings into individual lines wrapped in overflow-hidden containers.
- * When the heading enters the viewport, lines reveal sequentially with a smooth upward motion.
+ * Splits large headings into individual words with masked upward kinetic reveals.
+ * Words rise sequentially one by one ("pehla word, fir dusra, fir teesra")
+ * creating a high-production editorial typography effect.
  */
 export default function MaskedHeading({
   lines = [],
@@ -12,35 +13,70 @@ export default function MaskedHeading({
   className = '',
   as: Component = 'h2',
   delay = 0,
-  stagger = 0.12,
-  duration = 0.85,
+  stagger = 0.065,
+  duration = 0.65,
   once = true
 }) {
-  const reducedMotion = useReducedMotion();
   const headingLines = lines.length > 0 
     ? lines 
     : React.Children.toArray(children);
 
+  let globalWordIndex = 0;
+  const getIndex = () => globalWordIndex++;
+
+  const renderWordsFromNode = (node) => {
+    if (typeof node === 'string') {
+      const parts = node.split(/(\s+)/);
+      return parts.map((part, pIdx) => {
+        if (/^\s+$/.test(part)) {
+          return " ";
+        }
+        if (!part) return null;
+        const currentIdx = getIndex();
+        return (
+          <span 
+            key={`word-${currentIdx}`} 
+            className="inline-block overflow-hidden align-baseline py-0.5"
+          >
+            <motion.span
+              className="inline-block will-change-transform"
+              initial={{ y: '115%', opacity: 0, rotateX: 28, filter: 'blur(3px)' }}
+              whileInView={{ y: '0%', opacity: 1, rotateX: 0, filter: 'blur(0px)' }}
+              viewport={{ once, amount: 0.15 }}
+              transition={{
+                duration: duration,
+                delay: delay + currentIdx * stagger,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+            >
+              {part}
+            </motion.span>
+          </span>
+        );
+      });
+    }
+
+    if (React.isValidElement(node)) {
+      const parsedChildren = React.Children.map(node.props.children, child =>
+        renderWordsFromNode(child)
+      );
+      return React.cloneElement(node, {
+        ...node.props,
+        children: parsedChildren
+      });
+    }
+
+    return node;
+  };
+
   return (
     <Component className={className}>
-      {headingLines.map((line, idx) => (
+      {headingLines.map((line, lIdx) => (
         <span 
-          key={idx} 
-          className="block overflow-hidden py-0.5 leading-[1.12]"
+          key={`line-${lIdx}`} 
+          className="block py-0.5 leading-[1.12]"
         >
-          <motion.span
-            className="block will-change-transform"
-            initial={{ y: '115%', opacity: 0, rotate: 1.2 }}
-            whileInView={{ y: '0%', opacity: 1, rotate: 0 }}
-            viewport={{ once, amount: 0.15 }}
-            transition={{
-              duration: duration,
-              delay: delay + idx * stagger,
-              ease: [0.16, 1, 0.3, 1]
-            }}
-          >
-            {line}
-          </motion.span>
+          {renderWordsFromNode(line)}
         </span>
       ))}
     </Component>

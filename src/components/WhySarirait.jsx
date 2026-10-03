@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Target, Sparkles, Cpu, BarChart3, ArrowRight, CheckCircle2 } from 'lucide-react';
 import SpotlightCard from './SpotlightCard';
 import MaskedHeading from './MaskedHeading';
@@ -100,101 +101,122 @@ export default function WhySarirait() {
           </p>
         </div>
 
-        {/* 4 CORE PRINCIPLES WITH STAGGERED ENTRANCE & SPOTLIGHT CARDS */}
-        <div data-motion-stagger="110" className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {principles.map((p, index) => (
-            <SpotlightCard
-              key={p.number}
-              spotlightColor={p.spotlight}
-              borderColor={p.glowBorder}
-              tiltIntensity={4.8}
-              elevation={12}
-              data-motion-reveal
-              style={{ '--motion-delay': `${index * 110}ms` }}
-              onMouseEnter={() => sound.hover()}
-              className={`motion-card group p-6 sm:p-9 rounded-3xl transition-all duration-500 ease-out hover:-translate-y-2 relative flex flex-col justify-between border shadow-xl ${
-                isDark 
-                  ? 'bg-[#0c1220]/80 border-white/[0.08] hover:border-cyan-400/50 shadow-black/40' 
-                  : 'bg-white border-slate-200/90 hover:border-sky-400 shadow-slate-200/70 hover:shadow-xl hover:shadow-sky-500/10'
-              } ${p.accent}`}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  {/* Large Stylized Number with Theme Contrast */}
-                  <span className={`font-mono-code text-3xl sm:text-4xl font-extrabold tracking-tight transition-colors ${
+        {/* 4 CORE PRINCIPLES WITH DUAL-SIDE SLIDING CARDS ON SCROLL */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" style={{ perspective: '1200px' }}>
+          {principles.map((p, index) => {
+            const isLeft = index % 2 === 0;
+            return (
+              <motion.div
+                key={p.number}
+                initial={{
+                  opacity: 0,
+                  x: isLeft ? -90 : 90,
+                  rotateY: isLeft ? -8 : 8
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  rotateY: 0
+                }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: 0.85,
+                  delay: (index % 2) * 0.12 + Math.floor(index / 2) * 0.15,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+                className="h-full"
+              >
+                <SpotlightCard
+                  spotlightColor={p.spotlight}
+                  borderColor={p.glowBorder}
+                  tiltIntensity={4.8}
+                  elevation={12}
+                  onMouseEnter={() => sound.hover()}
+                  className={`motion-card group p-6 sm:p-9 rounded-3xl transition-all duration-500 ease-out hover:-translate-y-2 relative flex flex-col justify-between border shadow-xl h-full ${
                     isDark 
-                      ? 'text-white/20 group-hover:text-cyan-400' 
-                      : 'text-slate-300 group-hover:text-sky-600'
-                  }`}>
-                    {p.number}
-                  </span>
-
-                  {/* Icon Container with Theme Contrast */}
-                  <div className={`p-3 rounded-2xl border transition-all duration-400 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg ${
-                    isDark 
-                      ? 'bg-white/[0.04] border-white/10 group-hover:border-cyan-400/40' 
-                      : 'bg-slate-100 border-slate-200 group-hover:border-sky-400 shadow-sm'
-                  }`}>
-                    {p.icon}
-                  </div>
-                </div>
-
-                <h3 className={`text-2xl sm:text-3xl font-display font-bold mb-2 transition-colors ${
-                  isDark ? 'text-white group-hover:text-cyan-300' : 'text-slate-900 group-hover:text-sky-700'
-                }`}>
-                  {p.title}
-                </h3>
-
-                <div className={`text-xs sm:text-sm font-semibold font-mono-code mb-3.5 ${
-                  isDark ? 'text-cyan-400' : 'text-sky-600'
-                }`}>
-                  {p.subtitle}
-                </div>
-
-                <p className={`text-xs sm:text-sm leading-relaxed mb-6 ${
-                  isDark ? 'text-slate-400' : 'text-slate-600'
-                }`}>
-                  {p.description}
-                </p>
-
-                {/* Micro-deliverables badges */}
-                <div className="flex flex-wrap gap-2 pt-2 mb-4">
-                  {p.deliverables.map((item, idx) => (
-                    <span 
-                      key={idx}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono-code border ${
+                      ? 'bg-[#0c1220]/80 border-white/[0.08] hover:border-cyan-400/50 shadow-black/40' 
+                      : 'bg-white border-slate-200/90 hover:border-sky-400 shadow-slate-200/70 hover:shadow-xl hover:shadow-sky-500/10'
+                  } ${p.accent}`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      {/* Large Stylized Number with Theme Contrast */}
+                      <span className={`font-mono-code text-3xl sm:text-4xl font-extrabold tracking-tight transition-colors ${
                         isDark 
-                          ? 'bg-white/[0.03] text-slate-300 border-white/[0.06]' 
-                          : 'bg-slate-50 text-slate-700 border-slate-200'
-                      }`}
-                    >
-                      <CheckCircle2 size={11} className={isDark ? "text-cyan-400" : "text-sky-600"} />
-                      <span>{item}</span>
+                          ? 'text-white/20 group-hover:text-cyan-400' 
+                          : 'text-slate-300 group-hover:text-sky-600'
+                      }`}>
+                        {p.number}
+                      </span>
+
+                      {/* Icon Container with Theme Contrast */}
+                      <div className={`p-3 rounded-2xl border transition-all duration-400 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg ${
+                        isDark 
+                          ? 'bg-white/[0.04] border-white/10 group-hover:border-cyan-400/40' 
+                          : 'bg-slate-100 border-slate-200 group-hover:border-sky-400 shadow-sm'
+                      }`}>
+                        {p.icon}
+                      </div>
+                    </div>
+
+                    <h3 className={`text-2xl sm:text-3xl font-display font-bold mb-2 transition-colors ${
+                      isDark ? 'text-white group-hover:text-cyan-300' : 'text-slate-900 group-hover:text-sky-700'
+                    }`}>
+                      {p.title}
+                    </h3>
+
+                    <div className={`text-xs sm:text-sm font-semibold font-mono-code mb-3.5 ${
+                      isDark ? 'text-cyan-400' : 'text-sky-600'
+                    }`}>
+                      {p.subtitle}
+                    </div>
+
+                    <p className={`text-xs sm:text-sm leading-relaxed mb-6 ${
+                      isDark ? 'text-slate-400' : 'text-slate-600'
+                    }`}>
+                      {p.description}
+                    </p>
+
+                    {/* Micro-deliverables badges */}
+                    <div className="flex flex-wrap gap-2 pt-2 mb-4">
+                      {p.deliverables.map((item, idx) => (
+                        <span 
+                          key={idx}
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono-code border ${
+                            isDark 
+                              ? 'bg-white/[0.03] text-slate-300 border-white/[0.06]' 
+                              : 'bg-slate-50 text-slate-700 border-slate-200'
+                          }`}
+                        >
+                          <CheckCircle2 size={11} className={isDark ? "text-cyan-400" : "text-sky-600"} />
+                          <span>{item}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom Card Footer */}
+                  <div className={`pt-5 border-t flex items-center justify-between ${
+                    isDark ? 'border-white/[0.06]' : 'border-slate-100'
+                  }`}>
+                    <span className={`text-[11px] font-mono-code uppercase font-semibold ${
+                      isDark ? 'text-slate-500' : 'text-slate-400'
+                    }`}>
+                      Pillar {p.number} // Core Standard
                     </span>
-                  ))}
-                </div>
-              </div>
 
-              {/* Bottom Card Footer */}
-              <div className={`pt-5 border-t flex items-center justify-between ${
-                isDark ? 'border-white/[0.06]' : 'border-slate-100'
-              }`}>
-                <span className={`text-[11px] font-mono-code uppercase font-semibold ${
-                  isDark ? 'text-slate-500' : 'text-slate-400'
-                }`}>
-                  Pillar {p.number} // Core Standard
-                </span>
-
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                  isDark 
-                    ? 'bg-white/[0.04] text-slate-400 group-hover:text-white group-hover:bg-cyan-500/20' 
-                    : 'bg-slate-100 text-slate-500 group-hover:text-sky-700 group-hover:bg-sky-100'
-                }`}>
-                  <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </div>
-            </SpotlightCard>
-          ))}
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      isDark 
+                        ? 'bg-white/[0.04] text-slate-400 group-hover:text-white group-hover:bg-cyan-500/20' 
+                        : 'bg-slate-100 text-slate-500 group-hover:text-sky-700 group-hover:bg-sky-100'
+                    }`}>
+                      <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+                </SpotlightCard>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>
