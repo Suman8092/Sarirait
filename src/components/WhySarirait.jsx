@@ -77,7 +77,11 @@ export default function WhySarirait() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* SECTION HEADER */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-3xl mb-12 sm:mb-16"
         >
           <div data-motion-reveal className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-xs font-mono-code mb-4 border border-cyan-500/30">
@@ -99,10 +103,10 @@ export default function WhySarirait() {
           }`}>
             We connect every dimension of your online presence so your brand looks world-class, operates friction-free, and converts visitors into loyal clients.
           </p>
-        </div>
+        </motion.div>
 
-        {/* 4 CORE PRINCIPLES WITH DUAL-SIDE SLIDING CARDS ON SCROLL */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" style={{ perspective: '1200px' }}>
+        {/* 4 CORE PRINCIPLES WITH DUAL-SIDE SLOW-MOTION SLIDING CARDS ON SCROLL */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 overflow-hidden py-2" style={{ perspective: '1200px' }}>
           {principles.map((p, index) => {
             const isLeft = index % 2 === 0;
             return (
@@ -110,18 +114,18 @@ export default function WhySarirait() {
                 key={p.number}
                 initial={{
                   opacity: 0,
-                  x: isLeft ? -90 : 90,
-                  rotateY: isLeft ? -8 : 8
+                  x: isLeft ? -220 : 220,
+                  scale: 0.94
                 }}
                 whileInView={{
                   opacity: 1,
                   x: 0,
-                  rotateY: 0
+                  scale: 1
                 }}
-                viewport={{ once: true, amount: 0.15 }}
+                viewport={{ once: false, amount: 0.15 }}
                 transition={{
-                  duration: 0.85,
-                  delay: (index % 2) * 0.12 + Math.floor(index / 2) * 0.15,
+                  duration: 1.25,
+                  delay: (index % 2) * 0.12 + Math.floor(index / 2) * 0.18,
                   ease: [0.16, 1, 0.3, 1]
                 }}
                 className="h-full"
