@@ -103,7 +103,7 @@ export default function Hero({ onOpenProjectModal }) {
                   <span key="brand">Make Your Brand</span>,
                   <span key="online" className="text-gradient-cyan">Stand Out Online.</span>
                 ]}
-                stagger={0.14}
+                stagger={0.08}
               />
 
               <div className={`mt-3 text-xl sm:text-2xl md:text-3xl lg:text-[2.1rem] xl:text-[2.4rem] font-medium tracking-tight ${

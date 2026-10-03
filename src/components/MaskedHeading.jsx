@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 
 /**
  * MaskedHeading
- * Splits large headings into individual words with masked upward kinetic reveals.
- * Words rise sequentially one by one ("pehla word, fir dusra, fir teesra")
- * cleanly supporting gradient text classes by applying them directly to the word spans.
+ * Brainly-style 3D Flip Tumble & Kinetic Blur Heading Reveal.
+ * Words roll up sequentially in 3D perspective while resolving from
+ * cinematic blur to crystal-clear focus ("pehla word, fir dusra, fir teesra").
+ * Full support for gradient text classes and interactive micro-hover response.
  */
 export default function MaskedHeading({
   lines = [],
@@ -13,8 +14,8 @@ export default function MaskedHeading({
   className = '',
   as: Component = 'h2',
   delay = 0,
-  stagger = 0.08,
-  duration = 0.65,
+  stagger = 0.06,
+  duration = 0.72,
   once = true
 }) {
   const headingLines = lines.length > 0 
@@ -32,20 +33,44 @@ export default function MaskedHeading({
         return (
           <span 
             key={`word-${currentIdx}`} 
-            className="inline-block overflow-hidden align-baseline py-0.5 mr-[0.28em] last:mr-0"
+            className="inline-block align-baseline py-1 mr-[0.28em] last:mr-0 [perspective:1200px] [transform-style:preserve-3d]"
           >
             <motion.span
-              className={`inline-block will-change-transform ${inheritedClass}`}
-              initial={{ y: '110%', opacity: 0 }}
-              whileInView={{ y: '0%', opacity: 1 }}
+              className="inline-block will-change-transform"
+              style={{
+                transformStyle: 'preserve-3d',
+                transformOrigin: '50% 100% -25px',
+                backfaceVisibility: 'hidden',
+              }}
+              initial={{
+                y: 42,
+                opacity: 0,
+                rotateX: -65,
+                filter: 'blur(12px)',
+                scale: 0.95,
+              }}
+              whileInView={{
+                y: 0,
+                opacity: 1,
+                rotateX: 0,
+                filter: 'blur(0px)',
+                scale: 1,
+              }}
               viewport={{ once, amount: 0.15 }}
               transition={{
-                duration: duration,
-                delay: delay + currentIdx * stagger,
-                ease: [0.16, 1, 0.3, 1]
+                duration: duration || 0.72,
+                delay: delay + currentIdx * (stagger || 0.06),
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              whileHover={{
+                y: -2,
+                rotateX: 6,
+                transition: { duration: 0.25, ease: 'easeOut' },
               }}
             >
-              {word}
+              <span className={`inline-block ${inheritedClass}`}>
+                {word}
+              </span>
             </motion.span>
           </span>
         );
@@ -82,7 +107,7 @@ export default function MaskedHeading({
       {headingLines.map((line, lIdx) => (
         <span 
           key={`line-${lIdx}`} 
-          className="block py-0.5 leading-[1.14]"
+          className="block py-0.5 leading-[1.18]"
         >
           {renderWordsFromNode(line)}
         </span>

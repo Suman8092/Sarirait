@@ -24,6 +24,7 @@ import CaseStudyModal from '../components/CaseStudyModal';
 import { DeviceShowcase3D } from '../components/3d/DeviceShowcase3D';
 import { projectsData } from '../data/projects';
 import CountUpValue from '../components/CountUpValue';
+import MaskedHeading from '../components/MaskedHeading';
 import { sound } from '../utils/sound';
 import { useTheme } from '../context/ThemeContext';
 
@@ -124,10 +125,14 @@ export default function Work() {
                 <span>COMPLETE PORTFOLIO ARCHIVE // 18+ DELIVERIES</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-[1.1] mb-6">
-                Engineered for scale, <br />
-                <span className="text-gradient-cyan">designed for market impact.</span>
-              </h1>
+              <MaskedHeading
+                as="h1"
+                lines={[
+                  'Engineered for scale,',
+                  <span key="market-impact" className="text-gradient-cyan">designed for market impact.</span>
+                ]}
+                className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-[1.1] mb-6"
+              />
 
               <p className={`text-base sm:text-lg leading-relaxed max-w-2xl ${
                 isDark ? 'text-slate-300' : 'text-slate-600'
