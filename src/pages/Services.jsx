@@ -29,7 +29,7 @@ export default function Services() {
   const { isDark } = useTheme();
   const { hash } = useLocation();
   const hashCategory = serviceCategories.find(category => `#${category.id}` === hash)?.id;
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = false;
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [directoryFilters, setDirectoryFilters] = useState(() => ({
     hash,
@@ -202,8 +202,8 @@ export default function Services() {
                     key={tab.id}
                     aria-pressed={isActive}
                     aria-controls="service-capabilities"
-                    whileHover={reducedMotion ? undefined : { y: -2 }}
-                    whileTap={reducedMotion ? undefined : { scale: 0.97 }}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => {
                       sound.click();
                       setActiveTab(tab.id);
@@ -221,7 +221,7 @@ export default function Services() {
                   >
                     {isActive && (
                       <motion.div
-                        layoutId={reducedMotion ? undefined : 'servicesTabGlider'}
+                        layoutId="servicesTabGlider"
                         className={`absolute inset-0 rounded-full ${
                           isDark ? 'bg-cyan-500/25 border-cyan-400' : 'bg-sky-100 border-sky-400'
                         }`}
@@ -257,14 +257,14 @@ export default function Services() {
             <a href="#project-scope" className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-mono-code transition-colors hover:border-cyan-400/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${isDark ? 'border-white/10 text-cyan-300' : 'border-sky-200 text-sky-700'}`}>
               <Sliders size={13} />
               <span>Your scope</span>
-              <motion.span key={scopeServices.length} initial={reducedMotion ? false : { scale: 0.75 }} animate={{ scale: 1 }} className="rounded-full bg-cyan-500/15 px-2 py-0.5 font-bold">{scopeServices.length}</motion.span>
+              <motion.span key={scopeServices.length} initial={{ scale: 0.75 }} animate={{ scale: 1 }} className="rounded-full bg-cyan-500/15 px-2 py-0.5 font-bold">{scopeServices.length}</motion.span>
               <ArrowUpRight size={13} />
             </a>
           </div>
 
           <motion.div 
             id="service-capabilities"
-            layout={!reducedMotion}
+            layout
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
           >
             <AnimatePresence mode="popLayout">
@@ -275,12 +275,12 @@ export default function Services() {
                 return (
                   <motion.div
                     key={srv.slug}
-                    layout={reducedMotion ? false : 'position'}
-                    initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+                    layout="position"
+                    initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.12, margin: '0px 0px -28px 0px' }}
-                    exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
-                    transition={{ duration: reducedMotion ? 0.1 : 0.55, delay: reducedMotion ? 0 : (idx % 3) * 0.055, ease: [0.22, 1, 0.36, 1], layout: { duration: 0.35 } }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.55, delay: (idx % 3) * 0.055, ease: [0.22, 1, 0.36, 1], layout: { duration: 0.35 } }}
                   >
                     <SpotlightCard
                       spotlightColor={meta.spotlight}

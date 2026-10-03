@@ -1,14 +1,18 @@
 import { useSyncExternalStore } from 'react';
 
-const query = '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)';
+const query = '(hover: hover) and (pointer: fine)';
 const subscribe = (callback) => {
+  if (typeof window === 'undefined') return () => {};
   const media = window.matchMedia(query);
   media.addEventListener('change', callback);
   return () => media.removeEventListener('change', callback);
 };
-const getSnapshot = () => window.matchMedia(query).matches;
+const getSnapshot = () => {
+  if (typeof window === 'undefined') return true;
+  return window.matchMedia(query).matches;
+};
 
-// Update when a pointer or motion preference changes, without a render per move.
+// Returns true on desktop/laptop devices with fine pointer
 export default function useMotionPointer() {
-  return useSyncExternalStore(subscribe, getSnapshot, () => false);
+  return useSyncExternalStore(subscribe, getSnapshot, () => true);
 }

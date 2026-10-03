@@ -146,9 +146,8 @@ function NeuralNetworkMesh({ nodeCount = 55, animate = true }) {
 export function NeuralBrain3D() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { amount: 0.05 });
-  const reduceMotion = useReducedMotion();
   const pageVisible = usePageVisibility();
-  const animate = isInView && pageVisible && !reduceMotion;
+  const animate = isInView && pageVisible;
 
   return (
     <div 

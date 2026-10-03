@@ -46,16 +46,19 @@ export default function Hero({ onOpenProjectModal }) {
 
   return (
     <section id="hero" ref={sectionRef} className="relative min-h-[90vh] sm:min-h-screen pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-20 flex flex-col justify-between overflow-hidden bg-mesh-grid w-full max-w-full">
-      {/* Background ambient lighting glows - GPU accelerated */}
-      <div className={`ambient-glow absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] h-[350px] sm:h-[500px] rounded-full blur-[90px] pointer-events-none -z-10 ${
-        isDark ? 'bg-cyan-500/10' : 'bg-sky-400/15'
+      {/* Background ambient lighting glows - GPU accelerated & animated */}
+      <div className={`ambient-glow animate-aurora absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[680px] h-[380px] sm:h-[520px] rounded-full blur-[100px] pointer-events-none -z-10 ${
+        isDark ? 'bg-cyan-500/15' : 'bg-sky-400/20'
       }`} />
-      <div className={`ambient-glow absolute top-1/3 right-0 sm:right-10 w-full max-w-[450px] h-[350px] sm:h-[450px] rounded-full blur-[100px] pointer-events-none -z-10 ${
-        isDark ? 'bg-violet-600/12' : 'bg-purple-300/15'
+      <div className={`ambient-glow animate-pulse-glow absolute top-1/3 right-0 sm:right-10 w-full max-w-[500px] h-[380px] sm:h-[480px] rounded-full blur-[110px] pointer-events-none -z-10 ${
+        isDark ? 'bg-violet-600/16' : 'bg-purple-300/20'
+      }`} />
+      <div className={`ambient-glow animate-float-slow absolute bottom-12 left-6 w-[350px] h-[300px] rounded-full blur-[90px] pointer-events-none -z-10 ${
+        isDark ? 'bg-indigo-600/12' : 'bg-blue-300/15'
       }`} />
 
       <motion.div 
-        style={reducedMotion ? undefined : { y: heroY, opacity: heroOpacity, scale: heroScale }}
+        style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
         className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
@@ -63,7 +66,7 @@ export default function Hero({ onOpenProjectModal }) {
           {/* LEFT COLUMN: HERO COPY & CTAS */}
           <motion.div
             variants={containerVariants}
-            initial={reducedMotion ? false : 'hidden'}
+            initial="hidden"
             animate="visible"
             className="lg:col-span-7 xl:col-span-7 2xl:col-span-7 flex flex-col items-start z-10 w-full"
           >
@@ -272,6 +275,29 @@ export default function Hero({ onOpenProjectModal }) {
               </div>
             </motion.div>
 
+            {/* Ambient Floating Metric Badge - Middle Right */}
+            <motion.div
+              data-scroll-depth="15"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+              className={`hidden xl:flex absolute top-1/2 -translate-y-1/2 -right-6 z-20 items-center gap-2.5 px-3 py-2 rounded-xl shadow-xl animate-float pointer-events-none backdrop-blur-xl border ${
+                isDark 
+                  ? 'glass-card border-emerald-500/30 shadow-emerald-500/10' 
+                  : 'bg-white/95 border-emerald-300 shadow-emerald-500/10'
+              }`}
+            >
+              <span className="flex h-2 w-2 relative shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span className={`text-[11px] font-mono-code font-bold uppercase tracking-wider ${
+                isDark ? 'text-emerald-300' : 'text-emerald-700'
+              }`}>
+                60 FPS WebGL
+              </span>
+            </motion.div>
+
             <Hero3D />
           </motion.div>
 
@@ -293,8 +319,8 @@ export default function Hero({ onOpenProjectModal }) {
             isDark ? 'border-white/20 group-hover:border-cyan-400/60' : 'border-slate-300 group-hover:border-sky-500'
           }`}>
             <motion.div
-              animate={{ y: !reducedMotion && inView && pageVisible ? [0, 10, 0] : 0 }}
-              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+              animate={{ y: [0, 10, 0] }}
+              transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
               className={`w-1.5 h-2 rounded-full ${isDark ? 'bg-cyan-400' : 'bg-sky-600'}`}
             />
           </div>

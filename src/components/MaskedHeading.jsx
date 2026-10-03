@@ -30,12 +30,12 @@ export default function MaskedHeading({
         >
           <motion.span
             className="block will-change-transform"
-            initial={reducedMotion ? false : { y: '115%', opacity: 0, rotate: 1.2 }}
+            initial={{ y: '115%', opacity: 0, rotate: 1.2 }}
             whileInView={{ y: '0%', opacity: 1, rotate: 0 }}
             viewport={{ once, amount: 0.15 }}
             transition={{
-              duration: reducedMotion ? 0 : duration,
-              delay: reducedMotion ? 0 : delay + idx * stagger,
+              duration: duration,
+              delay: delay + idx * stagger,
               ease: [0.16, 1, 0.3, 1]
             }}
           >

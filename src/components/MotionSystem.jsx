@@ -9,7 +9,7 @@ export default function MotionSystem() {
 
   useLayoutEffect(() => {
     const root = document.documentElement;
-    if (reducedMotion || !('IntersectionObserver' in window)) {
+    if (!('IntersectionObserver' in window)) {
       document.querySelectorAll('[data-motion-reveal]').forEach((target) => {
         target.classList.add('is-motion-visible');
       });
@@ -121,7 +121,7 @@ export default function MotionSystem() {
       const viewportHeight = Math.max(window.innerHeight, 1);
       const depthScale = window.innerWidth < 640 ? 0.42 : window.innerWidth < 1024 ? 0.68 : 1;
 
-      if (!reducedMotion) activeTargets.forEach((target) => {
+      activeTargets.forEach((target) => {
         const bounds = target.getBoundingClientRect();
         const distanceFromCenter = (bounds.top + bounds.height / 2 - viewportHeight / 2) / viewportHeight;
         const normalizedDistance = Math.max(-1, Math.min(1, distanceFromCenter));
@@ -177,10 +177,8 @@ export default function MotionSystem() {
     };
 
     const scanNode = (node) => {
-      if (!reducedMotion) {
-        if (node instanceof Element && node.matches('[data-scroll-depth]')) observeTarget(node);
-        node.querySelectorAll?.('[data-scroll-depth]').forEach(observeTarget);
-      }
+      if (node instanceof Element && node.matches('[data-scroll-depth]')) observeTarget(node);
+      node.querySelectorAll?.('[data-scroll-depth]').forEach(observeTarget);
       if (node instanceof Element && node.matches('main > section, footer')) observeSection(node);
       node.querySelectorAll?.('main > section, footer').forEach(observeSection);
     };
@@ -240,6 +238,7 @@ export default function MotionSystem() {
 
     let activeTarget = null;
     let activeGlossyTarget = null;
+    let activeTiltTarget = null;
     let frameId = 0;
     let pointer = { x: 0, y: 0 };
 
@@ -255,6 +254,13 @@ export default function MotionSystem() {
       if (!activeGlossyTarget) return;
       activeGlossyTarget.classList.remove('is-glossy-active');
       activeGlossyTarget = null;
+    };
+
+    const resetTiltTarget = () => {
+      if (!activeTiltTarget) return;
+      activeTiltTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      activeTiltTarget.style.transition = 'transform 500ms cubic-bezier(0.22, 1, 0.36, 1)';
+      activeTiltTarget = null;
     };
 
     const applyOffset = () => {
@@ -274,6 +280,20 @@ export default function MotionSystem() {
         activeGlossyTarget.style.setProperty('--gloss-x', `${Math.max(0, Math.min(100, x))}%`);
         activeGlossyTarget.style.setProperty('--gloss-y', `${Math.max(0, Math.min(100, y))}%`);
       }
+
+      if (activeTiltTarget) {
+        const bounds = activeTiltTarget.getBoundingClientRect();
+        const centerX = bounds.left + bounds.width / 2;
+        const centerY = bounds.top + bounds.height / 2;
+        const normX = Math.max(-1, Math.min(1, (pointer.x - centerX) / (bounds.width / 2)));
+        const normY = Math.max(-1, Math.min(1, (pointer.y - centerY) / (bounds.height / 2)));
+        const rotateX = (-normY * 6).toFixed(2);
+        const rotateY = (normX * 6).toFixed(2);
+        activeTiltTarget.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.018, 1.018, 1.018)`;
+        activeTiltTarget.style.transition = 'transform 75ms ease-out';
+        activeTiltTarget.style.setProperty('--spotlight-x', `${Math.round(((pointer.x - bounds.left) / bounds.width) * 100)}%`);
+        activeTiltTarget.style.setProperty('--spotlight-y', `${Math.round(((pointer.y - bounds.top) / bounds.height) * 100)}%`);
+      }
     };
 
     const handlePointerMove = (event) => {
@@ -291,7 +311,14 @@ export default function MotionSystem() {
         activeGlossyTarget = nextGlossyTarget;
         activeGlossyTarget?.classList.add('is-glossy-active');
       }
-      if (!activeTarget && !activeGlossyTarget) return;
+
+      const nextTiltTarget = pointerElement?.closest('[data-tilt], .glass-card, .spotlight-card') || null;
+      if (nextTiltTarget !== activeTiltTarget) {
+        resetTiltTarget();
+        activeTiltTarget = nextTiltTarget;
+      }
+
+      if (!activeTarget && !activeGlossyTarget && !activeTiltTarget) return;
 
       pointer = { x: event.clientX, y: event.clientY };
       if (!frameId) frameId = window.requestAnimationFrame(applyOffset);
@@ -300,6 +327,7 @@ export default function MotionSystem() {
     const resetEffects = () => {
       resetTarget();
       resetGlossyTarget();
+      resetTiltTarget();
     };
     const handleScroll = resetEffects;
     const handleBlur = resetEffects;

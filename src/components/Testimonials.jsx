@@ -59,7 +59,6 @@ const clientReviews = [
 
 export default function Testimonials() {
   const { isDark } = useTheme();
-  const reduceMotion = useReducedMotion();
   const sectionRef = useRef(null);
   const isVisible = useInView(sectionRef, { amount: 0.15 });
   const [activeReview, setActiveReview] = useState(0);
@@ -67,7 +66,7 @@ export default function Testimonials() {
   const [isHovered, setIsHovered] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
-  const canPlay = isPlaying && !reduceMotion && isVisible && pageVisible && !isHovered && !hasFocus;
+  const canPlay = isPlaying && isVisible && pageVisible && !isHovered && !hasFocus;
 
   useEffect(() => {
     const updateVisibility = () => setPageVisible(!document.hidden);
@@ -154,21 +153,20 @@ export default function Testimonials() {
             {/* Play/Pause Autoplay Controls */}
             <button
               type="button"
-              disabled={reduceMotion}
-              aria-pressed={isPlaying && !reduceMotion}
-              aria-label={reduceMotion ? 'Autoplay disabled for reduced motion' : isPlaying ? 'Pause testimonial autoplay' : 'Start testimonial autoplay'}
+              aria-pressed={isPlaying}
+              aria-label={isPlaying ? 'Pause testimonial autoplay' : 'Start testimonial autoplay'}
               onClick={() => {
                 sound.click();
                 setIsPlaying(!isPlaying);
               }}
-              className={`motion-selector inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono-code border transition-colors cursor-pointer disabled:cursor-default ${
+              className={`motion-selector inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono-code border transition-colors cursor-pointer ${
                 isDark 
                   ? 'bg-white/[0.04] border-white/10 text-slate-300 hover:text-white' 
                   : 'bg-slate-100 border-slate-200 text-slate-700'
               }`}
             >
-              {isPlaying && !reduceMotion ? <Pause size={12} className="text-cyan-400" /> : <Play size={12} className="text-emerald-400" />}
-              <span>{reduceMotion ? 'Manual browsing' : isPlaying ? 'Auto-play Active' : 'Paused'}</span>
+              {isPlaying ? <Pause size={12} className="text-cyan-400" /> : <Play size={12} className="text-emerald-400" />}
+              <span>{isPlaying ? 'Auto-play Active' : 'Paused'}</span>
             </button>
           </div>
         </div>
@@ -195,10 +193,10 @@ export default function Testimonials() {
                 <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={current.company}
-                  initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: reduceMotion ? 0 : -10 }}
-                  transition={{ duration: reduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                   className="lg:col-span-8 space-y-6"
                 >
                   {/* Star Rating & Category */}
@@ -258,9 +256,9 @@ export default function Testimonials() {
                 }`}>
                   <motion.div
                     key={current.company}
-                    initial={{ opacity: reduceMotion ? 1 : 0 }}
+                    initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: reduceMotion ? 0 : 0.4 }}
+                    transition={{ duration: 0.4 }}
                     className="space-y-6"
                   >
                   <div>

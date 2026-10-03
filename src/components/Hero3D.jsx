@@ -1,12 +1,10 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { useReducedMotion } from 'framer-motion';
 import { DigitalCore } from './3d/DigitalCore';
 import usePageVisibility from '../hooks/usePageVisibility';
 
 export default function Hero3D() {
-  const prefersReducedMotion = useReducedMotion();
   const pageVisible = usePageVisibility();
   const containerRef = useRef(null);
   const [isInView, setIsInView] = useState(true);
@@ -87,7 +85,7 @@ export default function Hero3D() {
           }
         >
           <Canvas
-            frameloop={isInView && pageVisible && !prefersReducedMotion ? 'always' : 'demand'}
+            frameloop={isInView && pageVisible ? 'always' : 'demand'}
             camera={{ position: [0, 0, 7.0], fov: 45 }}
             dpr={isMobile ? 1 : [1, 1.5]}
             gl={{ 
@@ -108,7 +106,7 @@ export default function Hero3D() {
 
             {/* The 3D Digital Transformation Core with enlarged visual scale */}
             <DigitalCore scale={deviceScale} />
-            <OrbitControls enableZoom={false} enablePan={false} enableDamping={!prefersReducedMotion} />
+            <OrbitControls enableZoom={false} enablePan={false} enableDamping={true} />
           </Canvas>
         </Suspense>
       ) : (

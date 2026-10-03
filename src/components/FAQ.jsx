@@ -8,7 +8,6 @@ import { useTheme } from '../context/ThemeContext';
 
 export default function FAQ({ onOpenProjectModal }) {
   const { isDark } = useTheme();
-  const reduceMotion = useReducedMotion();
   const [openId, setOpenId] = useState(1);
 
   const toggle = (id) => {
@@ -116,10 +115,10 @@ export default function FAQ({ onOpenProjectModal }) {
                       id={`faq-answer-${faq.id}`}
                       role="region"
                       aria-labelledby={`faq-question-${faq.id}`}
-                      initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+                      initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: reduceMotion ? 'auto' : 0, opacity: 0 }}
-                      transition={{ duration: reduceMotion ? 0 : 0.36, ease: [0.16, 1, 0.3, 1] }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.36, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
                       <div className={`px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm leading-relaxed border-t pt-4 ${

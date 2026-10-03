@@ -34,7 +34,7 @@ export default function Work() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('featured');
   const { isDark } = useTheme();
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = false;
 
   // Scroll to top and set document title
   useEffect(() => {
@@ -191,7 +191,7 @@ export default function Work() {
                       key={cat.id}
                       type="button"
                       aria-pressed={isActive}
-                      whileTap={reducedMotion ? undefined : { scale: 0.97 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={() => {
                         sound.click();
                         setActiveCategory(cat.id);
@@ -205,7 +205,7 @@ export default function Work() {
                             : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-200'
                       }`}
                     >
-                      {isActive && <motion.span layoutId="work-category-indicator" aria-hidden="true" className="absolute left-3.5 right-3.5 -bottom-px h-0.5 bg-cyan-400 rounded-full" transition={{ duration: reducedMotion ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }} />}
+                      {isActive && <motion.span layoutId="work-category-indicator" aria-hidden="true" className="absolute left-3.5 right-3.5 -bottom-px h-0.5 bg-cyan-400 rounded-full" transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }} />}
                       <span className={isActive ? 'text-cyan-300' : 'text-slate-400'}>{cat.icon}</span>
                       <span>{cat.label}</span>
                       <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
@@ -317,17 +317,17 @@ export default function Work() {
               </button>
             </div>
           ) : (
-            <motion.div layout={!reducedMotion} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <AnimatePresence mode="popLayout">
                 {filteredProjects.map((project, index) => (
                   <motion.div
-                    layout={!reducedMotion}
+                    layout
                     key={project.id}
-                    initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+                    initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.12, margin: '0px 0px -24px 0px' }}
-                    exit={{ opacity: 0, scale: reducedMotion ? 1 : 0.98 }}
-                    transition={{ duration: reducedMotion ? 0 : 0.48, delay: reducedMotion ? 0 : (index % 2) * 0.065, ease: [0.16, 1, 0.3, 1], layout: { duration: reducedMotion ? 0 : 0.35, delay: 0 } }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.48, delay: (index % 2) * 0.065, ease: [0.16, 1, 0.3, 1], layout: { duration: 0.35, delay: 0 } }}
                     role="button"
                     tabIndex={0}
                     aria-haspopup="dialog"

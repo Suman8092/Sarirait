@@ -9,7 +9,6 @@ import { useTheme } from '../context/ThemeContext';
 
 export default function Technologies() {
   const { isDark } = useTheme();
-  const reducedMotion = useReducedMotion();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { amount: 0.15 });
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -100,7 +99,7 @@ export default function Technologies() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -140,7 +139,7 @@ export default function Technologies() {
                         : isDark ? 'bg-white/[0.04] text-slate-400 hover:text-white hover:bg-white/[0.08] border border-white/5' : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200/80 border border-slate-200 shadow-sm'
                     }`}
                   >
-                    {selected && <motion.span layoutId="activeTechFilter" className={`absolute inset-0 rounded-full shadow-md ${isDark ? 'bg-cyan-400 shadow-cyan-400/25' : 'bg-cyan-600 shadow-cyan-600/25'}`} transition={{ duration: reducedMotion ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }} />}
+                    {selected && <motion.span layoutId="activeTechFilter" className={`absolute inset-0 rounded-full shadow-md ${isDark ? 'bg-cyan-400 shadow-cyan-400/25' : 'bg-cyan-600 shadow-cyan-600/25'}`} transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }} />}
                     <span className="relative z-10">{category}</span>
                   </button>
                 );
@@ -148,12 +147,10 @@ export default function Technologies() {
             </div>
             <div className="flex flex-wrap items-center gap-3 text-[11px] font-mono-code text-slate-400">
               <span>Hover, focus or tap a tool to explore.</span>
-              {!reducedMotion && (
-                <button type="button" aria-pressed={isPaused} aria-label={isPaused ? 'Resume moving technology rows' : 'Pause moving technology rows'} onClick={() => setIsPaused((current) => !current)} className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 cursor-pointer">
-                  {isPaused ? <Play size={12} /> : <Pause size={12} />}
-                  {isPaused ? 'Resume motion' : 'Pause motion'}
-                </button>
-              )}
+              <button type="button" aria-pressed={isPaused} aria-label={isPaused ? 'Resume moving technology rows' : 'Pause moving technology rows'} onClick={() => setIsPaused((current) => !current)} className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 cursor-pointer">
+                {isPaused ? <Play size={12} /> : <Pause size={12} />}
+                {isPaused ? 'Resume motion' : 'Pause motion'}
+              </button>
             </div>
           </div>
         </motion.div>
@@ -164,23 +161,17 @@ export default function Technologies() {
           onMouseLeave={() => setIsInteracting(false)}
           className="relative overflow-hidden py-3 my-2 rounded-2xl sm:rounded-3xl border border-current/5"
         >
-          {reducedMotion ? (
-            <div className="flex flex-wrap justify-center gap-3 px-3 py-2">{technologiesData.map((tech) => renderChip(tech))}</div>
-          ) : (
-            <>
-              <div className={`tech-vignette-left absolute left-0 inset-y-0 w-8 sm:w-20 pointer-events-none z-10 ${isDark ? 'bg-gradient-to-r from-[#090d16] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
-              <div className={`tech-vignette-right absolute right-0 inset-y-0 w-8 sm:w-20 pointer-events-none z-10 ${isDark ? 'bg-gradient-to-l from-[#090d16] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
-              {streams.map((stream, row) => (
-                <div key={row} className={`flex w-max py-1.5 ${row === 0 ? 'animate-marquee-infinite' : 'animate-marquee-reverse'}`} style={{ animationDuration: row === 0 ? '40s' : '44s', animationPlayState: paused ? 'paused' : 'running' }}>
-                  {[false, true].map((duplicate) => (
-                    <div key={String(duplicate)} aria-hidden={duplicate || undefined} className="flex shrink-0 items-center gap-3 sm:gap-4 pr-3 sm:pr-4">
-                      {stream.map((tech) => renderChip(tech, duplicate))}
-                    </div>
-                  ))}
+          <div className={`tech-vignette-left absolute left-0 inset-y-0 w-8 sm:w-20 pointer-events-none z-10 ${isDark ? 'bg-gradient-to-r from-[#090d16] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
+          <div className={`tech-vignette-right absolute right-0 inset-y-0 w-8 sm:w-20 pointer-events-none z-10 ${isDark ? 'bg-gradient-to-l from-[#090d16] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
+          {streams.map((stream, row) => (
+            <div key={row} className={`flex w-max py-1.5 ${row === 0 ? 'animate-marquee-infinite' : 'animate-marquee-reverse'}`} style={{ animationDuration: row === 0 ? '40s' : '44s', animationPlayState: paused ? 'paused' : 'running' }}>
+              {[false, true].map((duplicate) => (
+                <div key={String(duplicate)} aria-hidden={duplicate || undefined} className="flex shrink-0 items-center gap-3 sm:gap-4 pr-3 sm:pr-4">
+                  {stream.map((tech) => renderChip(tech, duplicate))}
                 </div>
               ))}
-            </>
-          )}
+            </div>
+          ))}
         </div>
 
         <div data-motion-reveal style={{ '--motion-delay': '80ms' }} className={`tech-hud-panel mt-4 px-4 py-3 sm:px-6 sm:py-3.5 rounded-2xl border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs ${
@@ -189,7 +180,7 @@ export default function Technologies() {
           <div id="technology-detail" className="min-h-10 sm:min-h-8 flex items-center flex-1 min-w-0">
             <AnimatePresence mode="wait" initial={false}>
               {detailTech ? (
-                <motion.div key={detailTech.name} initial={{ opacity: 0, y: reducedMotion ? 0 : 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reducedMotion ? 0 : -5 }} transition={{ duration: reducedMotion ? 0 : 0.18 }} className="flex items-start gap-3 w-full">
+                <motion.div key={detailTech.name} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="flex items-start gap-3 w-full">
                   <span className="w-2 h-2 mt-1.5 rounded-full shrink-0" style={{ backgroundColor: detailTech.accent }} />
                   <div>
                     <span className={`font-display font-bold text-sm ${isDark ? 'text-cyan-400' : 'text-cyan-700'}`}>{detailTech.name}</span>
@@ -198,7 +189,7 @@ export default function Technologies() {
                   </div>
                 </motion.div>
               ) : (
-                <motion.div key="default-telemetry" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reducedMotion ? 0 : 0.18 }} className="flex items-center gap-2 sm:gap-3 flex-wrap font-mono-code text-[11px] sm:text-xs">
+                <motion.div key="default-telemetry" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="flex items-center gap-2 sm:gap-3 flex-wrap font-mono-code text-[11px] sm:text-xs">
                   <Terminal className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span className={isDark ? 'text-slate-400' : 'text-slate-600'}><span className="text-cyan-400">●</span> Sub-Second Performance</span>
                   <span className="opacity-30">•</span>

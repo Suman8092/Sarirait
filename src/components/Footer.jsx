@@ -8,13 +8,13 @@ import { useLenis } from './SmoothScroll';
 
 export default function Footer({ onOpenProjectModal }) {
   const { isDark } = useTheme();
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = false;
   const lenis = useLenis();
 
   const scrollToTop = () => {
     sound.click();
     if (lenis) lenis.scrollTo(0, { duration: 1.1 });
-    else window.scrollTo({ top: 0, behavior: reducedMotion ? 'instant' : 'smooth' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

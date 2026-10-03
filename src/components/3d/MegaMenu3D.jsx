@@ -74,9 +74,8 @@ function MiniCore({ animate = true }) {
 export default function MegaMenu3D() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { amount: 0.05 });
-  const reduceMotion = useReducedMotion();
   const pageVisible = usePageVisibility();
-  const animate = isInView && pageVisible && !reduceMotion;
+  const animate = isInView && pageVisible;
 
   return (
     <div ref={containerRef} className="w-full h-36 relative flex items-center justify-center pointer-events-none">

@@ -9,7 +9,7 @@ import { useModalDialog } from '../hooks/useModalDialog';
 export default function ProjectModal({ isOpen, onClose, initialServices }) {
   const { isDark } = useTheme();
   const dialogRef = useModalDialog(isOpen, onClose);
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = false;
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState(['Website Development']);
   const [activeCategoryTab, setActiveCategoryTab] = useState('all');
@@ -105,10 +105,10 @@ export default function ProjectModal({ isOpen, onClose, initialServices }) {
           aria-modal="true"
           aria-labelledby="project-dialog-title"
           tabIndex={-1}
-          initial={{ opacity: 0, scale: reducedMotion ? 1 : 0.98, y: reducedMotion ? 0 : 12 }}
+          initial={{ opacity: 0, scale: 0.96, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
-          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
           className={`relative w-full max-w-2xl max-h-[92dvh] sm:max-h-[88vh] flex flex-col rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden z-10 border ${
             isDark
               ? 'bg-[#0a0e1a] border-cyan-500/30 shadow-cyan-500/20'

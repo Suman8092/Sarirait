@@ -21,7 +21,7 @@ import { sound } from '../utils/sound';
 
 export default function ServiceDetail() {
   const { slug } = useParams();
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = false;
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeProcess, setActiveProcess] = useState(0);
@@ -54,22 +54,22 @@ export default function ServiceDetail() {
   const category = service.categoryData;
 
   const containerVariants = {
-    hidden: { opacity: reducedMotion ? 1 : 0 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: reducedMotion ? 0 : 0.08,
-        delayChildren: reducedMotion ? 0 : 0.04
+        staggerChildren: 0.08,
+        delayChildren: 0.04
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 20 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: reducedMotion ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
     }
   };
 

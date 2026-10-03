@@ -17,11 +17,11 @@ export default function ScrollToTop({ location }) {
         const id = hash.replace('#', '');
         const element = document.getElementById(id);
         if (element) {
-          const { lenis, reducedMotion } = scrollOptions.current;
+          const { lenis } = scrollOptions.current;
           if (lenis) {
             lenis.scrollTo(element, { offset: -80, duration: 1.2 });
           } else {
-            element.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         }
       }, 100);

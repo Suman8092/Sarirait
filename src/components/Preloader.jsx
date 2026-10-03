@@ -9,17 +9,11 @@ import { useTheme } from '../context/ThemeContext';
  */
 export default function Preloader({ onComplete }) {
   const { isDark } = useTheme();
-  const reducedMotion = useReducedMotion();
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
-  const [isDone, setIsDone] = useState(reducedMotion || false);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
-    if (reducedMotion) {
-      setIsDone(true);
-      onComplete?.();
-      return undefined;
-    }
 
     let frameId;
     const startTime = performance.now();
@@ -70,7 +64,7 @@ export default function Preloader({ onComplete }) {
       clearTimeout(fallbackTimer);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [reducedMotion, onComplete]);
+  }, [onComplete]);
 
   const handleDismiss = () => {
     setIsExiting(true);
@@ -80,7 +74,7 @@ export default function Preloader({ onComplete }) {
     }, 350);
   };
 
-  if (reducedMotion || isDone) return null;
+  if (isDone) return null;
 
   return (
     <AnimatePresence>

@@ -24,12 +24,12 @@ export default function SplitWordReveal({
         <span key={idx} className="inline-block overflow-hidden py-0.5" aria-hidden="true">
           <motion.span
             className="inline-block will-change-transform"
-            initial={reducedMotion ? false : { y: '110%', opacity: 0, rotate: 1.2 }}
+            initial={{ y: '110%', opacity: 0, rotate: 1.2 }}
             whileInView={{ y: '0%', opacity: 1, rotate: 0 }}
             viewport={{ once, amount: 0.15 }}
             transition={{
-              duration: reducedMotion ? 0 : duration || 0.8,
-              delay: reducedMotion ? 0 : delay + Math.min(idx * stagger, 0.4),
+              duration: duration || 0.8,
+              delay: delay + Math.min(idx * stagger, 0.4),
               ease: [0.16, 1, 0.3, 1]
             }}
           >

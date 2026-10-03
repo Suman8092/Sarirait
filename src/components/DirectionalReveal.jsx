@@ -63,12 +63,12 @@ export default function DirectionalReveal({
 
   return (
     <motion.div
-      initial={reducedMotion ? false : getInitial()}
+      initial={getInitial()}
       whileInView={getAnimate()}
       viewport={{ once, amount }}
       transition={{
-        duration: reducedMotion ? 0 : duration,
-        delay: reducedMotion ? 0 : delay,
+        duration: duration,
+        delay: delay,
         ease: [0.16, 1, 0.3, 1]
       }}
       className={className}

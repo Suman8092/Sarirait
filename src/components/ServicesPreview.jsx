@@ -19,7 +19,6 @@ import { useTheme } from '../context/ThemeContext';
 
 export default function ServicesPreview() {
   const { isDark } = useTheme();
-  const reduceMotion = useReducedMotion();
   const [activeCategoryId, setActiveCategoryId] = useState(serviceCategories[0].id);
 
   const activeCategory = serviceCategories.find((c) => c.id === activeCategoryId) || serviceCategories[0];
@@ -159,7 +158,7 @@ export default function ServicesPreview() {
                         ? 'bg-gradient-to-r from-cyan-500/20 via-blue-500/15 to-violet-500/10 border-cyan-400/50' 
                         : 'bg-sky-100/80 border-sky-400'
                     }`}
-                    transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 400, damping: 30 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
                 
@@ -178,17 +177,16 @@ export default function ServicesPreview() {
           })}
         </div>
 
-        {/* ACTIVE CATEGORY SHOWCASE STAGE */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeCategory.id}
             id="services-preview-stage"
             role="region"
             aria-label={`${activeCategory.title} capabilities`}
-            initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
-            transition={{ duration: reduceMotion ? 0 : 0.28, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
             className="space-y-6"
           >
             {/* Category Context Banner */}

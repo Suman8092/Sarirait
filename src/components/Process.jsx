@@ -9,16 +9,15 @@ import MaskedHeading from './MaskedHeading';
 
 export default function Process() {
   const { isDark } = useTheme();
-  const reducedMotion = useReducedMotion();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { amount: 0.25 });
   const [activeStep, setActiveStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(() => !reducedMotion);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isInteracting, setIsInteracting] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isDocumentVisible, setIsDocumentVisible] = useState(() => !document.hidden);
   const timerRef = useRef(null);
-  const shouldAutoAdvance = isPlaying && isInView && isDocumentVisible && !isInteracting && !isFocused && !reducedMotion;
+  const shouldAutoAdvance = isPlaying && isInView && isDocumentVisible && !isInteracting && !isFocused;
 
   useEffect(() => {
     const handleVisibility = () => setIsDocumentVisible(!document.hidden);
@@ -94,7 +93,7 @@ export default function Process() {
 
         {/* SECTION HEADER */}
         <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -122,7 +121,7 @@ export default function Process() {
               A transparent, sprint-based process keeping priorities visible, weekly progress demonstrable, and code production-grade.
             </p>
             {/* Play/Pause Autoplay Controls */}
-            {!reducedMotion && <button
+            <button
               onClick={() => {
                 sound.click();
                 setIsPlaying(!isPlaying);
@@ -137,7 +136,7 @@ export default function Process() {
             >
               {isPlaying ? <Pause size={12} className="text-cyan-400" /> : <Play size={12} className="text-emerald-400" />}
               <span>{isPlaying ? 'Auto-play · pauses while you explore' : 'Auto-play Paused'}</span>
-            </button>}
+            </button>
           </div>
         </motion.div>
 
@@ -199,7 +198,7 @@ export default function Process() {
                   <div className="text-[10px] font-mono-code opacity-70 mt-1 truncate">
                     {step.duration}
                   </div>
-                  {isSelected && !reducedMotion && (
+                  {isSelected && (
                     <motion.span
                       key={`${activeStep}-${shouldAutoAdvance}`}
                       aria-hidden="true"
@@ -223,10 +222,10 @@ export default function Process() {
             id="process-step-panel"
             role="tabpanel"
             aria-labelledby={`process-step-${currentStep.step}`}
-            initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: reducedMotion ? 0 : -8 }}
-            transition={{ duration: reducedMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             <SpotlightCard
               spotlightColor="rgba(0, 240, 255, 0.16)"
