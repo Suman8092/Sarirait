@@ -1429,3 +1429,163 @@ footer li :is(a, button):is(:hover, :focus-visible) {
     translate: var(--tw-translate-x, 0px) var(--tw-translate-y, 0px);
   }
 }
+
+/* ========================================================================= */
+/* BRAINLY 3D FLIPCASE HEADING ANIMATION                                     */
+/* High-performance hardware-accelerated 3D cylindrical text-front/back flip */
+/* Reference: demo.casethemes.net/brainly                                   */
+/* ========================================================================= */
+@keyframes brainly-wrap-flipCase {
+  0% {
+    opacity: 0;
+    transform: translateY(2.25rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes brainly-front-flipCase {
+  0% {
+    opacity: 1;
+    transform: translateY(0%) rotateX(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%) rotateX(90deg);
+  }
+}
+
+@keyframes brainly-back-flipCase {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) rotateX(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%) rotateX(0deg);
+  }
+}
+
+@keyframes brainly-hover-flip {
+  0% {
+    transform: translateY(0%) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-30%) rotateX(90deg);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateY(0%) rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+.brainly-flip-item {
+  position: relative;
+  display: inline-block;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  vertical-align: baseline;
+  will-change: transform, opacity;
+}
+
+.brainly-flip-item:not(.is-animating):not(.has-finished) {
+  opacity: 0;
+  transform: translateY(2.25rem);
+}
+
+.brainly-flip-item.is-animating {
+  animation: brainly-wrap-flipCase 0.85s cubic-bezier(0.8, 0, 0.2, 1) both;
+  animation-delay: var(--brainly-delay, 0s);
+}
+
+.brainly-flip-inner {
+  position: relative;
+  display: inline-block;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.brainly-text-front {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  backface-visibility: hidden;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+
+.brainly-flip-item.is-animating .brainly-text-front {
+  animation: brainly-front-flipCase 0.85s cubic-bezier(0.8, 0, 0.2, 1) both;
+  animation-delay: var(--brainly-delay, 0s);
+}
+
+.brainly-text-back-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: inline-block;
+  transform-style: preserve-3d;
+}
+
+.brainly-text-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  backface-visibility: hidden;
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+}
+
+.brainly-flip-item.is-animating .brainly-text-back {
+  animation: brainly-back-flipCase 0.85s cubic-bezier(0.8, 0, 0.2, 1) both;
+  animation-delay: var(--brainly-delay, 0s);
+}
+
+.brainly-flip-item.has-finished {
+  opacity: 1;
+  transform: none;
+}
+
+.brainly-flip-item.has-finished .brainly-text-front {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.brainly-flip-item.has-finished .brainly-text-back {
+  opacity: 1;
+  transform: translateY(0%) rotateX(0deg);
+}
+
+/* Interactive hover tumble */
+@media (hover: hover) and (pointer: fine) {
+  .brainly-flip-item.has-finished:hover .brainly-flip-inner {
+    animation: brainly-hover-flip 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brainly-flip-item {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .brainly-text-front {
+    display: none !important;
+  }
+  .brainly-text-back {
+    position: relative !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
