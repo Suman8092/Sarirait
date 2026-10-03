@@ -344,10 +344,11 @@ export default function Portfolio({ onOpenProjectModal }) {
                   navigateToProject(nextIndex);
                 }
               }}
-              className={`w-[85vw] sm:w-[370px] md:w-[410px] lg:w-[440px] h-[350px] sm:h-[380px] lg:h-[400px] shrink-0 rounded-3xl p-4 sm:p-5 border transition-all duration-300 cursor-pointer flex flex-col justify-between group shadow-xl hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${
+              data-cursor="project"
+              className={`w-[85vw] sm:w-[370px] md:w-[410px] lg:w-[440px] h-[350px] sm:h-[380px] lg:h-[400px] shrink-0 rounded-3xl p-4 sm:p-5 border transition-all duration-500 ease-out cursor-pointer flex flex-col justify-between group shadow-xl hover:-translate-y-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${
                 isDark
-                  ? 'bg-gradient-to-b from-[#0e1628]/95 via-[#090e1a]/95 to-[#060912] border-white/10 hover:border-cyan-400/50 hover:shadow-cyan-500/10'
-                  : 'bg-white border-slate-200/90 hover:border-sky-400/80 shadow-slate-200/60 hover:shadow-2xl hover:shadow-sky-500/10'
+                  ? 'bg-gradient-to-b from-[#0e1628]/95 via-[#090e1a]/95 to-[#060912] border-white/10 hover:border-cyan-400/60 hover:shadow-2xl hover:shadow-cyan-500/15'
+                  : 'bg-white border-slate-200/90 hover:border-sky-400/80 shadow-slate-200/60 hover:shadow-2xl hover:shadow-sky-500/15'
               }`}
             >
               {/* HERO LOGO DISPLAY BOX: Rich brand atmosphere, floating emblem plaque */}

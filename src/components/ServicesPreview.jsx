@@ -226,7 +226,7 @@ export default function ServicesPreview() {
             </div>
 
             {/* Clean Grid of Services */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div data-motion-stagger="80" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {activeCategory.services.map((srv, idx) => (
                 <SpotlightCard
                   key={srv.slug}
@@ -235,18 +235,18 @@ export default function ServicesPreview() {
                   tiltIntensity={4.8}
                   elevation={12}
                   data-motion-reveal
-                  style={{ '--motion-delay': `${Math.min(idx, 4) * 65}ms` }}
+                  style={{ '--motion-delay': `${Math.min(idx, 5) * 80}ms` }}
                   onMouseEnter={() => sound.hover()}
-                  className={`motion-card p-6 sm:p-7 rounded-2xl sm:rounded-3xl glass-card border transition-all duration-300 flex flex-col justify-between group ${
+                  className={`motion-card p-6 sm:p-7 rounded-2xl sm:rounded-3xl glass-card border transition-all duration-500 ease-out hover:-translate-y-2.5 flex flex-col justify-between group shadow-xl ${
                     isDark 
-                      ? 'bg-[#090d16] border-white/[0.08] hover:border-cyan-500/40' 
-                      : 'bg-white border-slate-200 hover:border-sky-400 shadow-sm'
+                      ? 'bg-[#090d16] border-white/[0.08] hover:border-cyan-400/50 hover:shadow-cyan-500/10' 
+                      : 'bg-white border-slate-200 hover:border-sky-400 shadow-sm hover:shadow-xl hover:shadow-sky-500/10'
                   }`}
                 >
                   <div>
                     {/* Top Row: Icon + Badge */}
                     <div className="flex items-center justify-between gap-3 mb-4">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-transform duration-300 group-hover:scale-110 ${
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-400 group-hover:scale-110 group-hover:rotate-6 ${
                         isDark 
                           ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400' 
                           : 'bg-sky-50 border-sky-200 text-sky-600'

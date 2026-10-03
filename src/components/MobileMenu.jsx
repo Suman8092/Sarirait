@@ -196,19 +196,25 @@ export default function MobileMenu({ isOpen, onClose, onOpenProjectModal }) {
                 Quick Navigation
               </span>
               <div className="grid grid-cols-2 gap-2">
-                {navLinks.map((link) => (
-                  <Link
+                {navLinks.map((link, idx) => (
+                  <motion.div
                     key={link.name}
-                    to={link.to}
-                    onClick={() => handleNavClick(link.to)}
-                    className={`p-3 rounded-xl text-center text-xs sm:text-sm font-semibold transition-all border ${
-                      isDark
-                        ? 'bg-white/[0.03] border-white/[0.07] text-slate-200 hover:text-white hover:border-cyan-500/40 hover:bg-white/[0.06]'
-                        : 'bg-slate-50 border-slate-200 text-slate-800 hover:text-slate-950 hover:border-cyan-500/50 hover:bg-white shadow-xs'
-                    }`}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + idx * 0.04, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    {link.name}
-                  </Link>
+                    <Link
+                      to={link.to}
+                      onClick={() => handleNavClick(link.to)}
+                      className={`block w-full p-3 rounded-xl text-center text-xs sm:text-sm font-semibold transition-all duration-300 border ${
+                        isDark
+                          ? 'bg-white/[0.03] border-white/[0.07] text-slate-200 hover:text-white hover:border-cyan-400/50 hover:bg-white/[0.08]'
+                          : 'bg-slate-50 border-slate-200 text-slate-800 hover:text-slate-950 hover:border-sky-500 hover:bg-white shadow-xs'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
             </div>

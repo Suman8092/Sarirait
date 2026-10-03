@@ -62,13 +62,15 @@ export default function FAQ({ onOpenProjectModal }) {
         </div>
 
         {/* ACCORDION LIST */}
-        <div data-motion-reveal className="space-y-3.5">
-          {faqsData.map((faq) => {
+        <div data-motion-reveal data-motion-stagger="70" className="space-y-3.5">
+          {faqsData.map((faq, idx) => {
             const isOpen = openId === faq.id;
             return (
               <div
                 key={faq.id}
-                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                data-motion-reveal
+                style={{ '--motion-delay': `${idx * 60}ms` }}
+                className={`rounded-2xl border transition-all duration-400 overflow-hidden ${
                   isOpen
                     ? isDark
                       ? 'bg-[#0c1220] border-cyan-500/40 shadow-xl shadow-cyan-500/10 border-l-4 border-l-cyan-400'
@@ -87,7 +89,7 @@ export default function FAQ({ onOpenProjectModal }) {
                   onMouseEnter={() => sound.hover()}
                   className="w-full px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-between gap-4 text-left cursor-pointer group"
                 >
-                  <span className={`text-base sm:text-lg font-display font-bold transition-colors ${
+                  <span className={`text-base sm:text-lg font-display font-bold transition-colors duration-300 ${
                     isOpen
                       ? isDark ? 'text-cyan-300' : 'text-sky-950 font-extrabold'
                       : isDark ? 'text-white group-hover:text-cyan-300' : 'text-slate-800 group-hover:text-sky-700'
@@ -95,7 +97,7 @@ export default function FAQ({ onOpenProjectModal }) {
                     {faq.question}
                   </span>
                   
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border transition-all duration-400 ease-out ${
                     isOpen
                       ? isDark 
                         ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400 rotate-180 shadow-[0_0_12px_rgba(0,240,255,0.25)]' 
@@ -117,7 +119,7 @@ export default function FAQ({ onOpenProjectModal }) {
                       initial={reduceMotion ? false : { height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: reduceMotion ? 'auto' : 0, opacity: 0 }}
-                      transition={{ duration: reduceMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: reduceMotion ? 0 : 0.36, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
                       <div className={`px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm leading-relaxed border-t pt-4 ${

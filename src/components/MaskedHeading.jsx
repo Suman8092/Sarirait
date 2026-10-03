@@ -29,10 +29,10 @@ export default function MaskedHeading({
           className="block overflow-hidden py-0.5 leading-[1.12]"
         >
           <motion.span
-            className="block"
-            initial={reducedMotion ? false : { y: '105%', opacity: 0 }}
-            whileInView={{ y: '0%', opacity: 1 }}
-            viewport={{ once, amount: 0.2 }}
+            className="block will-change-transform"
+            initial={reducedMotion ? false : { y: '115%', opacity: 0, rotate: 1.2 }}
+            whileInView={{ y: '0%', opacity: 1, rotate: 0 }}
+            viewport={{ once, amount: 0.15 }}
             transition={{
               duration: reducedMotion ? 0 : duration,
               delay: reducedMotion ? 0 : delay + idx * stagger,

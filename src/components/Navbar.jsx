@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowUpRight, Volume2, VolumeX, ChevronDown, Sun, Moon } from 'lucide-react';
 import MegaMenu from './MegaMenu';
@@ -130,19 +131,36 @@ export default function Navbar({ onOpenProjectModal }) {
                 ? 'bg-white/[0.03] border border-white/[0.07]'
                 : 'bg-slate-100/90 border border-slate-200/90 shadow-sm'
             }`}>
-              <Link
-                to="/"
-                onMouseEnter={() => sound.hover()}
-                onClick={() => sound.click()}
-                aria-current={location.pathname === '/' && !['why-us', 'process', 'technology', 'footer'].includes(activeSection) ? 'page' : undefined}
-                className={`nav-motion-link px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                  isDark
-                    ? 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                }`}
-              >
-                Home
-              </Link>
+              {/* Home Link with sliding active pill */}
+              {(() => {
+                const isHomeActive = location.pathname === '/' && !['why-us', 'process', 'technology', 'footer'].includes(activeSection);
+                return (
+                  <Link
+                    to="/"
+                    onMouseEnter={() => sound.hover()}
+                    onClick={() => sound.click()}
+                    aria-current={isHomeActive ? 'page' : undefined}
+                    className={`nav-motion-link relative px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                      isHomeActive
+                        ? isDark ? 'text-cyan-300 font-semibold' : 'text-cyan-800 font-semibold'
+                        : isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {isHomeActive && (
+                      <motion.div
+                        layoutId="activeNavIndicator"
+                        className={`absolute inset-0 rounded-full ${
+                          isDark
+                            ? 'bg-cyan-500/15 border border-cyan-400/40 shadow-[0_0_12px_rgba(0,240,255,0.2)]'
+                            : 'bg-white border border-sky-300 shadow-sm'
+                        }`}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10">Home</span>
+                  </Link>
+                );
+              })()}
 
               {/* SERVICES TRIGGER WITH MEGA MENU */}
               <div
@@ -157,7 +175,7 @@ export default function Navbar({ onOpenProjectModal }) {
                     sound.click();
                     setMegaMenuOpen(!megaMenuOpen);
                   }}
-                  className={`nav-motion-link px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
+                  className={`nav-motion-link relative px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
                     megaMenuOpen
                       ? isDark
                         ? 'text-cyan-300 bg-white/[0.08] shadow-sm'
@@ -192,17 +210,24 @@ export default function Navbar({ onOpenProjectModal }) {
                     onMouseEnter={() => sound.hover()}
                     onClick={() => sound.click()}
                     aria-current={isActive ? (link.to.includes('#') ? 'location' : 'page') : undefined}
-                    className={`nav-motion-link px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                    className={`nav-motion-link relative px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                       isActive
-                        ? isDark
-                          ? 'text-cyan-300 bg-white/[0.08] shadow-sm font-semibold'
-                          : 'text-cyan-700 bg-white shadow-sm font-semibold'
-                        : isDark
-                          ? 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                        ? isDark ? 'text-cyan-300 font-semibold' : 'text-cyan-800 font-semibold'
+                        : isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    {link.name}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeNavIndicator"
+                        className={`absolute inset-0 rounded-full ${
+                          isDark
+                            ? 'bg-cyan-500/15 border border-cyan-400/40 shadow-[0_0_12px_rgba(0,240,255,0.2)]'
+                            : 'bg-white border border-sky-300 shadow-sm'
+                        }`}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10">{link.name}</span>
                   </Link>
                 );
               })}

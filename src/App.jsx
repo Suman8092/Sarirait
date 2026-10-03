@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Work from './pages/Work';
 import Services from './pages/Services';
 import ServiceDetail from './pages/ServiceDetail';
+import Preloader from './components/Preloader';
 import { ThemeProvider } from './context/ThemeContext';
 
 function AnimatedRoutes() {
@@ -47,6 +48,7 @@ export default function App() {
       <BrowserRouter>
         <MotionConfig reducedMotion="user">
           <SmoothScroll>
+            <Preloader />
             <CustomCursor />
             <MotionSystem />
             <AnimatedRoutes />

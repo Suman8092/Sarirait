@@ -105,10 +105,10 @@ export default function FinalCTA({ onOpenProjectModal }) {
                 onOpenProjectModal();
               }}
               onMouseEnter={() => sound.hover()}
-              className="btn-shimmer px-7 py-3.5 sm:px-8 sm:py-4 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 hover:from-cyan-300 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm font-mono-code flex items-center gap-2 shadow-xl shadow-cyan-500/25 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              className="btn-shimmer group px-7 py-3.5 sm:px-8 sm:py-4 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 hover:from-cyan-300 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm font-mono-code flex items-center gap-2 shadow-xl shadow-cyan-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             >
               <span>Start a Project</span>
-              <ArrowUpRight size={16} />
+              <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
             </button>
           </MagneticButton>
 
@@ -118,14 +118,14 @@ export default function FinalCTA({ onOpenProjectModal }) {
               to="/work"
               onClick={() => sound.click()}
               onMouseEnter={() => sound.hover()}
-              className={`px-6 py-3.5 rounded-full border text-xs sm:text-sm font-mono-code font-bold flex items-center gap-2 transition-all cursor-pointer ${
+              className={`group px-6 py-3.5 rounded-full border text-xs sm:text-sm font-mono-code font-bold flex items-center gap-2 transition-all duration-300 cursor-pointer ${
                 isDark 
-                  ? 'bg-white/[0.04] border-white/10 text-white hover:bg-white/[0.08] hover:border-cyan-400/40' 
-                  : 'bg-white border-slate-300 text-slate-800 hover:bg-slate-50 hover:border-sky-400 shadow-sm'
+                  ? 'bg-white/[0.04] border-white/10 text-white hover:bg-white/[0.08] hover:border-cyan-400/50 hover:shadow-cyan-500/10' 
+                  : 'bg-white border-slate-300 text-slate-800 hover:bg-slate-50 hover:border-sky-400 shadow-sm hover:shadow-md'
               }`}
             >
               <span>Explore 18+ Deliveries Archive</span>
-              <ArrowRight size={15} />
+              <ArrowRight size={15} className="text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </MagneticButton>
         </div>

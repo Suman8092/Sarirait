@@ -69,7 +69,7 @@ export default function TrustSection() {
         </div>
 
         {/* 4 CORE STATS GRID */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
+        <div data-motion-stagger="95" className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
           {stats.map((stat, i) => (
             <SpotlightCard
               key={i}
@@ -78,12 +78,12 @@ export default function TrustSection() {
               tiltIntensity={4.2}
               elevation={10}
               data-motion-reveal
-              style={{ '--motion-delay': `${i * 75}ms` }}
+              style={{ '--motion-delay': `${i * 90}ms` }}
               onMouseEnter={() => sound.hover()}
-              className={`motion-card p-5 sm:p-8 rounded-2xl group relative overflow-hidden flex flex-col justify-between border ${
+              className={`motion-card p-5 sm:p-8 rounded-2xl group relative overflow-hidden flex flex-col justify-between border transition-all duration-500 ease-out hover:-translate-y-2 ${
                 isDark
-                  ? 'glass-card border-white/[0.08] hover:border-cyan-500/40'
-                  : 'bg-white border-slate-200 shadow-sm hover:border-sky-400 hover:shadow-md'
+                  ? 'glass-card border-white/[0.08] hover:border-cyan-400/50 hover:shadow-cyan-500/10'
+                  : 'bg-white border-slate-200 shadow-sm hover:border-sky-400 hover:shadow-lg hover:shadow-sky-500/10'
               }`}
             >
               {/* Subtle top accent bar */}

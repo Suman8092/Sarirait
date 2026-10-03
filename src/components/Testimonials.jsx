@@ -195,10 +195,10 @@ export default function Testimonials() {
                 <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={current.company}
-                  initial={{ opacity: 0, y: reduceMotion ? 0 : 10 }}
+                  initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: reduceMotion ? 0 : -6 }}
-                  transition={{ duration: reduceMotion ? 0 : 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, y: reduceMotion ? 0 : -10 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
                   className="lg:col-span-8 space-y-6"
                 >
                   {/* Star Rating & Category */}

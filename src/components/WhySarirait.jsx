@@ -101,7 +101,7 @@ export default function WhySarirait() {
         </div>
 
         {/* 4 CORE PRINCIPLES WITH STAGGERED ENTRANCE & SPOTLIGHT CARDS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        <div data-motion-stagger="110" className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {principles.map((p, index) => (
             <SpotlightCard
               key={p.number}
@@ -110,12 +110,12 @@ export default function WhySarirait() {
               tiltIntensity={4.8}
               elevation={12}
               data-motion-reveal
-              style={{ '--motion-delay': `${(index % 2) * 100}ms` }}
+              style={{ '--motion-delay': `${index * 110}ms` }}
               onMouseEnter={() => sound.hover()}
-              className={`motion-card group p-6 sm:p-9 rounded-3xl transition-all duration-300 relative flex flex-col justify-between border shadow-xl ${
+              className={`motion-card group p-6 sm:p-9 rounded-3xl transition-all duration-500 ease-out hover:-translate-y-2 relative flex flex-col justify-between border shadow-xl ${
                 isDark 
-                  ? 'bg-[#0c1220]/80 border-white/[0.08] hover:border-cyan-500/40 shadow-black/40' 
-                  : 'bg-white border-slate-200/90 hover:border-sky-400 shadow-slate-200/70'
+                  ? 'bg-[#0c1220]/80 border-white/[0.08] hover:border-cyan-400/50 shadow-black/40' 
+                  : 'bg-white border-slate-200/90 hover:border-sky-400 shadow-slate-200/70 hover:shadow-xl hover:shadow-sky-500/10'
               } ${p.accent}`}
             >
               <div>
@@ -130,7 +130,7 @@ export default function WhySarirait() {
                   </span>
 
                   {/* Icon Container with Theme Contrast */}
-                  <div className={`p-3 rounded-2xl border transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ${
+                  <div className={`p-3 rounded-2xl border transition-all duration-400 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg ${
                     isDark 
                       ? 'bg-white/[0.04] border-white/10 group-hover:border-cyan-400/40' 
                       : 'bg-slate-100 border-slate-200 group-hover:border-sky-400 shadow-sm'

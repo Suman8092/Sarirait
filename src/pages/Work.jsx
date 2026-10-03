@@ -344,19 +344,19 @@ export default function Work() {
                       sound.click();
                       setSelectedProject(project);
                     }}
-                    className={`group relative rounded-3xl overflow-hidden border cursor-pointer flex flex-col justify-between shadow-2xl transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400 ${
+                    className={`group relative rounded-3xl overflow-hidden border cursor-pointer flex flex-col justify-between shadow-2xl transition-all duration-500 ease-out hover:-translate-y-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400 ${
                       isDark
-                        ? 'glass-card border-white/[0.08] hover:border-cyan-500/50 bg-[#0c1220]/90'
-                        : 'bg-white border-slate-200 hover:border-cyan-500 shadow-slate-200/80'
+                        ? 'glass-card border-white/[0.08] hover:border-cyan-400/60 hover:shadow-cyan-500/15 bg-[#0c1220]/90'
+                        : 'bg-white border-slate-200 hover:border-sky-500 shadow-slate-200/80 hover:shadow-2xl hover:shadow-sky-500/15'
                     }`}
                   >
                     {/* Visual Mockup & Logo Header Area */}
                     <div className="relative h-72 sm:h-84 w-full overflow-hidden bg-gradient-to-br from-[#0c1220] to-[#07090e] p-5 sm:p-6 flex flex-col justify-between">
-                      {/* Real authentic project visual / logo background */}
+                      {/* Real authentic project visual / logo background with smooth image zoom */}
                       <img
                         src={project.image || project.logo}
                         alt={`${project.client} Showcase`}
-                        className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-700 ease-out brightness-[0.88] group-hover:brightness-100 group-focus-visible:brightness-100"
+                        className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-108 group-focus-visible:scale-108 transition-transform duration-800 ease-out brightness-[0.88] group-hover:brightness-100 group-focus-visible:brightness-100"
                         loading="lazy"
                       />
 

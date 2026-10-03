@@ -160,10 +160,10 @@ export default function AISection({ onOpenProjectModal }) {
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={selectedWorkload}
-                    initial={{ opacity: 0, y: reduceMotion ? 0 : 6 }}
+                    initial={{ opacity: 0, y: reduceMotion ? 0 : 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: reduceMotion ? 0 : -4 }}
-                    transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0, y: reduceMotion ? 0 : -6 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
                     className="grid grid-cols-1 sm:grid-cols-2 gap-3"
                   >
                 <div className={`p-3 rounded-xl border ${

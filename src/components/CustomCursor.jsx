@@ -18,7 +18,7 @@ export default function CustomCursor() {
   const isVisibleRef = useRef(false);
   const rafId = useRef(null);
 
-  const isView = cursorVariant === 'view';
+  const isView = cursorVariant === 'view' || cursorVariant === 'drag';
   const isHover = cursorVariant === 'hover';
   const targetScale = isHover ? 1.4 : 1.0;
   const targetScaleRef = useRef(targetScale);
@@ -93,6 +93,14 @@ export default function CustomCursor() {
         return;
       }
 
+      const dragTrigger = target.closest('[data-cursor="drag"]');
+      if (dragTrigger) {
+        setCursorVariant('drag');
+        setCursorText('DRAG ↔');
+        wakeLoop();
+        return;
+      }
+
       const interactive = target.closest('button, a, [role="button"], input, select, textarea');
       if (interactive) {
         setCursorVariant('hover');
@@ -103,6 +111,16 @@ export default function CustomCursor() {
 
       setCursorVariant('default');
       setCursorText('');
+      wakeLoop();
+    };
+
+    const onMouseDown = () => {
+      targetScaleRef.current = cursorVariant === 'hover' ? 1.15 : 0.85;
+      wakeLoop();
+    };
+
+    const onMouseUp = () => {
+      targetScaleRef.current = cursorVariant === 'hover' ? 1.4 : 1.0;
       wakeLoop();
     };
 
@@ -119,12 +137,16 @@ export default function CustomCursor() {
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mouseover', onMouseOver, { passive: true });
+    document.addEventListener('mousedown', onMouseDown, { passive: true });
+    document.addEventListener('mouseup', onMouseUp, { passive: true });
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseover', onMouseOver);
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
       if (rafId.current) cancelAnimationFrame(rafId.current);

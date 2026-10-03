@@ -33,6 +33,18 @@ export default function MotionSystem() {
 
     const observeTarget = (target) => {
       if (target.classList.contains('is-motion-visible') || target.hasAttribute('data-motion-revealed') || pendingTargets.has(target)) return;
+      
+      // Automatic staggered delay for card groups and grids
+      const staggerParent = target.closest('[data-motion-stagger]');
+      if (staggerParent && !target.style.getPropertyValue('--motion-delay')) {
+        const siblings = Array.from(staggerParent.querySelectorAll('[data-motion-reveal]'));
+        const index = siblings.indexOf(target);
+        if (index > 0) {
+          const step = Number(staggerParent.getAttribute('data-motion-stagger')) || 85;
+          target.style.setProperty('--motion-delay', `${Math.min(index * step, 450)}ms`);
+        }
+      }
+
       pendingTargets.add(target);
       observer.observe(target);
     };
