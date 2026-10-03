@@ -219,8 +219,8 @@ export default function Testimonials() {
 
                   {/* Quote */}
                   <div className="relative">
-                    <Quote className="absolute -top-3 -left-2 w-8 h-8 text-cyan-500/15 pointer-events-none" />
-                    <p className={`text-lg sm:text-2xl lg:text-3xl font-display font-medium leading-relaxed italic ${
+                    <Quote className="absolute -top-2.5 -left-2 w-6 h-6 text-cyan-500/15 pointer-events-none" />
+                    <p className={`text-sm sm:text-base lg:text-lg font-display font-medium leading-relaxed italic ${
                       isDark ? 'text-slate-100' : 'text-slate-900'
                     }`}>
                       “{current.quote}”

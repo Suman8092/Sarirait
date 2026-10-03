@@ -61,21 +61,6 @@ export default function Footer({ onOpenProjectModal }) {
                 <a href="mailto:info@sarirait.com" className="hover:text-cyan-300 transition-colors">info@sarirait.com</a>
               </div>
             </div>
-
-            <button
-              data-magnetic
-              type="button"
-              onClick={() => {
-                sound.click();
-                onOpenProjectModal();
-              }}
-              onMouseEnter={() => sound.hover()}
-              className={`inline-flex items-center gap-2 text-xs font-semibold transition-colors cursor-pointer ${
-                isDark ? 'text-cyan-300 hover:text-white' : 'text-cyan-700 hover:text-cyan-900 font-bold'
-              }`}
-            >
-              Tell us about your project <ArrowUpRight size={14} />
-            </button>
           </div>
 
           {/* COLUMN 1: COMPANY (2 COLS) */}
